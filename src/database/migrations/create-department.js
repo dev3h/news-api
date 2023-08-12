@@ -6,7 +6,8 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.STRING,
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
       },
       name: {
         type: Sequelize.STRING,
@@ -33,8 +34,7 @@ module.exports = {
         defaultValue: 1,
       },
       company_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
           model: { tableName: "companies" },
           key: "id",
@@ -51,20 +51,18 @@ module.exports = {
         unique: true,
       },
       createdBy: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       updatedBy: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       deletedAt: {
         type: Sequelize.DATE,

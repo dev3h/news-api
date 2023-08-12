@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Department.belongsTo(models.Company);
+      Department.belongsTo(models.Company, {
+        foreignKey: "company_id",
+        as: "company",
+      });
       Department.hasMany(models.User);
     }
   }
@@ -28,6 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
+      deletedAt: "deletedAt",
       modelName: "Department",
     }
   );

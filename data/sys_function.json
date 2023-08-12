@@ -1,0 +1,54 @@
+[
+  {
+    "id": "DANHMUC",
+    "name": "danh mục",
+    "sort": 100,
+    "description": "DANH MUC",
+    "is_group": true,
+    "menu": true
+  },
+  {
+    "id": "CONGTY",
+    "name": "danh mục công ty",
+    "sort": 101,
+    "description": "danh mục công ty",
+    "is_group": false,
+    "parent": "DANHMUC",
+    "menu": true
+  },
+  {
+    "id": "DONVI",
+    "name": "danh mục đơn vị",
+    "sort": 102,
+    "description": "danh mục đơn vị",
+    "is_group": false,
+    "parent": "DANHMUC",
+    "menu": true
+  },
+  {
+    "id": "CHUNGTU",
+    "name": "chứng từ",
+    "sort": 200,
+    "description": "nghiệp vụ liên quan đến chứng từ",
+    "is_group": true,
+    "menu": true
+  },
+  {
+    "id": "NHAPMUA",
+    "name": "phiếu nhập mua",
+    "sort": 201,
+    "description": "phiếu nhập mua từ nhà cung cấp",
+    "is_group": false,
+    "parent": "CHUNGTU",
+    "menu": true
+  },
+  {
+    "id": "NHAPNB",
+    "name": "phiếu nhập nội bộ",
+    "sort": 202,
+    "description": "phiếu nhập nội bộ giữa các đơn vị",
+    "is_group": false,
+    "parent": "CHUNGTU",
+    "menu": true
+  }
+]

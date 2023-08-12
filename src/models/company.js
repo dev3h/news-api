@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Company.hasMany(models.User);
-      Company.hasMany(models.Department);
+      // Company.hasMany(models.Department);
     }
   }
   Company.init(
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       // soft delete
       paranoid: true,
-      deletedAt: "destroyTime",
+      deletedAt: "deletedAt",
 
       modelName: "Company",
     }

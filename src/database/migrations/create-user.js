@@ -6,7 +6,8 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.STRING,
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
       },
       username: {
         type: Sequelize.STRING,
@@ -18,7 +19,7 @@ module.exports = {
         allowNull: false,
       },
       company_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: { tableName: "companies" },
@@ -28,7 +29,7 @@ module.exports = {
         onDelete: "cascade",
       },
       department_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: { tableName: "departments" },
@@ -70,12 +71,12 @@ module.exports = {
         type: Sequelize.DATE,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       deletedAt: {
         type: Sequelize.DATE,
