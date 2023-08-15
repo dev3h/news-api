@@ -1,13 +1,12 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import companyRequest from "../requests/companyRequest";
-import db from "models";
-import CompanyService from "../../services/companyServices";
+import supplierRequest from "../requests/supplierRequest";
+import SupplierService from "../../services/supplierServices";
 
-class CompanyController {
+class SupplierController {
   // INDEX
   static async index(req, res) {
     try {
-      const response = await CompanyService.index(req.query);
+      const response = await SupplierService.index(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -18,8 +17,8 @@ class CompanyController {
   // CREATE
   static async create(req, res) {
     try {
-      companyRequest(req, res, () => {});
-      const response = await CompanyService.create(req.body);
+      supplierRequest(req, res, () => {});
+      const response = await SupplierService.create(req.body);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -29,7 +28,7 @@ class CompanyController {
   // SHOW
   static async show(req, res) {
     try {
-      const response = await CompanyService.show(req.params.id);
+      const response = await SupplierService.show(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -40,9 +39,9 @@ class CompanyController {
   // UPDATE
   static async update(req, res) {
     try {
-      companyRequest(req, res, () => {});
+      supplierRequest(req, res, () => {});
 
-      const response = await CompanyService.update(req.params.id, req.body);
+      const response = await SupplierService.update(req.params.id, req.body);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -53,7 +52,7 @@ class CompanyController {
   // DELETE
   static async destroy(req, res) {
     try {
-      const response = await CompanyService.destroy(req.params.id);
+      const response = await SupplierService.destroy(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -62,4 +61,4 @@ class CompanyController {
   }
 }
 
-export default CompanyController;
+export default SupplierController;

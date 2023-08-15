@@ -1,25 +1,24 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Company extends Model {
+  class Supplier extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Company.belongsToMany(models.User, {
+      Supplier.belongsToMany(models.User, {
         foreignKey: "createdBy",
         as: "user_createdBy",
       });
-      Company.belongsToMany(models.User, {
+      Supplier.belongsToMany(models.User, {
         foreignKey: "updatedBy",
         as: "user_updatedBy",
       });
-      // Company.hasMany(models.Department);
     }
   }
-  Company.init(
+  Supplier.init(
     {
       name: DataTypes.STRING,
       address: DataTypes.TEXT,
@@ -32,12 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      // soft delete
       paranoid: true,
       deletedAt: "deletedAt",
-
-      modelName: "Company",
+      modelName: "Supplier",
     }
   );
-  return Company;
+  return Supplier;
 };

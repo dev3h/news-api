@@ -1,13 +1,12 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import departmentRequest from "../requests/departmentRequest";
-import db from "models";
-import DepartmentService from "../../services/departmentServices";
+import companyRequest from "../requests/companyRequest";
+import CompanyService from "../../services/companyServices";
 
-class DepartmentController {
+class CompanyController {
   // INDEX
   static async index(req, res) {
     try {
-      const response = await DepartmentService.index(req.query);
+      const response = await CompanyService.index(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -18,8 +17,8 @@ class DepartmentController {
   // CREATE
   static async create(req, res) {
     try {
-      departmentRequest(req, res, () => {});
-      const response = await DepartmentService.create(req.body);
+      companyRequest(req, res, () => {});
+      const response = await CompanyService.create(req.body);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -29,7 +28,7 @@ class DepartmentController {
   // SHOW
   static async show(req, res) {
     try {
-      const response = await DepartmentService.show(req.params.id);
+      const response = await CompanyService.show(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -40,9 +39,9 @@ class DepartmentController {
   // UPDATE
   static async update(req, res) {
     try {
-      departmentRequest(req, res, () => {});
+      companyRequest(req, res, () => {});
 
-      const response = await DepartmentService.update(req.params.id, req.body);
+      const response = await CompanyService.update(req.params.id, req.body);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -53,7 +52,7 @@ class DepartmentController {
   // DELETE
   static async destroy(req, res) {
     try {
-      const response = await DepartmentService.destroy(req.params.id);
+      const response = await CompanyService.destroy(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -62,4 +61,4 @@ class DepartmentController {
   }
 }
 
-export default DepartmentController;
+export default CompanyController;

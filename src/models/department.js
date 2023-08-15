@@ -12,7 +12,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "company_id",
         as: "company",
       });
-      Department.hasMany(models.User);
+       Department.belongsToMany(models.User, {
+         foreignKey: "createdBy",
+         as: "user_createdBy",
+       });
+       Department.belongsToMany(models.User, {
+         foreignKey: "updatedBy",
+         as: "user_updatedBy",
+       });
     }
   }
   Department.init(
