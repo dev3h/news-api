@@ -1,10 +1,6 @@
 import db from "models";
 import { Op } from "sequelize";
 class GroupProductService {
-  constructor() {
-    this.model = db.Unit;
-  }
-
   static async index({ page, limit, name, orderBy, orderType, ...query }) {
     try {
       const queries = {
@@ -24,7 +20,7 @@ class GroupProductService {
           },
         };
       }
-      const response = await this.model.findAndCountAll({
+      const response = await db.GroupProduct.findAndCountAll({
         where: query,
         ...queries,
       });
@@ -39,7 +35,7 @@ class GroupProductService {
   }
   static async create(data) {
     try {
-      const response = await this.model.findOrCreate({
+      const response = await db.GroupProduct.findOrCreate({
         where: { name: data.name },
         defaults: data,
       });
@@ -54,7 +50,7 @@ class GroupProductService {
   }
   static async show(id) {
     try {
-      const response = await this.model.findByPk(id, {});
+      const response = await db.GroupProduct.findByPk(id, {});
       return {
         error: response ? 0 : 1,
         data: response,
@@ -65,7 +61,7 @@ class GroupProductService {
   }
   static async update(id, data) {
     try {
-      const response = await this.model.update(data, { where: { id } });
+      const response = await db.GroupProduct.update(data, { where: { id } });
       return {
         error: response[0] > 0 ? 0 : 1,
         mes: response[0] > 0 ? "update success" : "update failed",
@@ -76,7 +72,7 @@ class GroupProductService {
   }
   static async destroy(id) {
     try {
-      const response = await this.model.destroy({ where: { id } });
+      const response = await db.GroupProduct.destroy({ where: { id } });
       return {
         error: response > 0 ? 0 : 1,
         mes: response > 0 ? "delete success" : "delete failed",

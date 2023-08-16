@@ -1,9 +1,6 @@
 import db from "models";
 import { Op } from "sequelize";
 class SupplierService {
-  constructor() {
-    this.model = db.Supplier;
-  }
   static async index({ page, limit, name, orderBy, orderType, ...query }) {
     try {
       const queries = {
@@ -23,7 +20,7 @@ class SupplierService {
           },
         };
       }
-      const response = await this.model.findAndCountAll({
+      const response = await db.Supplier.findAndCountAll({
         where: query,
         ...queries,
       });
@@ -38,7 +35,7 @@ class SupplierService {
   }
   static async create(data) {
     try {
-      const response = await this.model.findOrCreate({
+      const response = await db.Supplier.findOrCreate({
         where: { name: data.name },
         defaults: data,
       });
@@ -53,7 +50,7 @@ class SupplierService {
   }
   static async show(id) {
     try {
-      const response = await this.model.findByPk(id, {});
+      const response = await db.Supplier.findByPk(id, {});
       return {
         error: response ? 0 : 1,
         data: response,
@@ -64,7 +61,7 @@ class SupplierService {
   }
   static async update(id, data) {
     try {
-      const response = await this.model.update(data, { where: { id } });
+      const response = await db.Supplier.update(data, { where: { id } });
       return {
         error: response[0] > 0 ? 0 : 1,
         mes: response[0] > 0 ? "update success" : "update failed",
@@ -75,7 +72,7 @@ class SupplierService {
   }
   static async destroy(id) {
     try {
-      const response = await this.model.destroy({ where: { id } });
+      const response = await db.Supplier.destroy({ where: { id } });
       return {
         error: response > 0 ? 0 : 1,
         mes: response > 0 ? "delete success" : "delete failed",

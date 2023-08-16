@@ -16,13 +16,14 @@ class UnitController {
 
   // CREATE
   static async create(req, res) {
-    try {
-      unitRequest(req, res, () => {});
-      const response = await UnitService.create(req.body);
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    unitRequest(req, res, async () => {
+      try {
+        const response = await UnitService.create(req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // SHOW
@@ -38,15 +39,14 @@ class UnitController {
 
   // UPDATE
   static async update(req, res) {
-    try {
-      unitRequest(req, res, () => {});
-
-      const response = await UnitService.update(req.params.id, req.body);
-
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    unitRequest(req, res, async () => {
+      try {
+        const response = await UnitService.update(req.params.id, req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // DELETE

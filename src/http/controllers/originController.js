@@ -16,13 +16,14 @@ class OriginController {
 
   // CREATE
   static async create(req, res) {
-    try {
-      originRequest(req, res, () => {});
-      const response = await OriginService.create(req.body);
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    originRequest(req, res, async () => {
+      try {
+        const response = await OriginService.create(req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // SHOW
@@ -38,15 +39,15 @@ class OriginController {
 
   // UPDATE
   static async update(req, res) {
-    try {
-      originRequest(req, res, () => {});
+    originRequest(req, res, async () => {
+      try {
+        const response = await OriginService.update(req.params.id, req.body);
 
-      const response = await OriginService.update(req.params.id, req.body);
-
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // DELETE

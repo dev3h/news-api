@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "company_id",
         as: "company",
       });
-       Department.belongsToMany(models.User, {
+       Department.belongsTo(models.User, {
          foreignKey: "createdBy",
-         as: "user_createdBy",
+         as: "created_by_email",
        });
-       Department.belongsToMany(models.User, {
+       Department.belongsTo(models.User, {
          foreignKey: "updatedBy",
-         as: "user_updatedBy",
+         as: "updated_by_email",
        });
     }
   }

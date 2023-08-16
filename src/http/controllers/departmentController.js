@@ -16,13 +16,14 @@ class DepartmentController {
 
   // CREATE
   static async create(req, res) {
-    try {
-      departmentRequest(req, res, () => {});
-      const response = await DepartmentService.create(req.body);
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    departmentRequest(req, res, async () => {
+      try {
+        const response = await DepartmentService.create(req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // SHOW
@@ -38,15 +39,15 @@ class DepartmentController {
 
   // UPDATE
   static async update(req, res) {
-    try {
-      departmentRequest(req, res, () => {});
+    departmentRequest(req, res, async () => {
+      try {
+        const response = await DepartmentService.update(req.params.id, req.body);
 
-      const response = await DepartmentService.update(req.params.id, req.body);
-
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // DELETE

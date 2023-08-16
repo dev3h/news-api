@@ -16,13 +16,14 @@ class SupplierController {
 
   // CREATE
   static async create(req, res) {
-    try {
-      supplierRequest(req, res, () => {});
-      const response = await SupplierService.create(req.body);
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    supplierRequest(req, res, async () => {
+      try {
+        const response = await SupplierService.create(req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // SHOW
@@ -38,15 +39,15 @@ class SupplierController {
 
   // UPDATE
   static async update(req, res) {
-    try {
-      supplierRequest(req, res, () => {});
+    supplierRequest(req, res, async () => {
+      try {
+        const response = await SupplierService.update(req.params.id, req.body);
 
-      const response = await SupplierService.update(req.params.id, req.body);
-
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // DELETE

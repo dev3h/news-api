@@ -16,13 +16,14 @@ class GroupProductController {
 
   // CREATE
   static async create(req, res) {
-    try {
-      groupProductRequest(req, res, () => {});
-      const response = await GroupProductService.create(req.body);
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+    groupProductRequest(req, res, async () => {
+      try {
+        const response = await GroupProductService.create(req.body);
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // SHOW
@@ -38,15 +39,15 @@ class GroupProductController {
 
   // UPDATE
   static async update(req, res) {
-    try {
-      groupProductRequest(req, res, () => {});
+    groupProductRequest(req, res, async () => {
+      try {
+        const response = await GroupProductService.update(req.params.id, req.body);
 
-      const response = await GroupProductService.update(req.params.id, req.body);
-
-      return res.status(200).json(response);
-    } catch (error) {
-      return internalServerError(res);
-    }
+        return res.status(200).json(response);
+      } catch (error) {
+        return internalServerError(res);
+      }
+    });
   }
 
   // DELETE

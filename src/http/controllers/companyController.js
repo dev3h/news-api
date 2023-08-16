@@ -17,9 +17,14 @@ class CompanyController {
   // CREATE
   static async create(req, res) {
     try {
-      companyRequest(req, res, () => {});
-      const response = await CompanyService.create(req.body);
-      return res.status(200).json(response);
+      companyRequest(req, res, async () => {
+        try {
+          const response = await CompanyService.create(req.body);
+          return res.status(200).json(response);
+        } catch (error) {
+          return internalServerError(res);
+        }
+      });
     } catch (error) {
       return internalServerError(res);
     }
