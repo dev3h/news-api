@@ -1,12 +1,12 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import supplierRequest from "../requests/supplierRequest";
-import SupplierService from "../../services/SupplierServices";
+import productRequest from "../requests/productRequest";
+import ProductService from "../../services/ProductServices";
 
-class SupplierController {
+class ProductController {
   // INDEX
   static async index(req, res) {
     try {
-      const response = await SupplierService.index(req.query);
+      const response = await ProductService.index(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -16,9 +16,10 @@ class SupplierController {
 
   // CREATE
   static async create(req, res) {
-    supplierRequest(req, res, async () => {
+    productRequest(req, res, async () => {
       try {
-        const response = await SupplierService.create(req.body);
+        const fileData = req.file;
+        const response = await ProductService.create(req.body, fileData);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -29,7 +30,7 @@ class SupplierController {
   // SHOW
   static async show(req, res) {
     try {
-      const response = await SupplierService.show(req.params.id);
+      const response = await ProductService.show(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -39,9 +40,10 @@ class SupplierController {
 
   // UPDATE
   static async update(req, res) {
-    supplierRequest(req, res, async () => {
+    productRequest(req, res, async () => {
       try {
-        const response = await SupplierService.update(req.params.id, req.body);
+        const fileData = req.file;
+        const response = await ProductService.update(req.body, fileData);
 
         return res.status(200).json(response);
       } catch (error) {
@@ -53,7 +55,18 @@ class SupplierController {
   // DELETE
   static async destroy(req, res) {
     try {
-      const response = await SupplierService.destroy(req.params.id);
+      const response = await ProductService.destroy(req.params.id);
+
+      return res.status(200).json(response);
+    } catch (error) {
+      return internalServerError(res);
+    }
+  }
+
+  // EXPORT
+  static async exportExcel(req, res) {
+    try {
+      const response = await ProductService.exportExcel(res);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -62,4 +75,4 @@ class SupplierController {
   }
 }
 
-export default SupplierController;
+export default ProductController;

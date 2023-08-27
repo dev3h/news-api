@@ -1,6 +1,6 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
 import companyRequest from "../requests/companyRequest";
-import CompanyService from "../../services/companyServices";
+import CompanyService from "../../services/CompanyServices";
 
 class CompanyController {
   // INDEX

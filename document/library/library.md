@@ -18,3 +18,4 @@
 | 14 | multer | lấy ảnh kiểu file lưu vào `memory` hoặc `disk` | https://www.npmjs.com/package/uuid |
 | 15 | multer storage cloudinary | lưu ảnh từ multer vào cloudinary | https://www.npmjs.com/package/multer-storage-cloudinary |
 | 16 | faker | fake data | https://fakerjs.dev/guide/ |
+| 17 | xlsx | export excel | https://www.npmjs.com/package/xlsx |

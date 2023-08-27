@@ -1,6 +1,6 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
 import departmentRequest from "../requests/departmentRequest";
-import DepartmentService from "../../services/departmentServices";
+import DepartmentService from "../../services/DepartmentServices";
 
 class DepartmentController {
   // INDEX

@@ -1,6 +1,6 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
 import unitRequest from "../requests/unitRequest";
-import UnitService from "../../services/unitServices";
+import UnitService from "../../services/UnitServices";
 
 class UnitController {
   // INDEX

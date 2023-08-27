@@ -1,6 +1,6 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
 import originRequest from "../requests/originRequest";
-import OriginService from "../../services/originServices";
+import OriginService from "../../services/OriginServices";
 
 class OriginController {
   // INDEX

@@ -1,18 +1,22 @@
-import department from "./department";
-import company from "./company";
-import unit from "./unit";
-import supplier from "./supplier";
-import origin from "./origin";
-import groupProduct from "./group-product";
+import DepartmentRoute from "./DepartmentRoute";
+import CompanyRoute from "./CompanyRoute";
+import UnitRoute from "./UnitRoute";
+import SupplierRoute from "./SupplierRoute";
+import OriginRoute from "./OriginRoute";
+import GroupProductRoute from "./GroupProductRoute";
+import ProductRoute from "./ProductRoute";
+import { notFound } from "../http/middlewares/handle_error";
 
 const initRoutes = (app) => {
-  app.use("/api/v1/department", department);
-  app.use("/api/v1/company", company);
-  app.use("/api/v1/company", company);
-  app.use("/api/v1/unit", unit);
-  app.use("/api/v1/supplier", supplier);
-  app.use("/api/v1/origin", origin);
-  app.use("/api/v1/group-product", groupProduct);
+  app.use("/api/v1/department", DepartmentRoute);
+  app.use("/api/v1/company", CompanyRoute);
+  app.use("/api/v1/unit", UnitRoute);
+  app.use("/api/v1/supplier", SupplierRoute);
+  app.use("/api/v1/origin", OriginRoute);
+  app.use("/api/v1/group-product", GroupProductRoute);
+  app.use("/api/v1/product", ProductRoute);
+
+  return app.use(notFound);
 };
 
 export default initRoutes;

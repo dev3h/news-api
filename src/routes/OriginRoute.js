@@ -1,5 +1,5 @@
 import express from "express";
-import OriginController from "../http/controllers/originController";
+import OriginController from "../http/controllers/OriginController";
 
 const router = express.Router();
 

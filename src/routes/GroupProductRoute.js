@@ -1,5 +1,5 @@
 import express from "express";
-import GroupProductController from "../http/controllers/groupProductController";
+import GroupProductController from "../http/controllers/GroupProductController";
 
 const router = express.Router();
 

@@ -24,7 +24,6 @@ class UnitService {
       const response = await db.Unit.findAndCountAll({
         where: query,
         ...queries,
-        logging: console.log,
       });
 
       return {

@@ -1,6 +1,6 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
 import groupProductRequest from "../requests/groupProductRequest";
-import GroupProductService from "../../services/groupProductServices";
+import GroupProductService from "../../services/GroupProductServices";
 
 class GroupProductController {
   // INDEX
