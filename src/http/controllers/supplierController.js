@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import supplierRequest from "../requests/supplierRequest";
+import SupplierRequest from "../requests/SupplierRequest";
 import SupplierService from "../../services/SupplierServices";
 
 class SupplierController {
@@ -16,7 +16,7 @@ class SupplierController {
 
   // CREATE
   static async create(req, res) {
-    supplierRequest(req, res, async () => {
+    SupplierRequest(req, res, async () => {
       try {
         const response = await SupplierService.create(req.body);
         return res.status(200).json(response);
@@ -39,7 +39,7 @@ class SupplierController {
 
   // UPDATE
   static async update(req, res) {
-    supplierRequest(req, res, async () => {
+    SupplierRequest(req, res, async () => {
       try {
         const response = await SupplierService.update(req.params.id, req.body);
 

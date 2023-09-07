@@ -4,7 +4,7 @@ import db from "models";
 
 import { badRequest } from "../middlewares/handle_error";
 
-const productRequest = async (req, res, next) => {
+const ProductRequest = async (req, res, next) => {
   const fileData = req.file;
   console.log(req.body);
   const rules = {
@@ -24,4 +24,4 @@ const productRequest = async (req, res, next) => {
 
   next();
 };
-export default productRequest;
+export default ProductRequest;

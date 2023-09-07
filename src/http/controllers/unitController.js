@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import unitRequest from "../requests/unitRequest";
+import UnitRequest from "../requests/UnitRequest";
 import UnitService from "../../services/UnitServices";
 
 class UnitController {
@@ -16,7 +16,7 @@ class UnitController {
 
   // CREATE
   static async create(req, res) {
-    unitRequest(req, res, async () => {
+    UnitRequest(req, res, async () => {
       try {
         const response = await UnitService.create(req.body);
         return res.status(200).json(response);
@@ -39,7 +39,7 @@ class UnitController {
 
   // UPDATE
   static async update(req, res) {
-    unitRequest(req, res, async () => {
+    UnitRequest(req, res, async () => {
       try {
         const response = await UnitService.update(req.params.id, req.body);
         return res.status(200).json(response);

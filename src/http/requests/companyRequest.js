@@ -2,7 +2,7 @@ import joi from "joi";
 
 import { badRequest } from "../middlewares/handle_error";
 
-const companyRequest = (req, res, next) => {
+const CompanyRequest = (req, res, next) => {
   const { error } = joi
     .object({
       name: joi.string().required(),
@@ -15,4 +15,4 @@ const companyRequest = (req, res, next) => {
   }
   next();
 };
-export default companyRequest;
+export default CompanyRequest;

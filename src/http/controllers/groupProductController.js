@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import groupProductRequest from "../requests/groupProductRequest";
+import GroupProductRequest from "../requests/GroupProductRequest";
 import GroupProductService from "../../services/GroupProductServices";
 
 class GroupProductController {
@@ -16,7 +16,7 @@ class GroupProductController {
 
   // CREATE
   static async create(req, res) {
-    groupProductRequest(req, res, async () => {
+    GroupProductRequest(req, res, async () => {
       try {
         const response = await GroupProductService.create(req.body);
         return res.status(200).json(response);
@@ -39,7 +39,7 @@ class GroupProductController {
 
   // UPDATE
   static async update(req, res) {
-    groupProductRequest(req, res, async () => {
+    GroupProductRequest(req, res, async () => {
       try {
         const response = await GroupProductService.update(req.params.id, req.body);
 

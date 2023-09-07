@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import productRequest from "../requests/productRequest";
+import ProductRequest from "../requests/ProductRequest";
 import ProductService from "../../services/ProductServices";
 
 class ProductController {
@@ -16,7 +16,7 @@ class ProductController {
 
   // CREATE
   static async create(req, res) {
-    productRequest(req, res, async () => {
+    ProductRequest(req, res, async () => {
       try {
         const fileData = req.file;
         const response = await ProductService.create(req.body, fileData);
@@ -40,7 +40,7 @@ class ProductController {
 
   // UPDATE
   static async update(req, res) {
-    productRequest(req, res, async () => {
+    ProductRequest(req, res, async () => {
       try {
         const fileData = req.file;
         const response = await ProductService.update(req.body, fileData);

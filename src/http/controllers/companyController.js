@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import companyRequest from "../requests/companyRequest";
+import CompanyRequest from "../requests/CompanyRequest";
 import CompanyService from "../../services/CompanyServices";
 
 class CompanyController {
@@ -17,7 +17,7 @@ class CompanyController {
   // CREATE
   static async create(req, res) {
     try {
-      companyRequest(req, res, async () => {
+      CompanyRequest(req, res, async () => {
         try {
           const response = await CompanyService.create(req.body);
           return res.status(200).json(response);
@@ -44,7 +44,7 @@ class CompanyController {
   // UPDATE
   static async update(req, res) {
     try {
-      companyRequest(req, res, () => {});
+      CompanyRequest(req, res, () => {});
 
       const response = await CompanyService.update(req.params.id, req.body);
 

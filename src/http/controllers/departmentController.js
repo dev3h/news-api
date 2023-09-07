@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import departmentRequest from "../requests/departmentRequest";
+import DepartmentRequest from "../requests/DepartmentRequest";
 import DepartmentService from "../../services/DepartmentServices";
 
 class DepartmentController {
@@ -16,7 +16,7 @@ class DepartmentController {
 
   // CREATE
   static async create(req, res) {
-    departmentRequest(req, res, async () => {
+    DepartmentRequest(req, res, async () => {
       try {
         const response = await DepartmentService.create(req.body);
         return res.status(200).json(response);
@@ -39,7 +39,7 @@ class DepartmentController {
 
   // UPDATE
   static async update(req, res) {
-    departmentRequest(req, res, async () => {
+    DepartmentRequest(req, res, async () => {
       try {
         const response = await DepartmentService.update(req.params.id, req.body);
 

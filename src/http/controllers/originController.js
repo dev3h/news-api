@@ -1,5 +1,5 @@
 import { badRequest, internalServerError } from "../middlewares/handle_error";
-import originRequest from "../requests/originRequest";
+import OriginRequest from "../requests/OriginRequest";
 import OriginService from "../../services/OriginServices";
 
 class OriginController {
@@ -16,7 +16,7 @@ class OriginController {
 
   // CREATE
   static async create(req, res) {
-    originRequest(req, res, async () => {
+    OriginRequest(req, res, async () => {
       try {
         const response = await OriginService.create(req.body);
         return res.status(200).json(response);
@@ -39,7 +39,7 @@ class OriginController {
 
   // UPDATE
   static async update(req, res) {
-    originRequest(req, res, async () => {
+    OriginRequest(req, res, async () => {
       try {
         const response = await OriginService.update(req.params.id, req.body);
 
