@@ -3,10 +3,9 @@ import DepartmentRequest from "../requests/DepartmentRequest";
 import DepartmentService from "../../services/DepartmentServices";
 
 class DepartmentController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await DepartmentService.index(req.query);
+      const response = await DepartmentService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class DepartmentController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     DepartmentRequest(req, res, async () => {
       try {
@@ -26,10 +24,9 @@ class DepartmentController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await DepartmentService.show(req.params.id);
+      const response = await DepartmentService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -37,7 +34,6 @@ class DepartmentController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     DepartmentRequest(req, res, async () => {
       try {
@@ -50,7 +46,6 @@ class DepartmentController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await DepartmentService.destroy(req.params.id);

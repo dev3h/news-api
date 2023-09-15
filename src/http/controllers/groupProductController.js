@@ -3,10 +3,9 @@ import GroupProductRequest from "../requests/GroupProductRequest";
 import GroupProductService from "../../services/GroupProductServices";
 
 class GroupProductController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await GroupProductService.index(req.query);
+      const response = await GroupProductService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class GroupProductController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     GroupProductRequest(req, res, async () => {
       try {
@@ -26,10 +24,9 @@ class GroupProductController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await GroupProductService.show(req.params.id);
+      const response = await GroupProductService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -37,7 +34,6 @@ class GroupProductController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     GroupProductRequest(req, res, async () => {
       try {
@@ -50,7 +46,6 @@ class GroupProductController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await GroupProductService.destroy(req.params.id);

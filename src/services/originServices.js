@@ -1,7 +1,7 @@
 import db from "models";
 import { Op } from "sequelize";
 class OriginService {
-  static async index({ page, limit, name, orderBy, orderType, ...query }) {
+  static async getAll({ page, limit, name, orderBy, orderType, ...query }) {
     try {
       const queries = {
         raw: true,
@@ -48,7 +48,7 @@ class OriginService {
       throw error;
     }
   }
-  static async show(id) {
+  static async getOne(id) {
     try {
       const response = await db.Origin.findByPk(id, {});
       return {

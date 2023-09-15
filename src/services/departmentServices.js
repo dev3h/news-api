@@ -1,7 +1,7 @@
 import db from "models";
 import { Op } from "sequelize";
 class DepartmentService {
-  static async index({ page, limit, name, orderBy, orderType, ...query }) {
+  static async getAll({ page, limit, name, orderBy, orderType, ...query }) {
     try {
       const queries = {
         raw: true,
@@ -60,7 +60,7 @@ class DepartmentService {
       throw error;
     }
   }
-  static async show(id) {
+  static async getOne(id) {
     try {
       const response = await db.Department.findByPk(id, {
         include: [

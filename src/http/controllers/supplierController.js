@@ -3,10 +3,9 @@ import SupplierRequest from "../requests/SupplierRequest";
 import SupplierService from "../../services/SupplierServices";
 
 class SupplierController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await SupplierService.index(req.query);
+      const response = await SupplierService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class SupplierController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     SupplierRequest(req, res, async () => {
       try {
@@ -26,10 +24,9 @@ class SupplierController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await SupplierService.show(req.params.id);
+      const response = await SupplierService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -37,7 +34,6 @@ class SupplierController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     SupplierRequest(req, res, async () => {
       try {
@@ -50,7 +46,6 @@ class SupplierController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await SupplierService.destroy(req.params.id);

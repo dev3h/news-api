@@ -3,10 +3,9 @@ import CompanyRequest from "../requests/CompanyRequest";
 import CompanyService from "../../services/CompanyServices";
 
 class CompanyController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await CompanyService.index(req.query);
+      const response = await CompanyService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class CompanyController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     try {
       CompanyRequest(req, res, async () => {
@@ -30,10 +28,9 @@ class CompanyController {
     }
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await CompanyService.show(req.params.id);
+      const response = await CompanyService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -41,7 +38,6 @@ class CompanyController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     try {
       CompanyRequest(req, res, () => {});
@@ -54,7 +50,6 @@ class CompanyController {
     }
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await CompanyService.destroy(req.params.id);

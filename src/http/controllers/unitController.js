@@ -3,10 +3,9 @@ import UnitRequest from "../requests/UnitRequest";
 import UnitService from "../../services/UnitServices";
 
 class UnitController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await UnitService.index(req.query);
+      const response = await UnitService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class UnitController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     UnitRequest(req, res, async () => {
       try {
@@ -26,10 +24,9 @@ class UnitController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await UnitService.show(req.params.id);
+      const response = await UnitService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -37,7 +34,6 @@ class UnitController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     UnitRequest(req, res, async () => {
       try {
@@ -49,7 +45,6 @@ class UnitController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await UnitService.destroy(req.params.id);

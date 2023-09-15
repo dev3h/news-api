@@ -3,10 +3,9 @@ import OriginRequest from "../requests/OriginRequest";
 import OriginService from "../../services/OriginServices";
 
 class OriginController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await OriginService.index(req.query);
+      const response = await OriginService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class OriginController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     OriginRequest(req, res, async () => {
       try {
@@ -26,10 +24,9 @@ class OriginController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await OriginService.show(req.params.id);
+      const response = await OriginService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -37,7 +34,6 @@ class OriginController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     OriginRequest(req, res, async () => {
       try {
@@ -50,7 +46,6 @@ class OriginController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await OriginService.destroy(req.params.id);

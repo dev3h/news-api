@@ -4,7 +4,7 @@ import fs from "fs";
 import xlsx from "xlsx";
 import generateBarcode from "../helpers/createBarCode";
 class ProductService {
-  static async index({ page, limit, name, orderBy, orderType, ...query }) {
+  static async getAll({ page, limit, name, orderBy, orderType, ...query }) {
     try {
       const queries = {
         raw: true,
@@ -72,7 +72,7 @@ class ProductService {
       throw error;
     }
   }
-  static async show(id) {
+  static async getOne(id) {
     try {
       const response = await db.Product.findByPk(id, {});
       return {

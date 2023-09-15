@@ -3,10 +3,9 @@ import ProductRequest from "../requests/ProductRequest";
 import ProductService from "../../services/ProductServices";
 
 class ProductController {
-  // INDEX
-  static async index(req, res) {
+  static async getAll(req, res) {
     try {
-      const response = await ProductService.index(req.query);
+      const response = await ProductService.getAll(req.query);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -14,7 +13,6 @@ class ProductController {
     }
   }
 
-  // CREATE
   static async create(req, res) {
     ProductRequest(req, res, async () => {
       try {
@@ -27,10 +25,9 @@ class ProductController {
     });
   }
 
-  // SHOW
-  static async show(req, res) {
+  static async getOne(req, res) {
     try {
-      const response = await ProductService.show(req.params.id);
+      const response = await ProductService.getOne(req.params.id);
 
       return res.status(200).json(response);
     } catch (error) {
@@ -38,7 +35,6 @@ class ProductController {
     }
   }
 
-  // UPDATE
   static async update(req, res) {
     ProductRequest(req, res, async () => {
       try {
@@ -52,7 +48,6 @@ class ProductController {
     });
   }
 
-  // DELETE
   static async destroy(req, res) {
     try {
       const response = await ProductService.destroy(req.params.id);
