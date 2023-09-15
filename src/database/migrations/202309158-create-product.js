@@ -31,8 +31,8 @@ module.exports = {
           model: { tableName: "units" },
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       supplier_id: {
         type: Sequelize.INTEGER,
@@ -40,8 +40,8 @@ module.exports = {
           model: { tableName: "suppliers" },
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       origin_id: {
         type: Sequelize.INTEGER,
@@ -49,8 +49,8 @@ module.exports = {
           model: { tableName: "origins" },
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       group_product_id: {
         type: Sequelize.INTEGER,
@@ -58,8 +58,8 @@ module.exports = {
           model: { tableName: "group_products" },
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       is_active: {
         type: Sequelize.BOOLEAN,

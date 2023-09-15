@@ -2,41 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Departments", {
       id: {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
         type: Sequelize.INTEGER,
       },
-      username: {
+      name: {
         type: Sequelize.STRING,
-        allowNull: false,
         unique: true,
       },
-      password: {
+      short_name: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      company_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: { tableName: "companies" },
-          key: "id",
-        },
-        onUpdate: "cascade",
-        onDelete: "cascade",
-      },
-      department_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: { tableName: "departments" },
-          key: "id",
-        },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        unique: true,
       },
       address: {
         type: Sequelize.TEXT,
@@ -49,26 +28,34 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
+      fax: {
+        type: Sequelize.STRING,
+        unique: true,
+      },
       is_active: {
         type: Sequelize.BOOLEAN,
         comment: "0: inactive, 1: active",
         defaultValue: 1,
       },
-      is_group: {
+      company_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: { tableName: "companies" },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      is_warehouse: {
         type: Sequelize.BOOLEAN,
+        comment: "0: isn't warehouse, 1: is warehouse",
         defaultValue: 0,
       },
-      refresh_token: {
-        type: Sequelize.STRING,
+      createdBy: {
+        type: Sequelize.INTEGER,
       },
-      password_changed_at: {
-        type: Sequelize.DATE,
-      },
-      password_reset_token: {
-        type: Sequelize.STRING,
-      },
-      password_reset_token_expired_at: {
-        type: Sequelize.DATE,
+      updatedBy: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -84,6 +71,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Departments");
   },
 };

@@ -5,6 +5,7 @@ import SupplierRoute from "./SupplierRoute";
 import OriginRoute from "./OriginRoute";
 import GroupProductRoute from "./GroupProductRoute";
 import ProductRoute from "./ProductRoute";
+import DocumentRoute from "./DocumentRoute";
 import { notFound } from "../http/middlewares/handle_error";
 
 const initRoutes = (app) => {
@@ -15,6 +16,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/origin", OriginRoute);
   app.use("/api/v1/group-product", GroupProductRoute);
   app.use("/api/v1/product", ProductRoute);
+  app.use("/api/v1/document", DocumentRoute);
 
   return app.use(notFound);
 };

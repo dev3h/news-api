@@ -2,36 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Departments", {
+    await queryInterface.createTable("Documents", {
       id: {
         allowNull: false,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       name: {
         type: Sequelize.STRING,
-        unique: true,
       },
-      address: {
-        type: Sequelize.TEXT,
+      document_import: {
+        type: Sequelize.DATE,
       },
-      phone: {
-        type: Sequelize.STRING,
-        unique: true,
+      document_export: {
+        type: Sequelize.DATE,
       },
-      email: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      fax: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      is_active: {
-        type: Sequelize.BOOLEAN,
-        comment: "0: inactive, 1: active",
+      quantity: {
+        type: Sequelize.INTEGER,
         defaultValue: 1,
+        required: true,
+      },
+      total_price: {
+        type: Sequelize.FLOAT,
+        defaultValue: 0,
       },
       company_id: {
         type: Sequelize.INTEGER,
@@ -39,16 +33,26 @@ module.exports = {
           model: { tableName: "companies" },
           key: "id",
         },
-        onUpdate: "cascade",
-        onDelete: "cascade",
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      is_warehouse: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: 0,
+      department_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: { tableName: "departments" },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      sign: {
-        type: Sequelize.STRING,
-        unique: true,
+      supplier_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: { tableName: "suppliers" },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdBy: {
         type: Sequelize.INTEGER,
@@ -70,6 +74,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Departments");
+    await queryInterface.dropTable("Documents");
   },
 };

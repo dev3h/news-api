@@ -23,7 +23,7 @@ module.exports = {
         is_active: faker.datatype.boolean(),
         company_id: faker.helpers.arrayElement(companies).id,
         is_warehouse: faker.datatype.boolean(),
-        sign: faker.company.name(),
+        short_name: faker.word.words({ count: 5 }),
         createdAt: faker.date.past(),
         updatedAt: faker.date.recent(),
       }));

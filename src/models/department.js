@@ -12,19 +12,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "company_id",
         as: "company",
       });
-       Department.belongsTo(models.User, {
-         foreignKey: "createdBy",
-         as: "created_by_email",
-       });
-       Department.belongsTo(models.User, {
-         foreignKey: "updatedBy",
-         as: "updated_by_email",
-       });
+      Department.belongsTo(models.User, {
+        foreignKey: "createdBy",
+        as: "created_by_email",
+      });
+      Department.belongsTo(models.User, {
+        foreignKey: "updatedBy",
+        as: "updated_by_email",
+      });
     }
   }
   Department.init(
     {
       name: DataTypes.STRING,
+      short_name: DataTypes.STRING,
       address: DataTypes.TEXT,
       phone: DataTypes.STRING,
       email: DataTypes.STRING,
@@ -32,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       is_active: DataTypes.BOOLEAN,
       company_id: DataTypes.STRING,
       is_warehouse: DataTypes.BOOLEAN,
-      sign: DataTypes.STRING,
       createdBy: DataTypes.STRING,
       updatedBy: DataTypes.STRING,
     },
