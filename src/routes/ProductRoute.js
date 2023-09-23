@@ -1,6 +1,6 @@
 import express from "express";
 import ProductController from "../http/controllers/ProductController";
-import upload from "../http/middlewares/upload";
+import upload from "../http/middlewares/upload-image";
 
 const router = express.Router();
 

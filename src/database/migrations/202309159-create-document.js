@@ -9,23 +9,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      document_import: {
         type: Sequelize.STRING,
       },
-      document_import: {
+      document_export: {
+        type: Sequelize.STRING,
+      },
+      import_date: {
         type: Sequelize.DATE,
       },
-      document_export: {
+      export_date: {
         type: Sequelize.DATE,
       },
       quantity: {
         type: Sequelize.INTEGER,
-        defaultValue: 1,
-        required: true,
+      },
+      note: {
+        type: Sequelize.TEXT,
       },
       total_price: {
         type: Sequelize.FLOAT,
-        defaultValue: 0,
       },
       company_id: {
         type: Sequelize.INTEGER,
@@ -53,6 +56,11 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
+      },
+      status: {
+        type: Sequelize.TINYINT,
+        comment: "0: chưa hoàn tất, 1: đã hoàn tất",
+        defaultValue: 0,
       },
       createdBy: {
         type: Sequelize.INTEGER,

@@ -1,38 +1,35 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Department extends Model {
+  class Document_Detail extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Department.belongsTo(models.Company, {
-        foreignKey: "company_id",
-        as: "company",
+      Document_Detail.belongsTo(models.Product, {
+        foreignKey: "product_id",
+        as: "product",
       });
-      Department.belongsTo(models.User, {
+      Document_Detail.belongsTo(models.User, {
         foreignKey: "createdBy",
         as: "created_by_email",
       });
-      Department.belongsTo(models.User, {
+      Document_Detail.belongsTo(models.User, {
         foreignKey: "updatedBy",
         as: "updated_by_email",
       });
     }
   }
-  Department.init(
+  Document_Detail.init(
     {
-      name: DataTypes.STRING,
-      short_name: DataTypes.STRING,
-      address: DataTypes.TEXT,
-      phone: DataTypes.STRING,
-      email: DataTypes.STRING,
-      fax: DataTypes.STRING,
-      is_active: DataTypes.BOOLEAN,
-      company_id: DataTypes.STRING,
-      is_warehouse: DataTypes.BOOLEAN,
+      document_id: DataTypes.INTEGER,
+      product_id: DataTypes.STRING,
+      quantity: DataTypes.INTEGER,
+      price: DataTypes.FLOAT,
+      discount: DataTypes.FLOAT,
+      total_price: DataTypes.FLOAT,
       createdBy: DataTypes.INTEGER,
       updatedBy: DataTypes.INTEGER,
     },
@@ -40,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       paranoid: true,
       deletedAt: "deletedAt",
-      modelName: "Department",
+      modelName: "Document_Detail",
     }
   );
-  return Department;
+  return Document_Detail;
 };

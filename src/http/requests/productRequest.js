@@ -6,7 +6,6 @@ import { badRequest } from "../middlewares/handle_error";
 
 const ProductRequest = async (req, res, next) => {
   const fileData = req.file;
-  console.log(req.body);
   const rules = {
     name: joi.string().required(),
     group_product_id: joi.number().required(),

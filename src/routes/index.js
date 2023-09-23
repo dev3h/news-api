@@ -6,9 +6,11 @@ import OriginRoute from "./OriginRoute";
 import GroupProductRoute from "./GroupProductRoute";
 import ProductRoute from "./ProductRoute";
 import DocumentRoute from "./DocumentRoute";
+import AuthRoute from "./AuthRoute";
 import { notFound } from "../http/middlewares/handle_error";
 
 const initRoutes = (app) => {
+  app.use("/api/v1/auth", AuthRoute);
   app.use("/api/v1/department", DepartmentRoute);
   app.use("/api/v1/company", CompanyRoute);
   app.use("/api/v1/unit", UnitRoute);

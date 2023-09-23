@@ -74,7 +74,33 @@ class ProductService {
   }
   static async getOne(id) {
     try {
-      const response = await db.Product.findByPk(id, {});
+      const response = await db.Product.findByPk(id, {
+        include: [
+          {
+            model: db.Group_Product,
+            as: "group_product",
+            attributes: ["id", "name"],
+          },
+          {
+            model: db.Unit,
+            as: "unit",
+            attributes: ["id", "name"],
+          },
+          {
+            model: db.Supplier,
+            as: "supplier",
+            attributes: ["id", "name"],
+          },
+          {
+            model: db.Origin,
+            as: "origin",
+            attributes: ["id", "name"],
+          },
+        ],
+        attributes: {
+          exclude: ["unit_id", "supplier_id", "origin_id", "group_product_id"],
+        },
+      });
       return {
         error: response ? 0 : 1,
         data: response,
