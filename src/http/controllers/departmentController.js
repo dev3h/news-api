@@ -6,7 +6,7 @@ class DepartmentController {
   static async getAll(req, res) {
     try {
       const response = await DepartmentService.getAll(req.query);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -17,6 +17,7 @@ class DepartmentController {
     DepartmentRequest(req, res, async () => {
       try {
         const response = await DepartmentService.create(req.body);
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -27,7 +28,7 @@ class DepartmentController {
   static async getOne(req, res) {
     try {
       const response = await DepartmentService.getOne(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -38,7 +39,7 @@ class DepartmentController {
     DepartmentRequest(req, res, async () => {
       try {
         const response = await DepartmentService.update(req.params.id, req.body);
-
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -49,7 +50,7 @@ class DepartmentController {
   static async destroy(req, res) {
     try {
       const response = await DepartmentService.destroy(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);

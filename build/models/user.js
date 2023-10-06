@@ -32,22 +32,16 @@ module.exports = function (sequelize, DataTypes) {
        * The `models/index` file will call this method automatically.
        */
       function associate(models) {
-        User.belongsTo(models.Company);
-        User.belongsTo(models.Department);
+        // User.belongsTo(models.Company);
+        // User.belongsTo(models.Department);
       }
     }]);
     return User;
   }(Model);
   User.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    company_id: DataTypes.STRING,
-    department_id: DataTypes.STRING,
-    address: DataTypes.TEXT,
-    phone: DataTypes.STRING,
+    name: DataTypes.STRING,
     email: DataTypes.STRING,
-    is_active: DataTypes.BOOLEAN,
-    is_group: DataTypes.BOOLEAN,
+    password: DataTypes.STRING,
     refresh_token: DataTypes.STRING,
     password_changed_at: DataTypes.DATE,
     password_reset_token: DataTypes.STRING,
@@ -55,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     sequelize: sequelize,
     paranoid: true,
-    deletedAt: "destroyTime",
+    deletedAt: "deleted_at",
     modelName: "User"
   });
   return User;

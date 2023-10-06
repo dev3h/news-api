@@ -6,7 +6,7 @@ class ProductController {
   static async getAll(req, res) {
     try {
       const response = await ProductService.getAll(req.query);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -18,6 +18,7 @@ class ProductController {
       try {
         const fileData = req.file;
         const response = await ProductService.create(req.body, fileData);
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -28,7 +29,7 @@ class ProductController {
   static async getOne(req, res) {
     try {
       const response = await ProductService.getOne(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -40,7 +41,7 @@ class ProductController {
       try {
         const fileData = req.file;
         const response = await ProductService.update(req.body, fileData);
-
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -51,7 +52,7 @@ class ProductController {
   static async destroy(req, res) {
     try {
       const response = await ProductService.destroy(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);

@@ -7,10 +7,9 @@ class DocumentController {
   static async getAll(req, res) {
     try {
       const response = await DocumentService.getAll(req.query);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
-      console.log(error);
       return internalServerError(res);
     }
   }
@@ -19,6 +18,7 @@ class DocumentController {
     DocumentRequest(req, res, async () => {
       try {
         const response = await DocumentService.create(req.body);
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -30,9 +30,9 @@ class DocumentController {
       try {
         const fileData = req.file;
         const response = await DocumentService.importExcel(fileData);
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
-        console.log(error);
         return internalServerError(res);
       }
     });
@@ -41,7 +41,7 @@ class DocumentController {
   static async getOne(req, res) {
     try {
       const response = await DocumentService.getOne(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -53,7 +53,7 @@ class DocumentController {
       try {
         const fileData = req.file;
         const response = await DocumentService.update(req.body, fileData);
-
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -64,7 +64,7 @@ class DocumentController {
   static async destroy(req, res) {
     try {
       const response = await DocumentService.destroy(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);

@@ -1,3 +1,6 @@
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger-output.json";
+
 import DepartmentRoute from "./DepartmentRoute";
 import CompanyRoute from "./CompanyRoute";
 import UnitRoute from "./UnitRoute";
@@ -19,6 +22,8 @@ const initRoutes = (app) => {
   app.use("/api/v1/group-product", GroupProductRoute);
   app.use("/api/v1/product", ProductRoute);
   app.use("/api/v1/document", DocumentRoute);
+
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   return app.use(notFound);
 };

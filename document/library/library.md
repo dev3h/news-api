@@ -19,3 +19,6 @@
 | 15 | multer storage cloudinary | lưu ảnh từ multer vào cloudinary | https://www.npmjs.com/package/multer-storage-cloudinary |
 | 16 | faker | fake data | https://fakerjs.dev/guide/ |
 | 17 | xlsx | export excel | https://www.npmjs.com/package/xlsx |
+| 18 | cookie parser | parser cookie | https://www.npmjs.com/package/cookie-parser |
+| 18 | swagger-autogen | | https://www.npmjs.com/package/swagger-autogen |
+| 19 | swagger-ui-express | | https://www.npmjs.com/package/swagger-ui-express |

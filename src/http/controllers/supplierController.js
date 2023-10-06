@@ -6,7 +6,7 @@ class SupplierController {
   static async getAll(req, res) {
     try {
       const response = await SupplierService.getAll(req.query);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -17,6 +17,7 @@ class SupplierController {
     SupplierRequest(req, res, async () => {
       try {
         const response = await SupplierService.create(req.body);
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -27,7 +28,7 @@ class SupplierController {
   static async getOne(req, res) {
     try {
       const response = await SupplierService.getOne(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);
@@ -38,7 +39,7 @@ class SupplierController {
     SupplierRequest(req, res, async () => {
       try {
         const response = await SupplierService.update(req.params.id, req.body);
-
+        if (response.error === 1) return badRequest(response.mes, res);
         return res.status(200).json(response);
       } catch (error) {
         return internalServerError(res);
@@ -49,7 +50,7 @@ class SupplierController {
   static async destroy(req, res) {
     try {
       const response = await SupplierService.destroy(req.params.id);
-
+      if (response.error === 1) return badRequest(response.mes, res);
       return res.status(200).json(response);
     } catch (error) {
       return internalServerError(res);

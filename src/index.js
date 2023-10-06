@@ -1,18 +1,21 @@
 import express, { json, urlencoded } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 
-import connectDB from "config/database";
-import initRoutes from "routes";
+import connectDB from "./config/database";
+import initRoutes from "./routes";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+const corsOption = {
+  credentials: true,
+  origin: ["http://127.0.0.1:3000"],
+};
+
+app.use(cors(corsOption));
+
+app.use(cookieParser());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
