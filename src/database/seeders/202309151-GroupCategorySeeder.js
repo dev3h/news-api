@@ -6,27 +6,30 @@ const { faker } = require("@faker-js/faker");
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      const companies = [...Array(50)].map((company) => ({
+      const group_categories = [...Array(50)].map((item) => ({
         name: faker.company.name(),
         address: faker.location.streetAddress(),
         phone: faker.phone.number("+84 91 ### ## ##"),
         email: faker.internet.email(),
         fax: faker.phone.number("+84 91 ### ## ##"),
         is_active: faker.datatype.boolean(),
+        company_id: faker.helpers.arrayElement(companies).id,
+        is_warehouse: faker.datatype.boolean(),
+        short_name: faker.word.words({ count: 5 }),
         createdAt: faker.date.past(),
         updatedAt: faker.date.recent(),
       }));
-      await queryInterface.bulkInsert("companies", companies, {});
+      await queryInterface.bulkInsert("group_categories", group_categories, {});
     } catch (error) {
-      console.error("Error seeding companies:", error);
+      console.error("Error seeding group_categories:", error);
     }
   },
 
   async down(queryInterface, Sequelize) {
     try {
-      await queryInterface.bulkDelete("companies", null, {});
+      await queryInterface.bulkDelete("group_categories", null, {});
     } catch (error) {
-      console.error("Error undoing company seed:", error);
+      console.error("Error undoing group_categories seed:", error);
     }
   },
 };
