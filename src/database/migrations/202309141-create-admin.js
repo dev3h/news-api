@@ -11,7 +11,6 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false,
       },
       display_name: {
@@ -20,7 +19,7 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        unique: true,
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
@@ -28,6 +27,10 @@ module.exports = {
       },
       refresh_token: {
         type: Sequelize.STRING,
+      },
+      role: {
+        type: Sequelize.TINYINT,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

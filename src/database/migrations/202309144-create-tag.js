@@ -11,11 +11,9 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        unique: true,
       },
       slug: {
         type: Sequelize.STRING,
-        unique: true,
       },
       created_by: {
         type: Sequelize.INTEGER,

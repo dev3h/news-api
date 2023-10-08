@@ -14,7 +14,6 @@ module.exports = {
       },
       slug: {
         type: Sequelize.STRING,
-        unique: true,
       },
       photo: {
         type: Sequelize.STRING,

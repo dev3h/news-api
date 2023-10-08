@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       status: DataTypes.TINYINT,
       created_by: DataTypes.INTEGER,
+      updated_by: DataTypes.INTEGER,
     },
     {
       sequelize,

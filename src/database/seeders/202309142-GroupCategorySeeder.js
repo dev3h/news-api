@@ -3,19 +3,25 @@ const { faker } = require("@faker-js/faker");
 
 /** @type {import('sequelize-cli').Migration} */
 
+const getAdmins = async (queryInterface) => {
+  const data = await queryInterface.sequelize.query(
+    "SELECT id FROM admins where role=0",
+    {
+      type: queryInterface.sequelize.QueryTypes.SELECT,
+    }
+  );
+  return data;
+};
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      const group_categories = [...Array(50)].map((item) => ({
-        name: faker.company.name(),
-        address: faker.location.streetAddress(),
-        phone: faker.phone.number("+84 91 ### ## ##"),
-        email: faker.internet.email(),
-        fax: faker.phone.number("+84 91 ### ## ##"),
-        is_active: faker.datatype.boolean(),
-        company_id: faker.helpers.arrayElement(companies).id,
-        is_warehouse: faker.datatype.boolean(),
-        short_name: faker.word.words({ count: 5 }),
+      const admins = await getAdmins(queryInterface);
+      const group_categories = [...Array(20)].map((item) => ({
+        name: faker.lorem.word(),
+        slug: faker.lorem.slug(),
+        created_by: faker.helpers.arrayElement(admins).id,
+        updated_by: faker.helpers.arrayElement(admins).id,
         createdAt: faker.date.past(),
         updatedAt: faker.date.recent(),
       }));
