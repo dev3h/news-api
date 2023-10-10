@@ -23,8 +23,7 @@ module.exports = {
                 type: Sequelize.STRING
               },
               slug: {
-                type: Sequelize.STRING,
-                unique: true
+                type: Sequelize.STRING
               },
               photo: {
                 type: Sequelize.STRING

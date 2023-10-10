@@ -20,12 +20,10 @@ module.exports = {
                 type: Sequelize.INTEGER
               },
               name: {
-                type: Sequelize.STRING,
-                unique: true
+                type: Sequelize.STRING
               },
               slug: {
-                type: Sequelize.STRING,
-                unique: true
+                type: Sequelize.STRING
               },
               group_category_id: {
                 type: Sequelize.INTEGER,
@@ -38,7 +36,7 @@ module.exports = {
                 onUpdate: "CASCADE",
                 onDelete: "CASCADE"
               },
-              createdBy: {
+              created_by: {
                 type: Sequelize.INTEGER,
                 references: {
                   model: {
@@ -47,7 +45,7 @@ module.exports = {
                   key: "id"
                 }
               },
-              updatedBy: {
+              updated_by: {
                 type: Sequelize.INTEGER,
                 references: {
                   model: {

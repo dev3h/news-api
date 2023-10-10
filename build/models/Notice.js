@@ -39,7 +39,8 @@ module.exports = function (sequelize, DataTypes) {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
     status: DataTypes.TINYINT,
-    created_by: DataTypes.INTEGER
+    created_by: DataTypes.INTEGER,
+    updated_by: DataTypes.INTEGER
   }, {
     sequelize: sequelize,
     paranoid: true,

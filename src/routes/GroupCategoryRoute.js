@@ -1,12 +1,15 @@
 import express from "express";
-import CompanyController from "../http/controllers/CompanyController";
+import GroupCategoryController from "http/controllers/GroupCategoryController";
+import GroupCategoryRequest from "http/requests/GroupCategoryRequest";
 
 const router = express.Router();
 
-router.get("/", CompanyController.getAll);
-router.get("/one/:id", CompanyController.getOne);
-router.post("/", CompanyController.create);
-router.put("/:id", CompanyController.update);
-router.delete("/:id", CompanyController.destroy);
+router.get("", GroupCategoryController.getAll);
+router.get("/:id", GroupCategoryController.getOne);
+router.delete("/:id", GroupCategoryController.destroy);
+
+router.use(GroupCategoryRequest);
+router.post("/", GroupCategoryController.create);
+router.put("/:id", GroupCategoryController.update);
 
 export default router;
