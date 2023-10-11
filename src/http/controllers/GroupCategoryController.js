@@ -1,5 +1,12 @@
 // import { badRequest, internalServerError } from "../middlewares/handle_error";
-import GroupCategoryFilter from "../../modelFilters/GroupCategoryFilter";
+import db from "models";
+import GroupCategoryFilter from "modelFilters/GroupCategoryFilter";
+import generateSlug from "helpers/generateSlug";
+import {
+  generateCreatedByAndUpdatedBy,
+  generateUpdatedBy,
+} from "helpers/generateCreatedByAndUpdatedBy";
+import { internalServerError } from "helpers/generateError";
 
 class GroupCategoryController {
   static async getAll(req, res) {
@@ -11,7 +18,6 @@ class GroupCategoryController {
         page = 1,
         flimit = 10,
       } = req.query;
-      console.log(page);
       const filter = {
         search,
         sortBy,
@@ -22,49 +28,88 @@ class GroupCategoryController {
       const response = await GroupCategoryFilter.handleList(filter);
       return res.status(200).json(response);
     } catch (error) {
-      return res.status(500).json({
-        mes: error.message,
-      });
+      internalServerError(error, res);
     }
   }
 
   static async create(req, res) {
     try {
-      const response = await CompanyService.create(req.body);
-      if (response.error === 1) return badRequest(response.mes, res);
-      return res.status(200).json(response);
+      // change this
+      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
+      const response = await db.Group_Category.findOrCreate({
+        where: { name: req.body.name },
+        defaults: {
+          name: req.body.name,
+          slug: generateSlug(req.body.name),
+          created_by,
+          updated_by,
+        },
+      });
+      if (response[1] === false)
+        return res.status(422).json({
+          mes: "Tên nhóm đã tồn tại",
+        });
+      return res.status(200).json({
+        mes: "Tạo nhóm thành công",
+      });
     } catch (error) {
-      return internalServerError(res);
+      internalServerError(error, res);
     }
   }
 
   static async getOne(req, res) {
     try {
-      const response = await CompanyService.getOne(req.params.id);
-      if (response.error === 1) return badRequest(response.mes, res);
+      const response = await db.Group_Category.findByPk(req.params.id);
+      if (!response)
+        return res.status(404).json({
+          mes: "Không tìm thấy nhóm",
+        });
       return res.status(200).json(response);
     } catch (error) {
-      return internalServerError(res);
+      internalServerError(error, res);
     }
   }
 
   static async update(req, res) {
     try {
-      const response = await CompanyService.update(req.params.id, req.body);
-      if (response.error === 1) return badRequest(response.mes, res);
-      return res.status(200).json(response);
+      // change this
+      const { updated_by } = generateUpdatedBy(1);
+      const response = await db.Group_Category.update(
+        {
+          ...req.body,
+          slug: generateSlug(req.body.name),
+          updated_by,
+        },
+        {
+          where: { id: req.params.id },
+        }
+      );
+      if (response[0] === 0)
+        return res.status(404).json({
+          mes: "Không tìm thấy nhóm",
+        });
+      return res.status(200).json({
+        mes: "Cập nhật nhóm thành công",
+      });
     } catch (error) {
-      return internalServerError(res);
+      internalServerError(error, res);
     }
   }
 
   static async destroy(req, res) {
     try {
-      const response = await CompanyService.destroy(req.params.id);
-      if (response.error === 1) return badRequest(response.mes, res);
-      return res.status(200).json(response);
+      const response = await db.Group_Category.destroy({
+        where: { id: req.params.id },
+      });
+      if (response === 0)
+        return res.status(404).json({
+          mes: "Không tìm thấy nhóm",
+        });
+      return res.status(200).json({
+        mes: "Xóa nhóm thành công",
+      });
     } catch (error) {
-      return internalServerError(res);
+      return internalServerError(error, res);
     }
   }
 }
