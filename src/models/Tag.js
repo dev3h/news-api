@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       paranoid: true,
-      deletedAt: "deleted_at",
+      underscored: true,
       modelName: "Tag",
     }
   );

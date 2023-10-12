@@ -11,7 +11,7 @@ class CompanyService {
       const fLimit = +limit || 10;
       queries.offset = offset * fLimit;
       queries.limit = fLimit;
-      queries.order = [[orderBy || "createdAt", orderType || "DESC"]];
+      queries.order = [[orderBy || "created_at", orderType || "DESC"]];
 
       if (name) {
         queries.where = {

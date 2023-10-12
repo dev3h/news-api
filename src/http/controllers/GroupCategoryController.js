@@ -36,7 +36,7 @@ class GroupCategoryController {
     try {
       // change this
       const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
-      const response = await db.Group_Category.findOrCreate({
+      const response = await db.GroupCategory.findOrCreate({
         where: { name: req.body.name },
         defaults: {
           name: req.body.name,
@@ -59,7 +59,7 @@ class GroupCategoryController {
 
   static async getOne(req, res) {
     try {
-      const response = await db.Group_Category.findByPk(req.params.id);
+      const response = await db.GroupCategory.findByPk(req.params.id);
       if (!response)
         return res.status(404).json({
           mes: "Không tìm thấy nhóm",
@@ -74,7 +74,7 @@ class GroupCategoryController {
     try {
       // change this
       const { updated_by } = generateUpdatedBy(1);
-      const response = await db.Group_Category.update(
+      const response = await db.GroupCategory.update(
         {
           ...req.body,
           slug: generateSlug(req.body.name),
@@ -98,7 +98,7 @@ class GroupCategoryController {
 
   static async destroy(req, res) {
     try {
-      const response = await db.Group_Category.destroy({
+      const response = await db.GroupCategory.destroy({
         where: { id: req.params.id },
       });
       if (response === 0)

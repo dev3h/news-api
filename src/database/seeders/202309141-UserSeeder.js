@@ -9,8 +9,8 @@ module.exports = {
         name: faker.person.fullName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("users", users, {});
     } catch (error) {

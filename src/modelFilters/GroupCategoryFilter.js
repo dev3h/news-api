@@ -15,12 +15,21 @@ class GroupCategoryFilter {
     queries.limit = limit;
     queries.offset = offset;
 
-    const data = await db.Group_Category.findAndCountAll({
+    const data = await db.GroupCategory.findAndCountAll({
       ...queries,
-      // include: [
-      //   { model: db.Admin, as: "created_by_email" },
-      //   { model: db.Admin, as: "updated_by_email" },
-      // ],
+      include: [
+        {
+          model: db.Admin,
+          as: "created_by_admin",
+          attributes: ["id", "username", "email"],
+        },
+        {
+          model: db.Admin,
+          as: "updated_by_admin",
+          attributes: ["id", "username", "email"],
+        },
+      ],
+      attributes: { exclude: ["created_by", "updated_by"] },
     });
     const response = getPagingData(data, page, limit);
 

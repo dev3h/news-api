@@ -20,8 +20,8 @@ module.exports = {
         slug: faker.lorem.slug(),
         created_by: faker.helpers.arrayElement(admins).id,
         updated_by: faker.helpers.arrayElement(admins).id,
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("tags", tags, {});
     } catch (error) {

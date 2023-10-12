@@ -1,24 +1,24 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Group_Category extends Model {
+  class GroupCategory extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Group_Category.belongsTo(models.Admin, {
+      GroupCategory.belongsTo(models.Admin, {
         foreignKey: "created_by",
-        as: "created_by_email",
+        as: "created_by_admin",
       });
-      Group_Category.belongsTo(models.Admin, {
+      GroupCategory.belongsTo(models.Admin, {
         foreignKey: "updated_by",
-        as: "updated_by_email",
+        as: "updated_by_admin",
       });
     }
   }
-  Group_Category.init(
+  GroupCategory.init(
     {
       name: DataTypes.STRING,
       slug: DataTypes.STRING,
@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       paranoid: true,
-      deletedAt: "deleted_at",
-      modelName: "Group_Category",
+      underscored: true,
+      modelName: "GroupCategory",
     }
   );
 
-  return Group_Category;
+  return GroupCategory;
 };

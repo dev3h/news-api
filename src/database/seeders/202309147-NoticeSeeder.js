@@ -22,8 +22,8 @@ module.exports = {
         content: faker.lorem.paragraphs(5, "<br/>\n"),
         created_by: faker.helpers.arrayElement(admins).id,
         updated_by: faker.helpers.arrayElement(admins).id,
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("notices", notices, {});
     } catch (error) {

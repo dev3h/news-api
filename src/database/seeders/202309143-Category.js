@@ -30,8 +30,8 @@ module.exports = {
         group_category_id: faker.helpers.arrayElement(groupCategories).id,
         created_by: faker.helpers.arrayElement(admins).id,
         updated_by: faker.helpers.arrayElement(admins).id,
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("categories", categories, {});
     } catch (error) {

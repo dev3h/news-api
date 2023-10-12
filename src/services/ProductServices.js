@@ -14,7 +14,7 @@ class ProductService {
       const fLimit = +limit || 10;
       queries.offset = offset * fLimit;
       queries.limit = fLimit;
-      queries.order = [[orderBy || "createdAt", orderType || "DESC"]];
+      queries.order = [[orderBy || "created_at", orderType || "DESC"]];
 
       if (name) {
         queries.where = {
@@ -168,8 +168,8 @@ class ProductService {
         ],
         attributes: {
           exclude: [
-            "createdAt",
-            "updatedAt",
+            "created_at",
+            "updated_at",
             "deletedAt",
             "createdBy",
             "updatedBy",

@@ -12,8 +12,8 @@ module.exports = {
         email: faker.internet.email(),
         password: faker.internet.password(),
         role: 0,
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("admins", admins, {});
     } catch (error) {

@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       // soft delete
       paranoid: true,
-      deletedAt: "deleted_at",
-
+      underscored: true,
       modelName: "Admin",
     }
   );

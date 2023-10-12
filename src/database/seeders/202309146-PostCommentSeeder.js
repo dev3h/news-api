@@ -25,8 +25,8 @@ module.exports = {
         user_id: faker.helpers.arrayElement(users).id,
         post_id: faker.helpers.arrayElement(posts).id,
         content: faker.lorem.paragraphs(5, "<br/>\n"),
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.recent(),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
       }));
       await queryInterface.bulkInsert("post_comments", postComments, {});
     } catch (error) {
