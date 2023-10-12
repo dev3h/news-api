@@ -17,10 +17,10 @@ class GroupCategoryFilter {
 
     const data = await db.Group_Category.findAndCountAll({
       ...queries,
-      include: [
-        { model: db.Admin, as: "created_by_email" },
-        { model: db.Admin, as: "updated_by_email" },
-      ],
+      // include: [
+      //   { model: db.Admin, as: "created_by_email" },
+      //   { model: db.Admin, as: "updated_by_email" },
+      // ],
     });
     const response = getPagingData(data, page, limit);
 
