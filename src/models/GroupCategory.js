@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+import columnConfig from "config/columnConfig";
 module.exports = (sequelize, DataTypes) => {
   class GroupCategory extends Model {
     /**
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       paranoid: true,
       underscored: true,
+      ...columnConfig,
       modelName: "GroupCategory",
     }
   );

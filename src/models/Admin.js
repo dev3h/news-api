@@ -1,4 +1,5 @@
 "use strict";
+import columnConfig from "config/columnConfig";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       // soft delete
       paranoid: true,
       underscored: true,
+      ...columnConfig,
       modelName: "Admin",
     }
   );

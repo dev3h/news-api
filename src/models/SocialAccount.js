@@ -1,4 +1,5 @@
 "use strict";
+import columnConfig from "config/columnConfig";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SocialAccount extends Model {
@@ -18,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       underscored: true,
+      ...columnConfig,
       modelName: "SocialAccount",
     }
   );
