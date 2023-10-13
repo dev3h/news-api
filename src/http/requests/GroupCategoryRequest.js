@@ -21,8 +21,8 @@ const GroupCategoryRequest = (req, res, next) => {
     // Nếu là phương thức PUT và không có sửa đổi tên, bỏ qua lỗi required
     next();
   } else if (error) {
-    return res.status(400).json({
-      mes: error.message,
+    return res.status(422).json({
+      message: error.message,
     });
   }
   next();

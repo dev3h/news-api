@@ -46,11 +46,11 @@ class GroupCategoryController {
         },
       });
       if (response[1] === false)
-        return res.status(422).json({
-          mes: "Tên nhóm đã tồn tại",
+        return res.status(400).json({
+          message: "Tên nhóm đã tồn tại",
         });
       return res.status(200).json({
-        mes: "Tạo nhóm thành công",
+        message: "Tạo nhóm thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -62,7 +62,7 @@ class GroupCategoryController {
       const response = await db.GroupCategory.findByPk(req.params.id);
       if (!response)
         return res.status(404).json({
-          mes: "Không tìm thấy nhóm",
+          message: "Không tìm thấy nhóm",
         });
       return res.status(200).json(response);
     } catch (error) {
@@ -86,10 +86,10 @@ class GroupCategoryController {
       );
       if (response[0] === 0)
         return res.status(404).json({
-          mes: "Không tìm thấy nhóm",
+          message: "Không tìm thấy nhóm",
         });
       return res.status(200).json({
-        mes: "Cập nhật nhóm thành công",
+        message: "Cập nhật nhóm thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -103,10 +103,10 @@ class GroupCategoryController {
       });
       if (response === 0)
         return res.status(404).json({
-          mes: "Không tìm thấy nhóm",
+          message: "Không tìm thấy nhóm",
         });
       return res.status(200).json({
-        mes: "Xóa nhóm thành công",
+        message: "Xóa nhóm thành công",
       });
     } catch (error) {
       return internalServerError(error, res);

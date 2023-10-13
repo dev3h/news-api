@@ -19,9 +19,21 @@ module.exports = {
       },
       created_by: {
         type: Sequelize.INTEGER,
+        references: {
+          model: { tableName: "admins" },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       updated_by: {
         type: Sequelize.INTEGER,
+        references: {
+          model: { tableName: "admins" },
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       created_at: {
         type: Sequelize.DATE,

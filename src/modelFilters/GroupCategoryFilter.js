@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 import db from "models";
 import { getPagination, getPagingData } from "helpers/pagination";
+import { generateOrder } from "helpers";
 
 class GroupCategoryFilter {
   static async handleList({ search, sortBy, sortType, page, flimit }) {
@@ -10,7 +11,8 @@ class GroupCategoryFilter {
         [Op.or]: [{ name: { [Op.like]: `%${search}%` } }, { id: search }],
       };
     }
-    queries.order = [[sortBy, sortType]];
+    const order = generateOrder(sortBy, sortType);
+    queries.order = order;
     const { limit, offset } = getPagination(page, flimit);
     queries.limit = limit;
     queries.offset = offset;
