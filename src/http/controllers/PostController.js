@@ -7,9 +7,9 @@ import {
   generateUpdatedBy,
 } from "helpers/generateCreatedByAndUpdatedBy";
 import { internalServerError } from "helpers/generateError";
-import CategoryFilter from "modelFilters/CategoryFilter";
+import PostFilter from "modelFilters/PostFilter";
 
-class CategoryController {
+class PostController {
   static async getAll(req, res) {
     try {
       const {
@@ -26,7 +26,7 @@ class CategoryController {
         page,
         flimit,
       };
-      const response = await CategoryFilter.handleList(filter);
+      const response = await PostFilter.handleList(filter);
       return res.status(200).json(response);
     } catch (error) {
       internalServerError(error, res);
@@ -38,7 +38,7 @@ class CategoryController {
       // change this
       const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
       const { name } = req.body;
-      const response = await db.Category.findOrCreate({
+      const response = await db.Post.findOrCreate({
         where: { name },
         defaults: {
           ...req.body,
@@ -49,10 +49,10 @@ class CategoryController {
       });
       if (response[1] === false)
         return res.status(400).json({
-          message: "Tên danh mục đã tồn tại",
+          message: "Tên bài viết đã tồn tại",
         });
       return res.status(200).json({
-        message: "Tạo danh mục thành công",
+        message: "Tạo bài viết thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -61,7 +61,7 @@ class CategoryController {
 
   static async getOne(req, res) {
     try {
-      const response = await db.Category.findByPk(req.params.id, {
+      const response = await db.Post.findByPk(req.params.id, {
         include: [
           {
             model: db.Admin,
@@ -74,15 +74,15 @@ class CategoryController {
             attributes: ["id", "username", "email"],
           },
           {
-            model: db.GroupCategory,
-            as: "group_category",
+            model: db.GroupPost,
+            as: "group_post",
             attributes: ["id", "name"],
           },
         ],
       });
       if (!response)
         return res.status(404).json({
-          message: "Không tìm thấy danh mục",
+          message: "Không tìm thấy bài viết",
         });
       return res.status(200).json(response);
     } catch (error) {
@@ -94,7 +94,7 @@ class CategoryController {
     try {
       // change this
       const { updated_by } = generateUpdatedBy(1);
-      const response = await db.Category.update(
+      const response = await db.Post.update(
         {
           ...req.body,
           slug: generateSlug(req.body.name),
@@ -106,10 +106,10 @@ class CategoryController {
       );
       if (response[0] === 0)
         return res.status(404).json({
-          message: "Không tìm thấy danh mục",
+          message: "Không tìm thấy bài viết",
         });
       return res.status(200).json({
-        message: "Cập nhật danh mục thành công",
+        message: "Cập nhật bài viết thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -118,15 +118,15 @@ class CategoryController {
 
   static async destroy(req, res) {
     try {
-      const response = await db.Category.destroy({
+      const response = await db.Post.destroy({
         where: { id: req.params.id },
       });
       if (response === 0)
         return res.status(404).json({
-          message: "Không tìm thấy danh mục",
+          message: "Không tìm thấy bài viết",
         });
       return res.status(200).json({
-        message: "Xóa danh mục thành công",
+        message: "Xóa bài viết thành công",
       });
     } catch (error) {
       return internalServerError(error, res);
@@ -134,4 +134,4 @@ class CategoryController {
   }
 }
 
-export default CategoryController;
+export default PostController;
