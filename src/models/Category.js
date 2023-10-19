@@ -8,7 +8,20 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {}
+    static associate(models) {
+      Category.belongsTo(models.Admin, {
+        foreignKey: "created_by",
+        as: "created_by_admin",
+      });
+      Category.belongsTo(models.Admin, {
+        foreignKey: "updated_by",
+        as: "updated_by_admin",
+      });
+      Category.belongsTo(models.GroupCategory, {
+        foreignKey: "group_category_id",
+        as: "group_category",
+      });
+    }
   }
   Category.init(
     {

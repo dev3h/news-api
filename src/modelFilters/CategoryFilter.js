@@ -1,9 +1,9 @@
 import { Op } from "sequelize";
 import db from "models";
 import { getPagination, getPagingData } from "helpers/pagination";
-import { generateOrderBasic } from "helpers/generateOrder";
+import { generateOrderCategory } from "helpers/generateOrder";
 
-class GroupCategoryFilter {
+class CategoryFilter {
   static async handleList({ search, sortBy, sortType, page, flimit }) {
     const queries = {};
     if (search) {
@@ -11,13 +11,13 @@ class GroupCategoryFilter {
         [Op.or]: [{ name: { [Op.like]: `%${search}%` } }, { id: search }],
       };
     }
-    const order = generateOrderBasic(sortBy, sortType);
+    const order = generateOrderCategory(sortBy, sortType);
     queries.order = order;
     const { limit, offset } = getPagination(page, flimit);
     queries.limit = limit;
     queries.offset = offset;
 
-    const data = await db.GroupCategory.findAndCountAll({
+    const data = await db.Category.findAndCountAll({
       ...queries,
       include: [
         {
@@ -30,6 +30,11 @@ class GroupCategoryFilter {
           as: "updated_by_admin",
           attributes: ["id", "username", "email"],
         },
+        {
+          model: db.GroupCategory,
+          as: "group_category",
+          attributes: ["id", "name"],
+        },
       ],
       attributes: { exclude: ["created_by", "updated_by"] },
     });
@@ -38,4 +43,4 @@ class GroupCategoryFilter {
     return response;
   }
 }
-export default GroupCategoryFilter;
+export default CategoryFilter;

@@ -1,14 +1,15 @@
 // import { badRequest, internalServerError } from "../middlewares/handle_error";
 import db from "models";
-import GroupCategoryFilter from "modelFilters/GroupCategoryFilter";
+
 import generateSlug from "helpers/generateSlug";
 import {
   generateCreatedByAndUpdatedBy,
   generateUpdatedBy,
 } from "helpers/generateCreatedByAndUpdatedBy";
 import { internalServerError } from "helpers/generateError";
+import CategoryFilter from "modelFilters/CategoryFilter";
 
-class GroupCategoryController {
+class CategoryController {
   static async getAll(req, res) {
     try {
       const {
@@ -25,7 +26,7 @@ class GroupCategoryController {
         page,
         flimit,
       };
-      const response = await GroupCategoryFilter.handleList(filter);
+      const response = await CategoryFilter.handleList(filter);
       return res.status(200).json(response);
     } catch (error) {
       internalServerError(error, res);
@@ -37,8 +38,8 @@ class GroupCategoryController {
       // change this
       const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
       const { name } = req.body;
-      const response = await db.GroupCategory.findOrCreate({
-        where: { name },
+      const response = await db.Category.findOrCreate({
+        where: { name: req.body.name },
         defaults: {
           ...req.body,
           slug: generateSlug(name),
@@ -48,10 +49,10 @@ class GroupCategoryController {
       });
       if (response[1] === false)
         return res.status(400).json({
-          message: "Tên nhóm đã tồn tại",
+          message: "Tên danh mục đã tồn tại",
         });
       return res.status(200).json({
-        message: "Tạo nhóm thành công",
+        message: "Tạo danh mục thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -60,7 +61,7 @@ class GroupCategoryController {
 
   static async getOne(req, res) {
     try {
-      const response = await db.GroupCategory.findByPk(req.params.id, {
+      const response = await db.Category.findByPk(req.params.id, {
         include: [
           {
             model: db.Admin,
@@ -72,11 +73,16 @@ class GroupCategoryController {
             as: "updated_by_admin",
             attributes: ["id", "username", "email"],
           },
+          {
+            model: db.GroupCategory,
+            as: "group_category",
+            attributes: ["id", "name"],
+          },
         ],
       });
       if (!response)
         return res.status(404).json({
-          message: "Không tìm thấy nhóm",
+          message: "Không tìm thấy danh mục",
         });
       return res.status(200).json(response);
     } catch (error) {
@@ -88,7 +94,7 @@ class GroupCategoryController {
     try {
       // change this
       const { updated_by } = generateUpdatedBy(1);
-      const response = await db.GroupCategory.update(
+      const response = await db.Category.update(
         {
           ...req.body,
           slug: generateSlug(req.body.name),
@@ -100,10 +106,10 @@ class GroupCategoryController {
       );
       if (response[0] === 0)
         return res.status(404).json({
-          message: "Không tìm thấy nhóm",
+          message: "Không tìm thấy danh mục",
         });
       return res.status(200).json({
-        message: "Cập nhật nhóm thành công",
+        message: "Cập nhật danh mục thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -112,15 +118,15 @@ class GroupCategoryController {
 
   static async destroy(req, res) {
     try {
-      const response = await db.GroupCategory.destroy({
+      const response = await db.Category.destroy({
         where: { id: req.params.id },
       });
       if (response === 0)
         return res.status(404).json({
-          message: "Không tìm thấy nhóm",
+          message: "Không tìm thấy danh mục",
         });
       return res.status(200).json({
-        message: "Xóa nhóm thành công",
+        message: "Xóa danh mục thành công",
       });
     } catch (error) {
       return internalServerError(error, res);
@@ -128,4 +134,4 @@ class GroupCategoryController {
   }
 }
 
-export default GroupCategoryController;
+export default CategoryController;
