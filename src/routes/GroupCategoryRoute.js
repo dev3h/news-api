@@ -5,7 +5,7 @@ import GroupCategoryRequest from "http/requests/GroupCategoryRequest";
 const router = express.Router();
 
 router.get("", GroupCategoryController.getAll);
-router.get("/:id", GroupCategoryController.getOne);
+router.get("/:id/info", GroupCategoryController.getOne);
 router.delete("/:id", GroupCategoryController.destroy);
 
 router.use(GroupCategoryRequest);

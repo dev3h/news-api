@@ -7,7 +7,8 @@ import PostRequest from "http/requests/PostRequest";
 const router = express.Router();
 
 router.get("/", PostController.getAll);
-router.get("/:id", PostController.getOne);
+router.get("/:id/info", PostController.getOne);
+router.get("/getAllStatus", PostController.getAllStatus);
 // router.get("/export-excel", PostController.exportExcel);
 router.delete("/:id", PostController.destroy);
 

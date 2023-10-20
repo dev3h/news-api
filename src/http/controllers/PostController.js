@@ -8,6 +8,7 @@ import {
 } from "helpers/generateCreatedByAndUpdatedBy";
 import { internalServerError } from "helpers/generateError";
 import PostFilter from "modelFilters/PostFilter";
+import PostStatusEnum from "enums/PostStatusEnum";
 
 class PostController {
   static async getAll(req, res) {
@@ -17,7 +18,7 @@ class PostController {
         sortBy = "id",
         sortType = "ASC",
         page = 1,
-        flimit = 10,
+        flimit,
       } = req.query;
       const filter = {
         search,
@@ -84,6 +85,15 @@ class PostController {
         return res.status(404).json({
           message: "Không tìm thấy bài viết",
         });
+      return res.status(200).json(response);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+
+  static async getAllStatus(_, res) {
+    try {
+      const response = PostStatusEnum.getAll();
       return res.status(200).json(response);
     } catch (error) {
       internalServerError(error, res);

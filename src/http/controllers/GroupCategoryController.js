@@ -16,7 +16,7 @@ class GroupCategoryController {
         sortBy = "id",
         sortType = "ASC",
         page = 1,
-        flimit = 10,
+        flimit,
       } = req.query;
       const filter = {
         search,

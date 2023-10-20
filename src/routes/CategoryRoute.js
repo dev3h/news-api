@@ -6,7 +6,7 @@ import CategoryController from "http/controllers/CategoryController";
 const router = express.Router();
 
 router.get("", CategoryController.getAll);
-router.get("/:id", CategoryController.getOne);
+router.get("/:id/info", CategoryController.getOne);
 router.delete("/:id", CategoryController.destroy);
 
 router.use(CategoryRequest);
