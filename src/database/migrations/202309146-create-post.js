@@ -18,6 +18,9 @@ module.exports = {
       photo: {
         type: Sequelize.STRING,
       },
+      filename: {
+        type: Sequelize.STRING,
+      },
       content: {
         type: Sequelize.TEXT,
       },

@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "category_id",
         as: "category",
       });
+      Post.belongsToMany(models.Tag, {
+        through: models.PostTag,
+        foreignKey: "post_id",
+        as: "post_tag",
+      });
     }
   }
   Post.init(
@@ -28,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       slug: DataTypes.STRING,
       photo: DataTypes.STRING,
+      filename: DataTypes.STRING,
       content: DataTypes.TEXT,
       view: DataTypes.INTEGER,
       category_id: DataTypes.INTEGER,
