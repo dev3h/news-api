@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "updated_by",
         as: "updated_by_admin",
       });
+      Tag.belongsToMany(models.Post, {
+        through: models.PostTag,
+        foreignKey: "tag_id",
+        as: "post_tag",
+      });
     }
   }
   Tag.init(

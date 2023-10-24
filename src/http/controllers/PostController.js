@@ -10,6 +10,7 @@ import {
 import { internalServerError } from "helpers/generateError";
 import PostFilter from "modelFilters/PostFilter";
 import PostStatusEnum from "enums/PostStatusEnum";
+import PostObservers from "observers/PostObservers";
 
 class PostController {
   static async getAll(req, res) {
@@ -45,6 +46,7 @@ class PostController {
           ...rest,
           slug: generateSlug(title),
           photo: photo?.file?.response?.data?.path,
+          filename: photo?.file?.response?.data?.filename,
           created_by,
           updated_by,
         },
@@ -53,23 +55,13 @@ class PostController {
         return res.status(400).json({
           message: "Tên bài viết đã tồn tại",
         });
-      if (tags?.length > 0) {
-        const post_id = response[0].id;
-        const post_tag = tags.map((tag_id) => {
-          tag_id = +tag_id;
-          return {
-            post_id,
-            tag_id,
-          };
+      else {
+        PostObservers.saved(response[0].id, tags);
+        return res.status(200).json({
+          message: "Tạo bài viết thành công",
         });
-        console.log(post_tag);
-        await db.PostTag.bulkCreate(post_tag);
       }
-      return res.status(200).json({
-        message: "Tạo bài viết thành công",
-      });
     } catch (error) {
-      console.log(error);
       const { photo } = req.body;
       if (photo) cloudinary.uploader.destroy(photo?.file?.response?.data?.filename);
       internalServerError(error, res);
