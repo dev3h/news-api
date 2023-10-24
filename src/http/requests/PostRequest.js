@@ -1,5 +1,7 @@
 import joi from "joi";
+import db from "models";
 const cloudinary = require("cloudinary").v2;
+import PostStatusEnum from "enums/PostStatusEnum";
 
 const PostRequest = (req, res, next) => {
   const fileData = req?.photo?.file;
@@ -9,15 +11,31 @@ const PostRequest = (req, res, next) => {
       "string.empty": "Tên bài viết không được để trống",
       "any.required": "Tên bài viết là bắt buộc",
     }),
-    category_id: joi.required().messages({
-      "number.empty": "ID danh mục không được để trống",
-      "any.required": "ID danh mục là bắt buộc",
+    content: joi.string().required().messages({
+      "string.base": "Nội dung bài viết phải là chuỗi",
+      "string.empty": "Nội dung bài viết không được để trống",
+      "any.required": "Nội dung bài viết là bắt buộc",
     }),
-    photo: joi
-      .string()
-      .pattern(/\.jpg$|\.png$|\.jpeg$/)
+    status: joi
+      .required()
+      .custom((value, helper) => {
+        if (!Object.values(PostStatusEnum).includes(+value))
+          return helper.message("Trạng thái không hợp lệ");
+        return true;
+      })
       .messages({
-        "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg",
+        "any.required": "Trạng thái là bắt buộc",
+      }),
+    category_id: joi
+      .required()
+      .custom((value, helper) => {
+        if (!db.Category.findByPk(+value))
+          return helper.message("ID danh mục không tồn tại");
+        return true;
+      })
+      .messages({
+        "number.empty": "ID danh mục không được để trống",
+        "any.required": "ID danh mục là bắt buộc",
       }),
   };
   if (fileData) {
@@ -28,10 +46,28 @@ const PostRequest = (req, res, next) => {
         "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg",
       });
   }
-  const { error } = joi.object(rules).validate({
-    ...req.body,
-    photo: fileData?.response?.data?.path,
-  });
+  if (req.body.published_at) {
+    // nếu có phải check xem ngày có lớn hơn ngày hiện tại không, thời gian cũng thế
+    rules.published_at = joi.date().greater("now").messages({
+      "date.greater": "Ngày đăng bài phải lớn hơn ngày hiện tại",
+    });
+  }
+  if (req.body.tags) {
+    rules.tags = joi.custom((tags, helper) => {
+      if (tags.length > 0) {
+        const checkTags = tags.map((tag) => {
+          return db.Tag.findByPk(+tag);
+        });
+        if (checkTags.includes(null)) return helper.message("ID thẻ không tồn tại");
+      }
+      return true;
+    });
+  }
+  const dataToValidate = { ...req.body };
+  if (fileData?.response?.data?.path) {
+    dataToValidate.photo = fileData.response.data.path;
+  }
+  const { error } = joi.object(rules).validate(dataToValidate);
   if (
     error &&
     error.details[0].path[0] === "name" &&

@@ -41,6 +41,9 @@ module.exports = {
         type: Sequelize.TINYINT,
         defaultValue: 0,
       },
+      published_at: {
+        type: Sequelize.DATE,
+      },
       created_by: {
         type: Sequelize.INTEGER,
         references: {

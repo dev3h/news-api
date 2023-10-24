@@ -18,7 +18,7 @@ router.post(
   [uploader.single("photo"), UploadRequest],
   PostController.uploadPhoto
 );
-// router.use(PostRequest);
+router.use(PostRequest);
 router.post("/", uploader.single("photo"), PostController.create);
 router.put("/:id", uploader.single("photo"), PostController.update);
 

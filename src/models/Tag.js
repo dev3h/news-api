@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       Tag.belongsToMany(models.Post, {
         through: models.PostTag,
         foreignKey: "tag_id",
-        as: "post_tag",
+        as: "posts",
       });
     }
   }

@@ -103,9 +103,17 @@ class PostController {
             attributes: ["id", "username", "email"],
           },
           {
-            model: db.GroupPost,
-            as: "group_post",
+            model: db.Category,
+            as: "category",
             attributes: ["id", "name"],
+          },
+          {
+            model: db.Tag,
+            as: "tags",
+            through: {
+              model: db.PostTag,
+            },
+            attributes: ["id"],
           },
         ],
       });
@@ -113,7 +121,11 @@ class PostController {
         return res.status(404).json({
           message: "Không tìm thấy bài viết",
         });
-      return res.status(200).json(response);
+      const tagIds = response.tags.map((tag) => tag.id.toString());
+      return res.status(200).json({
+        ...response.toJSON(),
+        tags: tagIds,
+      });
     } catch (error) {
       internalServerError(error, res);
     }
@@ -132,10 +144,13 @@ class PostController {
     try {
       // change this
       const { updated_by } = generateUpdatedBy(1);
+      const { title, photo, tags, ...rest } = req.body;
       const response = await db.Post.update(
         {
-          ...req.body,
-          slug: generateSlug(req.body.name),
+          rest,
+          slug: generateSlug(title),
+          photo: photo?.file?.response?.data?.path,
+          filename: photo?.file?.response?.data?.filename,
           updated_by,
         },
         {
