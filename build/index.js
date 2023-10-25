@@ -13,7 +13,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 var app = (0, _express["default"])();
 var corsOption = {
   credentials: true,
-  origin: ["http://127.0.0.1:3000"]
+  origin: ["http://localhost:3000"]
 };
 app.use((0, _cors["default"])(corsOption));
 app.use((0, _cookieParser["default"])());

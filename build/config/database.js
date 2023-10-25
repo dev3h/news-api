@@ -13,7 +13,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var sequelize = new _sequelize.Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, null, {
   host: process.env.DB_HOST,
   dialect: "mysql",
-  logging: false
+  logging: false,
+  timezone: "+07:00"
 });
 var connectDB = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
