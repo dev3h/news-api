@@ -4,9 +4,11 @@ import uploader from "config/cloudinaryConfig";
 import PostRequest from "http/requests/PostRequest";
 import UploadRequest from "http/requests/uploadRequest";
 import PostController from "../http/controllers/AdminController/PostController";
+import { verifyAccessToken } from "../http/middlewares/verifyToken";
 
 const router = express.Router();
 
+router.use(verifyAccessToken);
 router.get("/", PostController.getAll);
 router.get("/:id/info", PostController.getOne);
 router.get("/getAllStatus", PostController.getAllStatus);
