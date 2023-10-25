@@ -40,6 +40,7 @@ class PostController {
     try {
       const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
       const { title, photo, tags, ...rest } = req.body;
+
       const response = await db.Post.findOrCreate({
         where: { title },
         defaults: {
@@ -75,10 +76,21 @@ class PostController {
         return res.status(400).json({
           message: "Không có file nào được gửi lên",
         });
+      // Lấy filename của file cũ từ request (nếu có)
+      const oldFilename = req.body.oldPhoto;
+
+      // Nếu có file cũ, xóa nó trên Cloudinary
+      if (oldFilename) {
+        cloudinary.uploader.destroy(oldFilename, (error, result) => {
+          if (error) {
+            console.error("Lỗi khi xóa file cũ trên Cloudinary: " + error);
+          }
+        });
+      }
+
       return res.status(200).json({
         data: {
           path: file.path,
-          // filename là id của ảnh trên cloudinary
           filename: file.filename,
         },
       });
@@ -145,6 +157,10 @@ class PostController {
       // change this
       const { updated_by } = generateUpdatedBy(1);
       const { title, photo, tags, ...rest } = req.body;
+      const oldImage = await db.Post.findOne({
+        where: { id: req.params.id },
+        attributes: ["filename"],
+      });
       const response = await db.Post.update(
         {
           rest,
@@ -157,14 +173,21 @@ class PostController {
           where: { id: req.params.id },
         }
       );
-      if (response[0] === 0)
+      if (response[0] === 0) {
+        if (photo) cloudinary.uploader.destroy(photo?.file?.response?.data?.filename);
         return res.status(404).json({
           message: "Không tìm thấy bài viết",
         });
+      }
+      if (response[0] > 0 && photo && oldImage)
+        cloudinary.uploader.destroy(oldImage.filename);
+
       return res.status(200).json({
         message: "Cập nhật bài viết thành công",
       });
     } catch (error) {
+      const { photo } = req.body;
+      if (photo) cloudinary.uploader.destroy(photo?.file?.response?.data?.filename);
       internalServerError(error, res);
     }
   }
@@ -178,6 +201,7 @@ class PostController {
         return res.status(404).json({
           message: "Không tìm thấy bài viết",
         });
+
       return res.status(200).json({
         message: "Xóa bài viết thành công",
       });

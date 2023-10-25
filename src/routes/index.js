@@ -5,11 +5,11 @@ import GroupCategoryRoute from "./GroupCategoryRoute";
 import CategoryRoute from "./CategoryRoute";
 import PostRoute from "./PostRoute";
 import TagRoute from "./TagRoute";
-import AuthRoute from "./AuthRoute";
+import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
 import { notFound } from "http/middlewares/handle_error";
 
 const initRoutes = (app) => {
-  // app.use("/api/v1/auth", AuthRoute);
+  app.use("/api/v1/admin/auth", AdminAuthRoute);
   app.use("/api/v1/group-category", GroupCategoryRoute);
   app.use("/api/v1/category", CategoryRoute);
   app.use("/api/v1/post", PostRoute);

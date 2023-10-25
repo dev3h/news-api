@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary").v2;
 import PostStatusEnum from "enums/PostStatusEnum";
 
 const PostRequest = (req, res, next) => {
-  const fileData = req?.photo?.file;
+  const fileData = req?.body?.photo?.file;
   const rules = {
     title: joi.string().required().messages({
       "string.base": "Tên bài viết phải là chuỗi",

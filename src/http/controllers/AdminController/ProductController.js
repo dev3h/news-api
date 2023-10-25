@@ -1,6 +1,6 @@
-import { badRequest, internalServerError } from "../middlewares/handle_error";
+import { badRequest, internalServerError } from "http/middlewares/handle_error";
 import ProductRequest from "../requests/ProductRequest";
-import ProductService from "../../services/ProductServices";
+import ProductService from "services/ProductServices";
 
 class ProductController {
   static async getAll(req, res) {
