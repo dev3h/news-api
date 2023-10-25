@@ -6,10 +6,10 @@ import CategoryRoute from "./CategoryRoute";
 import PostRoute from "./PostRoute";
 import TagRoute from "./TagRoute";
 import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
-import { notFound } from "http/middlewares/handle_error";
+import { notFoundRoute } from "../helpers/generateError";
 
 const initRoutes = (app) => {
-  app.use("/api/v1/admin/auth", AdminAuthRoute);
+  app.use("/api/v1/auth/admin", AdminAuthRoute);
   app.use("/api/v1/group-category", GroupCategoryRoute);
   app.use("/api/v1/category", CategoryRoute);
   app.use("/api/v1/post", PostRoute);
@@ -17,7 +17,7 @@ const initRoutes = (app) => {
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  return app.use(notFound);
+  return app.use(notFoundRoute);
 };
 
 export default initRoutes;

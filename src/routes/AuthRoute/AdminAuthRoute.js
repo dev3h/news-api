@@ -1,6 +1,7 @@
 import express from "express";
-import AdminAuthController from "http/controllers/AdminController/AuthController";
+
 import AdminAuthRequest from "http/requests/AdminAuthRequest";
+import AdminAuthController from "../../http/controllers/AdminController/AdminAuthController";
 const router = express.Router();
 
 router.use(AdminAuthRequest);

@@ -1,19 +1,23 @@
-import { badRequest, internalServerError } from "http/middlewares/handle_error";
+import db from "models";
+import bcrypt from "bcryptjs";
 import AuthService from "services/AuthServices";
+import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
+import RoleSysEnum from "enums/RoleSysEnum";
 
-class AuthController {
+class AdminAuthController {
   static async login(req, res) {
     try {
       const admin = await db.Admin.findOne({
         where: { username: req.body?.username },
         raw: true,
       });
+      if (!admin) return badRequest(new Error("Username không tồn tại"), res);
 
-      const { id, password, refreshToken, ...rest } = admin;
+      const { id, password, refreshToken, role, ...rest } = admin;
 
       const comparePassword = await bcrypt.compare(req.body?.password, password);
-      const accessToken = comparePassword ? generateToken(id) : null;
+      const accessToken = comparePassword ? generateToken({ id, role }) : null;
 
       const newRefreshToken = comparePassword ? generateRefreshToken(id) : null;
       if (refreshToken) {
@@ -24,12 +28,17 @@ class AuthController {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-      if (!accessToken) return badRequest("Wrong password", res);
+      if (!accessToken) return badRequest(new Error("Sai mật khẩu"), res);
       return res.status(200).json({
         accessToken,
-        newRefreshToken,
-        data: rest,
-        message: "Login success",
+        data: {
+          ...rest,
+          role: {
+            role_id: role,
+            role_name: RoleSysEnum.getRoleSysName(role),
+          },
+        },
+        message: "Login thành công",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -65,4 +74,4 @@ class AuthController {
   }
 }
 
-export default AuthController;
+export default AdminAuthController;

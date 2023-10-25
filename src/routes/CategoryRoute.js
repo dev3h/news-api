@@ -1,7 +1,7 @@
 import express from "express";
 
 import CategoryRequest from "http/requests/CategoryRequest";
-import CategoryController from "http/controllers/CategoryController";
+import CategoryController from "../http/controllers/AdminController/CategoryController";
 
 const router = express.Router();
 

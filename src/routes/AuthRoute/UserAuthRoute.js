@@ -1,9 +1,9 @@
 import express from "express";
-import AuthController from "../../http/controllers/AdminController/AuthController";
+import AdminAuthController from "../../http/controllers/AdminController/AdminAdminAuthController";
 
 const router = express.Router();
 
-router.post("/login", AuthController.login);
-router.post("/refresh-token", AuthController.refreshAccessToken);
-router.get("/logout", AuthController.logout);
+router.post("/login", AdminAuthController.login);
+router.post("/refresh-token", AdminAuthController.refreshAccessToken);
+router.get("/logout", AdminAuthController.logout);
 export default router;

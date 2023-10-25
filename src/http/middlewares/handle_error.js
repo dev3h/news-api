@@ -8,17 +8,17 @@ const badRequest = (err, res) => {
 
   return res.status(error.status).json({
     err: 1,
-    mes: error.message,
+    mes: err.message,
   });
 };
 
 // internalServerError là một hàm trả về lỗi 500
-const internalServerError = (res) => {
-  const error = createError.InternalServerError();
+const internalServerError = (err, res) => {
+  const error = createError.InternalServerError(err);
 
   return res.status(error.status).json({
     err: 1,
-    mes: error.message,
+    mes: err.message,
   });
 };
 
@@ -38,7 +38,7 @@ const notAuth = (err, res, isExpired) => {
 
   return res.status(error.status).json({
     err: isExpired ? 2 : 1,
-    mes: error.message,
+    mes: err.message,
   });
 };
 

@@ -1,9 +1,9 @@
 import express from "express";
-import PostController from "http/controllers/PostController";
 
 import uploader from "config/cloudinaryConfig";
 import PostRequest from "http/requests/PostRequest";
 import UploadRequest from "http/requests/uploadRequest";
+import PostController from "../http/controllers/AdminController/PostController";
 
 const router = express.Router();
 
