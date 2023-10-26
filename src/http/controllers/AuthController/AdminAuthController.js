@@ -1,9 +1,9 @@
 import db from "models";
 import bcrypt from "bcryptjs";
-import AuthService from "services/AuthServices";
 import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
 import RoleSysEnum from "enums/RoleSysEnum";
+import jwt from "jsonwebtoken";
 
 class AdminAuthController {
   static async login(req, res) {
@@ -41,33 +41,62 @@ class AdminAuthController {
         message: "Login thành công",
       });
     } catch (error) {
-      internalServerError(error, res);
+      return internalServerError(error, res);
     }
   }
   static async refreshAccessToken(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshToken)
-        return badRequest(res, "Refresh token is required");
-      const response = await AuthService.refreshAccessToken(cookie.refreshToken);
-      if (response.error === 1) return badRequest(response.mes, res);
-      return res.status(200).json(response);
+        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+      const verifyRefreshToken = await jwt.verify(
+        cookie.refreshToken,
+        process.env.JWT_SECRET
+      );
+      const response = await db.User.findOne({
+        where: {
+          id: verifyRefreshToken.id,
+          refresh_token: cookie.refreshToken,
+        },
+      });
+
+      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      const newAccessToken = generateToken({ id: response.id, role: response.role });
+      return res.status(200).json({
+        accessToken: newAccessToken,
+        message: "Refresh token thành công",
+      });
     } catch (error) {
-      return internalServerError(res);
+      return internalServerError(error, res);
     }
   }
   static async logout(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshToken)
-        return badRequest(res, "Refresh token is required");
-      const response = await AuthService.logout(cookie.refreshToken);
-      if (response.error === 1) return badRequest(response.mes, res);
+        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+      const verifyRefreshToken = await jwt.verify(
+        cookie.refreshToken,
+        process.env.JWT_SECRET
+      );
+      const { id } = verifyRefreshToken;
+      const response = await db.Admin.findOne({
+        where: {
+          id,
+          refresh_token: cookie.refreshToken,
+        },
+        raw: true,
+      });
+      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      await db.Admin.update({ refresh_token: null }, { where: { id } });
+
       res.clearCookie("refreshToken", "", {
         httpOnly: true,
         secure: true,
       });
-      return res.status(200).json(response);
+      return res.status(200).json({
+        message: "Logout thành công",
+      });
     } catch (error) {
       return internalServerError(res);
     }

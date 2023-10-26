@@ -8,15 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // User.belongsTo(models.Company);
-      // User.belongsTo(models.Department);
-    }
+    static associate(models) {}
   }
   User.init(
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
+      email_verified_at: DataTypes.DATE,
       password: DataTypes.STRING,
       refresh_token: DataTypes.STRING,
       password_changed_at: DataTypes.DATE,

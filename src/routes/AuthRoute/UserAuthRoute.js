@@ -1,9 +1,12 @@
 import express from "express";
-import AdminAuthController from "../../http/controllers/AdminController/AdminAdminAuthController";
+import UserAuthController from "http/controllers/AuthController/UserAuthController";
+import UserAuthRequest from "http/requests/UserAuthRequest";
 
 const router = express.Router();
 
-router.post("/login", AdminAuthController.login);
-router.post("/refresh-token", AdminAuthController.refreshAccessToken);
-router.get("/logout", AdminAuthController.logout);
+router.use(UserAuthRequest);
+router.post("/register", UserAuthController.register);
+router.post("/login", UserAuthController.login);
+router.post("/refresh-token", UserAuthController.refreshAccessToken);
+router.get("/logout", UserAuthController.logout);
 export default router;

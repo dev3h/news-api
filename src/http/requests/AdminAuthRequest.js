@@ -18,7 +18,9 @@ const AdminAuthRequest = (req, res, next) => {
       ...req.body,
     });
   if (error) {
-    return badRequest(error.details[0].message, res);
+    return res.status(422).json({
+      message: error.message,
+    });
   }
   next();
 };
