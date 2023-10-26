@@ -9,7 +9,7 @@ const emailQueue = new Queue("email", {
 });
 
 emailQueue.process(async (job, done) => {
-  const { to, html, subject } = job.data;
+  const { email, html, subject } = job.data;
 
   const transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
@@ -22,7 +22,7 @@ emailQueue.process(async (job, done) => {
 
   const info = await transporter.sendMail({
     from: process.env.MAIL_FROM_ADDRESS,
-    to,
+    to: email,
     subject,
     html,
   });
