@@ -17,6 +17,7 @@ module.exports = {
       const users = [...Array(20)].map((item) => ({
         name: faker.person.fullName(),
         email: faker.internet.email(),
+        email_verified_at: faker.date.past(),
         password: password,
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),

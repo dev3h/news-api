@@ -40,6 +40,6 @@ const PORT = process.env.PORT || 5000;
 
 const listener = app.listen(PORT, () => {
   console.log(`Server is running on port ${listener.address().port}`);
-  console.log("For the UI, open http://localhost:5000/admin/queues");
+  console.log("For Bull Queue UI, open http://localhost:5000/admin/queues");
   console.log("Make sure Redis is running on port 6379 by default");
 });
