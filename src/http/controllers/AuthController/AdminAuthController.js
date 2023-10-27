@@ -14,15 +14,15 @@ class AdminAuthController {
       });
       if (!admin) return badRequest(new Error("Username không tồn tại"), res);
 
-      const { id, password, refreshToken, role, ...rest } = admin;
+      const { id, password, role, ...rest } = admin;
 
       const comparePassword = await bcrypt.compare(req.body?.password, password);
       const accessToken = comparePassword ? generateToken({ id, role }) : null;
 
       const newRefreshToken = comparePassword ? generateRefreshToken(id) : null;
-      if (refreshToken) {
-        await db.Admin.update({ refresh_token: newRefreshToken }, { where: { id } });
-      }
+
+      await db.Admin.update({ refresh_token: newRefreshToken }, { where: { id } });
+
       if (newRefreshToken)
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
@@ -98,7 +98,7 @@ class AdminAuthController {
         message: "Logout thành công",
       });
     } catch (error) {
-      return internalServerError(res);
+      return internalServerError(error, res);
     }
   }
 }

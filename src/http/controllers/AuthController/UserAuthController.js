@@ -1,6 +1,5 @@
 import db from "models";
 import bcrypt from "bcryptjs";
-import RoleSysEnum from "enums/RoleSysEnum";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { badRequest, internalServerError } from "helpers/generateError";
@@ -11,20 +10,23 @@ import hashPassword from "helpers/hashPassword";
 class UserAuthController {
   static async register(req, res) {
     try {
-      const { email } = req.body;
+      const { email, password } = req.body;
       const user = await db.User.findOne({
         where: { email },
       });
       if (user) return badRequest(new Error("Email đã tồn tại"), res);
 
-      // lưu tạm thời thông tin đăng ký vào cookie
+      // lưu tạm thời thông tin đăng ký vào db
+      // lưu 1 email kèm theo token vào db
+      // nếu người dùng xác nhận email thì trả lại email cho người dùng ban đầu
       const token = uuidv4();
-      const body = { ...req.body, token };
-      res.cookie("dataRegister", body, {
-        httpOnly: true,
-        maxAge: 15 * 60 * 1000,
+      const emailEdited = btoa(email) + "@" + token;
+      const newUser = await db.User.create({
+        email: emailEdited,
+        password: hashPassword(password),
       });
-      const html = `Vui lòng click vào link để hoàn tất đăng ký. Link này hết hạn sau 15p: <a href=${process.env.URL_SERVER}/api/v1/auth/user/final-register/${token}>Click here</a>`;
+      if (!newUser) return badRequest(new Error("Đăng ký thất bại"), res);
+      const html = `<h2>Mã đăng ký: </h2> <blockquote>${token}</blockquote>`;
       const data = {
         email,
         html,
@@ -36,6 +38,17 @@ class UserAuthController {
         console.error("Error sending email:", error);
         throw error;
       }
+      setTimeout(async () => {
+        const user = await db.User.findOne({
+          where: { email: emailEdited },
+        });
+        if (user) {
+          await user.destroy({
+            // hard delete
+            force: true,
+          });
+        }
+      }, 1000 * 60 * 15); // 15p
       return res.status(200).json({
         message: "Vui lòng kiểm tra email để hoàn tất đăng ký",
       });
@@ -46,23 +59,19 @@ class UserAuthController {
 
   static async verifyRegister(req, res) {
     try {
-      const cookie = req.cookies;
       const { token } = req.params;
-      console.log(cookie?.dataRegister?.token);
-      console.log(cookie?.dataRegister?.token === token);
-
-      if (!cookie?.dataRegister || cookie?.dataRegister?.token !== token)
-        return res.redirect(`${process.env.URL_CLIENT}/user/auth/final-register/failed`);
-      const newUser = await db.User.create({
-        email: cookie?.dataRegister?.email,
-        password: hashPassword(cookie?.dataRegister?.password),
-        email_verified_at: new Date(),
+      console.log(token);
+      const notVerifyEmail = await db.User.findOne({
+        where: { email: { [db.Sequelize.Op.like]: `%${token}` } },
       });
-      if (newUser) {
-        res.clearCookie("dataRegister");
-        return res.redirect(`${process.env.URL_CLIENT}/user/auth/final-register/success`);
-      }
-      return res.redirect(`${process.env.URL_CLIENT}/user/auth/final-register/failed`);
+      if (!notVerifyEmail) return badRequest(new Error("Email không tồn tại"), res);
+      notVerifyEmail.email = atob(notVerifyEmail?.email?.split("@")[0]);
+      notVerifyEmail.email_verified_at = new Date();
+      await notVerifyEmail.save();
+
+      return res.status(200).json({
+        message: "Xác minh email thành công. Vui lòng đăng nhập",
+      });
     } catch (error) {
       return internalServerError(error, res);
     }
@@ -76,15 +85,13 @@ class UserAuthController {
       });
       if (!user) return badRequest(new Error("Email không tồn tại"), res);
 
-      const { id, password, refreshToken, ...rest } = user;
+      const { id, password, refresh_token, ...rest } = user;
 
       const comparePassword = await bcrypt.compare(req.body?.password, password);
       const accessToken = comparePassword ? generateToken({ id }) : null;
 
       const newRefreshToken = comparePassword ? generateRefreshToken(id) : null;
-      if (refreshToken) {
-        await db.User.update({ refresh_token: newRefreshToken }, { where: { id } });
-      }
+      await db.User.update({ refresh_token: newRefreshToken }, { where: { id } });
       if (newRefreshToken)
         res.cookie("refreshTokenUser", newRefreshToken, {
           httpOnly: true,

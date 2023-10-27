@@ -4,7 +4,7 @@ import UserAuthRequest from "http/requests/UserAuthRequest";
 
 const router = express.Router();
 // VERIFY REGISTER
-router.get("/final-register/:token", UserAuthController.verifyRegister);
+router.put("/final-register/:token", UserAuthController.verifyRegister);
 
 router.use(UserAuthRequest);
 router.post("/register", UserAuthController.register);
