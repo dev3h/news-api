@@ -169,9 +169,9 @@ class UserAuthController {
 
   static async forgotPassword(req, res) {
     const { email } = req.query;
-    if (!email) throw new Error("Please provide email");
-    const user = await db.User.findOne({ email });
-    if (!user) throw new Error("User not found");
+    if (!email) return badRequest(new Error("Cung cấp email"), res);
+    const user = await db.User.findOne({ where: { email } });
+    if (!user) return badRequest(new Error("Email không tồn tại"), res);
     const resetToken = user.createPasswordChangeToken();
     await user.save();
 
