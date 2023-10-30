@@ -2,10 +2,14 @@ import db from "models";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
+import { emailQueue } from "queues";
+import { Op } from "sequelize";
+import crypto from "crypto";
+
 import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
-import { emailQueue } from "queues";
 import hashPassword from "helpers/hashPassword";
+import createPasswordChangeToken from "helpers/createPasswordChangeToken";
 
 class UserAuthController {
   static async register(req, res) {
@@ -60,9 +64,8 @@ class UserAuthController {
   static async verifyRegister(req, res) {
     try {
       const { token } = req.params;
-      console.log(token);
       const notVerifyEmail = await db.User.findOne({
-        where: { email: { [db.Sequelize.Op.like]: `%${token}` } },
+        where: { email: { [Op.like]: `%${token}` } },
       });
       if (!notVerifyEmail) return badRequest(new Error("Email không tồn tại"), res);
       notVerifyEmail.email = atob(notVerifyEmail?.email?.split("@")[0]);
@@ -172,45 +175,66 @@ class UserAuthController {
     if (!email) return badRequest(new Error("Cung cấp email"), res);
     const user = await db.User.findOne({ where: { email } });
     if (!user) return badRequest(new Error("Email không tồn tại"), res);
-    const resetToken = user.createPasswordChangeToken();
-    await user.save();
+    const resetToken = await createPasswordChangeToken(user);
 
-    const html = `Vui lòng click vào link để đổi mật khẩu. Link này hết hạn sau 15p: <a href=${process.env.URL_SERVER}/api/v1/user/resetpassword/${resetToken}>Click here</a>`;
+    const html = `Vui lòng click vào link để đổi mật khẩu. Link này hết hạn sau 15p: <a href=${process.env.URL_CLIENT}/auth/reset-password?token=${resetToken}&email=${user.email}>Bấm vào đây</a>`;
 
     const data = {
       email,
       html,
       subject: "Đổi mật khẩu",
     };
-    const rs = await sendMail(data);
+    try {
+      await emailQueue.add(data);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw error;
+    }
     return res.status(200).json({
-      success: true,
-      rs,
+      message: "Vui lòng kiểm tra email để đổi mật khẩu",
     });
   }
 
   static async resetPassword(req, res) {
-    const { token, password } = req.body;
-    if (!token || !password) throw new Error("Please provide token and password");
+    try {
+      const { token, password, email } = req.body;
+      if (!token || !password || !email)
+        return badRequest(
+          new Error("Yêu cầu cung cấp token, email và mật khẩu mới"),
+          res
+        );
 
-    const passwordChangeToken = crypto.createHash("sha256").update(token).digest("hex");
-    console.log(passwordChangeToken);
-    const user = await db.User.findOne({
-      passwordResetToken: passwordChangeToken,
-      passwordResetExpires: { $gt: Date.now() }, // passwordResetExpires > Date.now()
-    });
-    if (!user) throw new Error("Invalid reset token");
+      const passwordChangeToken = crypto.createHash("sha256").update(token).digest("hex");
+      const user = await db.User.findOne({
+        where: {
+          email,
+        },
+      });
+      if (!user) return badRequest(new Error("Email không tồn tại"), res);
+      const userWithToken = await db.User.findOne({
+        where: {
+          email,
+          password_reset_token: passwordChangeToken,
+          password_reset_token_expired_at: {
+            [Op.gte]: Date.now(), // lớn hơn hoặc bằng
+          },
+        },
+      });
+      if (!userWithToken)
+        return badRequest(new Error("Token không hợp lệ hoặc hết hạn"), res);
 
-    user.password = password;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    user.passwordChangedAt = Date.now();
-    await user.save();
-
-    return res.status(200).json({
-      success: user ? true : false,
-      mes: user ? "Update password successfully" : "Update password failed",
-    });
+      await user.update({
+        password: hashPassword(password),
+        password_reset_token: null,
+        password_reset_token_expired_at: null,
+        password_changed_at: Date.now(),
+      });
+      return res.status(200).json({
+        message: "Đổi mật khẩu thành công",
+      });
+    } catch (error) {
+      return internalServerError(error, res);
+    }
   }
 }
 
