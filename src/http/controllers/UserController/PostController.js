@@ -27,7 +27,6 @@ class PostController {
   }
 
   static async getOne(req, res) {
-    console.log(req.params.slug);
     try {
       const response = await db.Post.findOne({
         where: {

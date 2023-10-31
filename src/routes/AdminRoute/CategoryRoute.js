@@ -1,8 +1,8 @@
 import express from "express";
 
 import CategoryRequest from "http/requests/CategoryRequest";
-import CategoryController from "../../http/controllers/AdminController/CategoryController";
-import { verifyAccessToken } from "../../http/middlewares/verifyToken";
+import CategoryController from "http/controllers/AdminController/CategoryController";
+import { verifyAccessToken } from "http/middlewares/verifyToken";
 
 const router = express.Router();
 
