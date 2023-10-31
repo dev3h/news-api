@@ -1,7 +1,7 @@
 import express from "express";
 import GroupCategoryRequest from "http/requests/GroupCategoryRequest";
-import GroupCategoryController from "../http/controllers/AdminController/GroupCategoryController";
-import { verifyAccessToken } from "../http/middlewares/verifyToken";
+import GroupCategoryController from "../../http/controllers/AdminController/GroupCategoryController";
+import { verifyAccessToken } from "../../http/middlewares/verifyToken";
 
 const router = express.Router();
 
