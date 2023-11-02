@@ -11,6 +11,7 @@ var _uuid = require("uuid");
 var _queues = require("../../../queues");
 var _sequelize = require("sequelize");
 var _crypto = _interopRequireDefault(require("crypto"));
+var _buffer = require("buffer");
 var _generateError = require("../../../helpers/generateError");
 var _jwt = require("../../../helpers/jwt");
 var _hashPassword = _interopRequireDefault(require("../../../helpers/hashPassword"));
@@ -63,7 +64,7 @@ var UserAuthController = /*#__PURE__*/function () {
               // lưu 1 email kèm theo token vào db
               // nếu người dùng xác nhận email thì trả lại email cho người dùng ban đầu
               token = (0, _uuid.v4)();
-              emailEdited = btoa(email) + "@" + token;
+              emailEdited = (0, _buffer.btoa)(email) + "@" + token;
               _context2.next = 11;
               return _models["default"].User.create({
                 email: emailEdited,
@@ -165,7 +166,7 @@ var UserAuthController = /*#__PURE__*/function () {
               }
               return _context3.abrupt("return", (0, _generateError.badRequest)(new Error("Email không tồn tại"), res));
             case 7:
-              notVerifyEmail.email = atob(notVerifyEmail === null || notVerifyEmail === void 0 || (_notVerifyEmail$email = notVerifyEmail.email) === null || _notVerifyEmail$email === void 0 ? void 0 : _notVerifyEmail$email.split("@")[0]);
+              notVerifyEmail.email = (0, _buffer.atob)(notVerifyEmail === null || notVerifyEmail === void 0 || (_notVerifyEmail$email = notVerifyEmail.email) === null || _notVerifyEmail$email === void 0 ? void 0 : _notVerifyEmail$email.split("@")[0]);
               notVerifyEmail.email_verified_at = new Date();
               _context3.next = 11;
               return notVerifyEmail.save();
