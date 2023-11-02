@@ -18,5 +18,4 @@ var storage = _multer["default"].diskStorage({
 var uploadFile = (0, _multer["default"])({
   storage: storage
 });
-var _default = uploadFile;
-exports["default"] = _default;
+var _default = exports["default"] = uploadFile;

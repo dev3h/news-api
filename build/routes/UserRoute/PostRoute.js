@@ -12,5 +12,4 @@ var router = _express["default"].Router();
 // router.use(verifyAccessToken);
 router.get("", _PostController["default"].getAll);
 router.get("/:slug/detail", _PostController["default"].getOne);
-var _default = router;
-exports["default"] = _default;
+var _default = exports["default"] = router;

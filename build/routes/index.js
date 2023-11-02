@@ -20,5 +20,4 @@ var initRoutes = function initRoutes(app) {
   app.use("/api-docs", _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(_swaggerOutput["default"]));
   return app.use(_generateError.notFoundRoute);
 };
-var _default = initRoutes;
-exports["default"] = _default;
+var _default = exports["default"] = initRoutes;

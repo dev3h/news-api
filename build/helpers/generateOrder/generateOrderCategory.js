@@ -19,5 +19,4 @@ var generateOrderCategory = function generateOrderCategory(sortBy, sortType) {
     return _order;
   }
 };
-var _default = generateOrderCategory;
-exports["default"] = _default;
+var _default = exports["default"] = generateOrderCategory;

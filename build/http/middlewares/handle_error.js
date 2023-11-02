@@ -8,7 +8,7 @@ var _httpErrors = _interopRequireDefault(require("http-errors"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 // nếu không truyền đoạn text vào trong hàm có sẵn của createError thì nó sẽ lấy mặc định của nó
 // badRequest là một hàm trả về lỗi 400
-var badRequest = function badRequest(err, res) {
+var badRequest = exports.badRequest = function badRequest(err, res) {
   var error = _httpErrors["default"].BadRequest(err);
   return res.status(error.status).json({
     err: 1,
@@ -17,8 +17,7 @@ var badRequest = function badRequest(err, res) {
 };
 
 // internalServerError là một hàm trả về lỗi 500
-exports.badRequest = badRequest;
-var internalServerError = function internalServerError(err, res) {
+var internalServerError = exports.internalServerError = function internalServerError(err, res) {
   var error = _httpErrors["default"].InternalServerError(err);
   return res.status(error.status).json({
     err: 1,
@@ -27,8 +26,7 @@ var internalServerError = function internalServerError(err, res) {
 };
 
 // notFound là một hàm trả về lỗi 404
-exports.internalServerError = internalServerError;
-var notFound = function notFound(req, res) {
+var notFound = exports.notFound = function notFound(req, res) {
   var error = _httpErrors["default"].NotFound("This route does not exist!");
   return res.status(error.status).json({
     err: 1,
@@ -37,12 +35,10 @@ var notFound = function notFound(req, res) {
 };
 
 // notAuth là một hàm trả về lỗi 401
-exports.notFound = notFound;
-var notAuth = function notAuth(err, res, isExpired) {
+var notAuth = exports.notAuth = function notAuth(err, res, isExpired) {
   var error = _httpErrors["default"].Unauthorized(err);
   return res.status(error.status).json({
     err: isExpired ? 2 : 1,
     mes: err.message
   });
 };
-exports.notAuth = notAuth;

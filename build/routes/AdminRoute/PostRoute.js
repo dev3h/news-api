@@ -22,5 +22,4 @@ router.post("/upload-photo", [_cloudinaryConfig["default"].single("photo"), _Upl
 router.use(_PostRequest["default"]);
 router.post("/", _cloudinaryConfig["default"].single("photo"), _PostController["default"].create);
 router.put("/:id", _cloudinaryConfig["default"].single("photo"), _PostController["default"].update);
-var _default = router;
-exports["default"] = _default;
+var _default = exports["default"] = router;

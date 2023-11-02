@@ -18,5 +18,4 @@ router.post("/register", _UserAuthController["default"].register);
 router.post("/login", _UserAuthController["default"].login);
 router.post("/refresh-token", _UserAuthController["default"].refreshAccessToken);
 router.get("/logout", _UserAuthController["default"].logout);
-var _default = router;
-exports["default"] = _default;
+var _default = exports["default"] = router;
