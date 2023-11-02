@@ -2,7 +2,7 @@ import express from "express";
 
 import uploader from "config/cloudinaryConfig";
 import PostRequest from "http/requests/PostRequest";
-import UploadRequest from "http/requests/uploadRequest";
+import UploadRequest from "http/requests/UploadRequest";
 import PostController from "../../http/controllers/AdminController/PostController";
 import { verifyAccessToken } from "../../http/middlewares/verifyToken";
 

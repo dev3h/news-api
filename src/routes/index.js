@@ -1,10 +1,11 @@
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger-output.json";
 
-import { AdminAuthRoute, UserAuthRoute } from "./AuthRoute";
 import { notFoundRoute } from "../helpers/generateError";
 import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
+import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
+import UserAuthRoute from "./AuthRoute/UserAuthRoute";
 
 const initRoutes = (app) => {
   AdminAuthRoute(app);

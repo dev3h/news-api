@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { emailQueue } from "queues";
 import { Op } from "sequelize";
 import crypto from "crypto";
+import { atob, btoa } from "buffer";
 
 import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
