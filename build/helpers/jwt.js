@@ -6,9 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.generateToken = exports.generateRefreshToken = void 0;
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-var generateToken = function generateToken(id) {
+var generateToken = function generateToken(_ref) {
+  var id = _ref.id,
+    _ref$role = _ref.role,
+    role = _ref$role === void 0 ? null : _ref$role;
   return _jsonwebtoken["default"].sign({
-    id: id
+    id: id,
+    role: role
   }, process.env.JWT_SECRET, {
     expiresIn: "2d"
   });

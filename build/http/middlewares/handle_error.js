@@ -12,17 +12,17 @@ var badRequest = function badRequest(err, res) {
   var error = _httpErrors["default"].BadRequest(err);
   return res.status(error.status).json({
     err: 1,
-    mes: error.message
+    mes: err.message
   });
 };
 
 // internalServerError là một hàm trả về lỗi 500
 exports.badRequest = badRequest;
-var internalServerError = function internalServerError(res) {
-  var error = _httpErrors["default"].InternalServerError();
+var internalServerError = function internalServerError(err, res) {
+  var error = _httpErrors["default"].InternalServerError(err);
   return res.status(error.status).json({
     err: 1,
-    mes: error.message
+    mes: err.message
   });
 };
 
@@ -42,7 +42,7 @@ var notAuth = function notAuth(err, res, isExpired) {
   var error = _httpErrors["default"].Unauthorized(err);
   return res.status(error.status).json({
     err: isExpired ? 2 : 1,
-    mes: error.message
+    mes: err.message
   });
 };
 exports.notAuth = notAuth;

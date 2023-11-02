@@ -13,17 +13,19 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
-  var _joi$object$validate = _joi["default"].object({
-      username: _joi["default"].string().required().messages({
-        "string.empty": "Tên đăng nhập không được để trống",
-        "any.required": "Tên đăng nhập là bắt buộc"
-      }),
-      password: _joi["default"].string().required().messages({
-        "string.empty": "Mật khẩu không được để trống",
-        "any.required": "Mật khẩu là bắt buộc"
-      })
-    }).validate(_objectSpread({}, req.body)),
+var UserAuthRequest = function UserAuthRequest(req, res, next) {
+  var rules = {
+    email: _joi["default"].string().email().required().messages({
+      "string.email": "Email không đúng định dạng",
+      "string.empty": "Email không được để trống",
+      "any.required": "Email là bắt buộc"
+    }),
+    password: _joi["default"].string().required().messages({
+      "string.empty": "Mật khẩu không được để trống",
+      "any.required": "Mật khẩu là bắt buộc"
+    })
+  };
+  var _joi$object$validate = _joi["default"].object(rules).validate(_objectSpread({}, req.body)),
     error = _joi$object$validate.error;
   if (error) {
     return res.status(422).json({
@@ -32,5 +34,5 @@ var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
   }
   next();
 };
-var _default = AdminAuthRequest;
+var _default = UserAuthRequest;
 exports["default"] = _default;

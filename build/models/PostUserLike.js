@@ -21,14 +21,14 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 var _require = require("sequelize"),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var User = /*#__PURE__*/function (_Model) {
-    _inherits(User, _Model);
-    var _super = _createSuper(User);
-    function User() {
-      _classCallCheck(this, User);
+  var PostUserLike = /*#__PURE__*/function (_Model) {
+    _inherits(PostUserLike, _Model);
+    var _super = _createSuper(PostUserLike);
+    function PostUserLike() {
+      _classCallCheck(this, PostUserLike);
       return _super.apply(this, arguments);
     }
-    _createClass(User, null, [{
+    _createClass(PostUserLike, null, [{
       key: "associate",
       value:
       /**
@@ -37,30 +37,29 @@ module.exports = function (sequelize, DataTypes) {
        * The `models/index` file will call this method automatically.
        */
       function associate(models) {
-        User.belongsToMany(models.Post, {
-          through: models.PostUserLike,
-          foreignKey: "user_id",
-          as: "posts_like"
+        PostUserLike.belongsTo(models.Post, {
+          foreignKey: "post_id"
+          // as: "post",
+        });
+
+        PostUserLike.belongsTo(models.User, {
+          foreignKey: "user_id"
+          // as: "tag",
         });
       }
     }]);
-    return User;
+    return PostUserLike;
   }(Model);
-  User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    email_verified_at: DataTypes.DATE,
-    password: DataTypes.STRING,
-    refresh_token: DataTypes.STRING,
-    password_changed_at: DataTypes.DATE,
-    password_reset_token: DataTypes.STRING,
-    password_reset_token_expired_at: DataTypes.DATE
+  PostUserLike.init({
+    post_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER
   }, _objectSpread(_objectSpread({
     sequelize: sequelize,
-    paranoid: true,
     underscored: true
   }, _columnConfig["default"]), {}, {
-    modelName: "User"
+    modelName: "PostUserLike",
+    tableName: "post_user_like",
+    timestamps: false
   }));
-  return User;
+  return PostUserLike;
 };
