@@ -41,7 +41,7 @@ class UserAuthController {
         await emailQueue.add(data);
       } catch (error) {
         console.error("Error sending email:", error);
-        throw error;
+        return internalServerError(error, res);
       }
       setTimeout(async () => {
         const user = await db.User.findOne({
