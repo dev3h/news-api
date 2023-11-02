@@ -94,7 +94,7 @@ var UserAuthController = /*#__PURE__*/function () {
               _context2.prev = 21;
               _context2.t0 = _context2["catch"](16);
               console.error("Error sending email:", _context2.t0);
-              throw _context2.t0;
+              return _context2.abrupt("return", (0, _generateError.internalServerError)(_context2.t0, res));
             case 25:
               setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
                 var user;

@@ -14,7 +14,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var emailQueue = new _bull["default"]("email", {
   redis: {
     port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASSWORD
   }
 });
 emailQueue.process( /*#__PURE__*/function () {
