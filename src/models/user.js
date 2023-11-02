@@ -9,14 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // User.belongsTo(models.Company);
-      // User.belongsTo(models.Department);
+      User.belongsToMany(models.Post, {
+        through: models.PostUserLike,
+        foreignKey: "user_id",
+        as: "posts_like",
+      });
     }
   }
   User.init(
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
+      email_verified_at: DataTypes.DATE,
       password: DataTypes.STRING,
       refresh_token: DataTypes.STRING,
       password_changed_at: DataTypes.DATE,

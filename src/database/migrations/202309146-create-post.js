@@ -18,6 +18,9 @@ module.exports = {
       photo: {
         type: Sequelize.STRING,
       },
+      filename: {
+        type: Sequelize.STRING,
+      },
       content: {
         type: Sequelize.TEXT,
       },
@@ -37,6 +40,9 @@ module.exports = {
       status: {
         type: Sequelize.TINYINT,
         defaultValue: 0,
+      },
+      published_at: {
+        type: Sequelize.DATE,
       },
       created_by: {
         type: Sequelize.INTEGER,

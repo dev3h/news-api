@@ -1,21 +1,21 @@
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger-output.json";
 
-import GroupCategoryRoute from "./GroupCategoryRoute";
-import CategoryRoute from "./CategoryRoute";
-import PostRoute from "./PostRoute";
-import AuthRoute from "./AuthRoute";
-import { notFound } from "http/middlewares/handle_error";
+import { notFoundRoute } from "../helpers/generateError";
+import AdminRoute from "./AdminRoute";
+import UserRoute from "./UserRoute";
+import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
+import UserAuthRoute from "./AuthRoute/UserAuthRoute";
 
 const initRoutes = (app) => {
-  // app.use("/api/v1/auth", AuthRoute);
-  app.use("/api/v1/group-category", GroupCategoryRoute);
-  app.use("/api/v1/category", CategoryRoute);
-  app.use("/api/v1/post", PostRoute);
+  AdminAuthRoute(app);
+  UserAuthRoute(app);
+  AdminRoute(app);
+  UserRoute(app);
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  return app.use(notFound);
+  return app.use(notFoundRoute);
 };
 
 export default initRoutes;

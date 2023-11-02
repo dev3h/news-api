@@ -6,18 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
 var _swaggerOutput = _interopRequireDefault(require("../swagger-output.json"));
-var _ProductRoute = _interopRequireDefault(require("./ProductRoute"));
-var _GroupCategoryRoute = _interopRequireDefault(require("./GroupCategoryRoute"));
-var _AuthRoute = _interopRequireDefault(require("./AuthRoute"));
-var _handle_error = require("../http/middlewares/handle_error");
+var _generateError = require("../helpers/generateError");
+var _AdminRoute = _interopRequireDefault(require("./AdminRoute"));
+var _UserRoute = _interopRequireDefault(require("./UserRoute"));
+var _AdminAuthRoute = _interopRequireDefault(require("./AuthRoute/AdminAuthRoute"));
+var _UserAuthRoute = _interopRequireDefault(require("./AuthRoute/UserAuthRoute"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var initRoutes = function initRoutes(app) {
-  app.use("/api/v1/auth", _AuthRoute["default"]);
-  app.use("/api/v1/group-category", _GroupCategoryRoute["default"]);
-  // app.use("/api/v1/product", ProductRoute);
-
+  (0, _AdminAuthRoute["default"])(app);
+  (0, _UserAuthRoute["default"])(app);
+  (0, _AdminRoute["default"])(app);
+  (0, _UserRoute["default"])(app);
   app.use("/api-docs", _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(_swaggerOutput["default"]));
-  return app.use(_handle_error.notFound);
+  return app.use(_generateError.notFoundRoute);
 };
 var _default = initRoutes;
 exports["default"] = _default;

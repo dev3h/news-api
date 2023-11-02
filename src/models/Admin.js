@@ -12,9 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Admin.init(
     {
-      name: DataTypes.STRING,
+      username: DataTypes.STRING,
+      display_name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      refresh_token: DataTypes.STRING,
       role: DataTypes.TINYINT,
     },
     {

@@ -14,8 +14,10 @@ class CategoryFilter {
     const order = generateOrderCategory(sortBy, sortType);
     queries.order = order;
     const { limit, offset } = getPagination(page, flimit);
-    queries.limit = limit;
-    queries.offset = offset;
+    if (limit !== Number.MAX_SAFE_INTEGER) {
+      queries.limit = limit;
+      queries.offset = offset;
+    }
 
     const data = await db.Category.findAndCountAll({
       ...queries,
@@ -38,9 +40,14 @@ class CategoryFilter {
       ],
       attributes: { exclude: ["created_by", "updated_by"] },
     });
-    const response = getPagingData(data, page, limit);
+    if (limit !== Number.MAX_SAFE_INTEGER) {
+      const response = getPagingData(data, page, limit);
+      return response;
+    } else {
+      const response = data;
 
-    return response;
+      return response;
+    }
   }
 }
 export default CategoryFilter;

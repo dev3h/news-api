@@ -1,7 +1,15 @@
 "use strict";
 /** @type {import('sequelize-cli').Migration} */
+const bcrypt = require("bcryptjs");
+
+const hashPassword = (password) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+  return hash;
+};
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const password = await hashPassword("1");
     await queryInterface.createTable("Admins", {
       id: {
         allowNull: false,
@@ -15,7 +23,7 @@ module.exports = {
       },
       display_name: {
         type: Sequelize.STRING,
-        defaultValue: "Admin",
+        defaultValue: "Unknown",
       },
       email: {
         type: Sequelize.STRING,
@@ -23,14 +31,14 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: password,
       },
       refresh_token: {
         type: Sequelize.STRING,
       },
       role: {
         type: Sequelize.TINYINT,
-        defaultValue: 0,
+        defaultValue: 1,
       },
       created_at: {
         allowNull: false,
