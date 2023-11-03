@@ -11,4 +11,5 @@ var hashPassword = function hashPassword(password) {
   var hash = _bcryptjs["default"].hashSync(password, salt);
   return hash;
 };
-var _default = exports["default"] = hashPassword;
+var _default = hashPassword;
+exports["default"] = _default;

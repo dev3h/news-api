@@ -17,4 +17,5 @@ router["delete"]("/:id", _CategoryController["default"].destroy);
 router.use(_CategoryRequest["default"]);
 router.post("/", _CategoryController["default"].create);
 router.put("/:id", _CategoryController["default"].update);
-var _default = exports["default"] = router;
+var _default = router;
+exports["default"] = _default;

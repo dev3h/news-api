@@ -9,4 +9,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var UserAuthRoute = function UserAuthRoute(app) {
   app.use("/api/v1/auth/user", _authRoute["default"]);
 };
-var _default = exports["default"] = UserAuthRoute;
+var _default = UserAuthRoute;
+exports["default"] = _default;

@@ -9,4 +9,5 @@ var columnConfig = {
   createdAt: "created_at",
   updatedAt: "updated_at"
 };
-var _default = exports["default"] = columnConfig;
+var _default = columnConfig;
+exports["default"] = _default;

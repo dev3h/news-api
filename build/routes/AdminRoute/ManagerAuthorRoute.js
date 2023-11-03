@@ -17,4 +17,5 @@ router["delete"]("/:id", _ManagerAuthorController["default"].destroy);
 router.use(_ManagerAuthorRequest["default"]);
 router.post("/", _ManagerAuthorController["default"].create);
 router.put("/:id", _ManagerAuthorController["default"].update);
-var _default = exports["default"] = router;
+var _default = router;
+exports["default"] = _default;

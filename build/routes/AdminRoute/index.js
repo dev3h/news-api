@@ -17,4 +17,5 @@ var AdminRoute = function AdminRoute(app) {
   app.use("/api/v1/tag", _TagRoute["default"]);
   app.use("/api/v1/manager-author", _ManagerAuthorRoute["default"]);
 };
-var _default = exports["default"] = AdminRoute;
+var _default = AdminRoute;
+exports["default"] = _default;

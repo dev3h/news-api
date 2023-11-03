@@ -17,4 +17,5 @@ router["delete"]("/:id", _GroupCategoryController["default"].destroy);
 router.use(_GroupCategoryRequest["default"]);
 router.post("/", _GroupCategoryController["default"].create);
 router.put("/:id", _GroupCategoryController["default"].update);
-var _default = exports["default"] = router;
+var _default = router;
+exports["default"] = _default;

@@ -9,4 +9,5 @@ var _TagController = _interopRequireDefault(require("../../http/controllers/Admi
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var router = _express["default"].Router();
 router.get("", _TagController["default"].getAll);
-var _default = exports["default"] = router;
+var _default = router;
+exports["default"] = _default;

@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getPagingData = exports.getPagination = void 0;
-var getPagination = exports.getPagination = function getPagination(page, limit) {
+var getPagination = function getPagination(page, limit) {
   var offset = !page || +page <= 1 ? 0 : +page - 1;
   var fLimit = limit ? +limit : Number.MAX_SAFE_INTEGER;
   return {
@@ -12,7 +12,8 @@ var getPagination = exports.getPagination = function getPagination(page, limit) 
     limit: fLimit
   };
 };
-var getPagingData = exports.getPagingData = function getPagingData(result, page, limit) {
+exports.getPagination = getPagination;
+var getPagingData = function getPagingData(result, page, limit) {
   var totalItems = result.count,
     data = result.rows;
   var currentPage = page ? +page : 0;
@@ -24,3 +25,4 @@ var getPagingData = exports.getPagingData = function getPagingData(result, page,
     currentPage: currentPage
   };
 };
+exports.getPagingData = getPagingData;
