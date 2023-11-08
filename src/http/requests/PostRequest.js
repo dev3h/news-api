@@ -43,6 +43,7 @@ const PostRequest = (req, res, next) => {
       .string()
       .pattern(/\.jpg$|\.png$|\.jpeg$/)
       .messages({
+        "string.base": "Ảnh phải là chuỗi",
         "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg",
       });
   }

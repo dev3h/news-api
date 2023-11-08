@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post("/login", AdminAuthRequest, AdminAuthController.login);
 router.post("/refresh-token", AdminAuthController.refreshAccessToken);
+router.get("/current", verifyAccessToken, AdminAuthController.getCurrent);
+
 router.get("/logout", AdminAuthController.logout);
 router.use(verifyAccessToken);
 router.get("/check-role", AdminAuthController.checkRole);
