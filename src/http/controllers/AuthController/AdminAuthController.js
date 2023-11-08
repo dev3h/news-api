@@ -123,7 +123,13 @@ class AdminAuthController {
       });
       if (!user) return badRequest(new Error("Không tìm thấy user"), res);
       return res.status(200).json({
-        data: user,
+        data: {
+          ...user,
+          role: {
+            role_id: user.role,
+            role_name: RoleSysEnum.getRoleSysName(user.role),
+          },
+        },
       });
     } catch (error) {
       return internalServerError(error, res);
