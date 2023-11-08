@@ -11,6 +11,7 @@ import { internalServerError } from "helpers/generateError";
 import PostFilter from "modelFilters/PostFilter";
 import PostStatusEnum from "enums/PostStatusEnum";
 import PostObservers from "observers/PostObservers";
+import PostSchedule from "schedule/PostSchedule";
 
 class PostController {
   static async getAll(req, res) {
@@ -57,6 +58,9 @@ class PostController {
           message: "Tên bài viết đã tồn tại",
         });
       else {
+        if (response[0].status === PostStatusEnum.SCHEDULE) {
+          PostSchedule.schedulePost(response[0].id);
+        }
         PostObservers.saved(response[0].id, tags);
         return res.status(200).json({
           message: "Tạo bài viết thành công",
@@ -175,6 +179,9 @@ class PostController {
       );
       if (response[0] === 0) {
         if (photo) cloudinary.uploader.destroy(photo?.file?.response?.data?.filename);
+        if (req.body.status === PostStatusEnum.SCHEDULE) {
+          PostSchedule.schedulePost(req.params.id);
+        }
         return res.status(404).json({
           message: "Không tìm thấy bài viết",
         });
