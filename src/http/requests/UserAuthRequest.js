@@ -1,7 +1,5 @@
 import joi from "joi";
 
-import { badRequest } from "../middlewares/handle_error";
-
 const UserAuthRequest = (req, res, next) => {
   const rules = {
     email: joi.string().email().required().messages({

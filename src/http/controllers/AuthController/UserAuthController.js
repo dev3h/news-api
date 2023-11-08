@@ -167,7 +167,7 @@ class UserAuthController {
         message: "Logout thành công",
       });
     } catch (error) {
-      return internalServerError(res);
+      return internalServerError(error, res);
     }
   }
 
@@ -232,6 +232,21 @@ class UserAuthController {
       });
       return res.status(200).json({
         message: "Đổi mật khẩu thành công",
+      });
+    } catch (error) {
+      return internalServerError(error, res);
+    }
+  }
+  static async getCurrent(req, res) {
+    try {
+      const { id } = req.user;
+      const user = await db.User.findOne({
+        where: { id },
+        raw: true,
+      });
+      if (!user) return badRequest(new Error("Không tìm thấy user"), res);
+      return res.status(200).json({
+        data: user,
       });
     } catch (error) {
       return internalServerError(error, res);

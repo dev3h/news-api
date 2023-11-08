@@ -4,6 +4,7 @@ import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
 import RoleSysEnum from "enums/RoleSysEnum";
 import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../../middlewares/verifyToken";
 
 class AdminAuthController {
   static async login(req, res) {
@@ -96,6 +97,18 @@ class AdminAuthController {
       });
       return res.status(200).json({
         message: "Logout thành công",
+      });
+    } catch (error) {
+      return internalServerError(error, res);
+    }
+  }
+  static async checkRole(req, res) {
+    try {
+      const { role } = req.user;
+      const roleName = RoleSysEnum.getRoleSysName(role);
+      return res.status(200).json({
+        role_id: role,
+        role_name: roleName,
       });
     } catch (error) {
       return internalServerError(error, res);

@@ -1,7 +1,5 @@
 import joi from "joi";
 
-import { badRequest } from "../middlewares/handle_error";
-
 const AdminAuthRequest = (req, res, next) => {
   const { error } = joi
     .object({
