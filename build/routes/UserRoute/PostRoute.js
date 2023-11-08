@@ -14,5 +14,4 @@ router.get("/:slug/detail", _PostController["default"].getOne);
 router.use(_verifyToken.verifyAccessToken);
 router.put("/:slug/like", _PostController["default"].toggleLike);
 router.post("/:slug/comment", _PostController["default"].createComment);
-var _default = router;
-exports["default"] = _default;
+var _default = exports["default"] = router;

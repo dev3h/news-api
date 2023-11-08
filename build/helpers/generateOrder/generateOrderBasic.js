@@ -28,5 +28,4 @@ var generateOrderBasic = function generateOrderBasic(sortBy, sortType) {
   }
   return order;
 };
-var _default = generateOrderBasic;
-exports["default"] = _default;
+var _default = exports["default"] = generateOrderBasic;

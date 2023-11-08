@@ -8,14 +8,15 @@ var _express = _interopRequireDefault(require("express"));
 var _ManagerAuthorController = _interopRequireDefault(require("../../http/controllers/AdminController/ManagerAuthorController"));
 var _verifyToken = require("../../http/middlewares/verifyToken");
 var _ManagerAuthorRequest = _interopRequireDefault(require("../../http/requests/ManagerAuthorRequest"));
+var _checkRole = require("../../http/middlewares/checkRole");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var router = _express["default"].Router();
 router.use(_verifyToken.verifyAccessToken);
+// router.use(checkAdminRole);
 router.get("", _ManagerAuthorController["default"].getAll);
 router.get("/:id/info", _ManagerAuthorController["default"].getOne);
 router["delete"]("/:id", _ManagerAuthorController["default"].destroy);
 router.use(_ManagerAuthorRequest["default"]);
 router.post("/", _ManagerAuthorController["default"].create);
 router.put("/:id", _ManagerAuthorController["default"].update);
-var _default = router;
-exports["default"] = _default;
+var _default = exports["default"] = router;

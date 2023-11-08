@@ -11,5 +11,4 @@ var generateSlug = function generateSlug(name) {
     lower: true
   });
 };
-var _default = generateSlug;
-exports["default"] = _default;
+var _default = exports["default"] = generateSlug;

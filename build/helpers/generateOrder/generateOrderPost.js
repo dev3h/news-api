@@ -19,5 +19,4 @@ var generateOrderPost = function generateOrderPost(sortBy, sortType) {
     return _order;
   }
 };
-var _default = generateOrderPost;
-exports["default"] = _default;
+var _default = exports["default"] = generateOrderPost;
