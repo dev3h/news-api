@@ -5,6 +5,7 @@ import "dotenv/config";
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter";
 import { ExpressAdapter } from "@bull-board/express";
+import bodyParser from "body-parser";
 
 import connectDB from "config/database";
 import initRoutes from "routes";
@@ -19,6 +20,7 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(json());
 app.use(urlencoded({ extended: true }));

@@ -13,13 +13,13 @@ const hashPassword = (password) => {
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      const password = await hashPassword("1");
+      const password = await hashPassword("Abcd1234@");
       const admins = [...Array(20)].map((item) => ({
         username: faker.internet.userName(),
         display_name: faker.person.fullName(),
         email: faker.internet.email(),
         password: password,
-        role: 0,
+        role: Math.round(Math.random()), // Tạo giá trị 0 hoặc 1 ngẫu nhiên,
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
       }));

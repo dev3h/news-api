@@ -72,6 +72,11 @@ class GroupCategoryController {
             as: "updated_by_admin",
             attributes: ["id", "username", "email"],
           },
+          {
+            model: db.Category,
+            as: "categories",
+            attributes: ["id", "name"],
+          },
         ],
       });
       if (!response)

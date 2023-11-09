@@ -103,6 +103,26 @@ class PostController {
       internalServerError(error, res);
     }
   }
+  static async deletePhoto(req, res) {
+    try {
+      console.log(req.body);
+      const { filename } = req.body;
+      if (!filename)
+        return res.status(400).json({
+          message: "Không có file nào được gửi lên",
+        });
+      cloudinary.uploader.destroy(filename, (error, result) => {
+        if (error) {
+          console.error("Lỗi khi xóa file cũ trên Cloudinary: " + error);
+        }
+      });
+      return res.status(200).json({
+        message: "Xóa ảnh thành công",
+      });
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
 
   static async getOne(req, res) {
     try {

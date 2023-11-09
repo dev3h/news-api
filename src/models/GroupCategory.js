@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "updated_by",
         as: "updated_by_admin",
       });
+      GroupCategory.hasMany(models.Category, {
+        foreignKey: "group_category_id",
+        as: "categories",
+      });
     }
   }
   GroupCategory.init(

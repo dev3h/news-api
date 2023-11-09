@@ -15,6 +15,7 @@ router.get("/", PostController.getAll);
 router.get("/:id/info", PostController.getOne);
 router.get("/getAllStatus", PostController.getAllStatus);
 // router.get("/export-excel", PostController.exportExcel);
+router.post("/delete-photo", PostController.deletePhoto);
 router.delete("/:id", PostController.destroy);
 
 router.post(

@@ -13,7 +13,7 @@ const hashPassword = (password) => {
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      const password = await hashPassword("1");
+      const password = await hashPassword("Abcd1234@");
       const users = [...Array(20)].map((item) => ({
         name: faker.person.fullName(),
         email: faker.internet.email(),
