@@ -133,6 +133,10 @@ var GroupCategoryController = /*#__PURE__*/function () {
                   model: _models["default"].Admin,
                   as: "updated_by_admin",
                   attributes: ["id", "username", "email"]
+                }, {
+                  model: _models["default"].Category,
+                  as: "categories",
+                  attributes: ["id", "name"]
                 }]
               });
             case 3:

@@ -19,6 +19,7 @@ router.get("/", _PostController["default"].getAll);
 router.get("/:id/info", _PostController["default"].getOne);
 router.get("/getAllStatus", _PostController["default"].getAllStatus);
 // router.get("/export-excel", PostController.exportExcel);
+router.post("/delete-photo", _PostController["default"].deletePhoto);
 router["delete"]("/:id", _PostController["default"].destroy);
 router.post("/upload-photo", [_cloudinaryConfig["default"].single("photo"), _UploadRequest["default"]], _PostController["default"].uploadPhoto);
 router.use(_PostRequest["default"]);

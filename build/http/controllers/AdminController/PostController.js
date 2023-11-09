@@ -163,15 +163,57 @@ var PostController = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "getOne",
+    key: "deletePhoto",
     value: function () {
-      var _getOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-        var response, tagIds;
+      var _deletePhoto = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+        var filename;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
-              _context3.next = 3;
+              console.log(req.body);
+              filename = req.body.filename;
+              if (filename) {
+                _context3.next = 5;
+                break;
+              }
+              return _context3.abrupt("return", res.status(400).json({
+                message: "Không có file nào được gửi lên"
+              }));
+            case 5:
+              cloudinary.uploader.destroy(filename, function (error, result) {
+                if (error) {
+                  console.error("Lỗi khi xóa file cũ trên Cloudinary: " + error);
+                }
+              });
+              return _context3.abrupt("return", res.status(200).json({
+                message: "Xóa ảnh thành công"
+              }));
+            case 9:
+              _context3.prev = 9;
+              _context3.t0 = _context3["catch"](0);
+              (0, _generateError.internalServerError)(_context3.t0, res);
+            case 12:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, null, [[0, 9]]);
+      }));
+      function deletePhoto(_x5, _x6) {
+        return _deletePhoto.apply(this, arguments);
+      }
+      return deletePhoto;
+    }()
+  }, {
+    key: "getOne",
+    value: function () {
+      var _getOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+        var response, tagIds;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.prev = 0;
+              _context4.next = 3;
               return _models["default"].Post.findByPk(req.params.id, {
                 include: [{
                   model: _models["default"].Admin,
@@ -195,32 +237,32 @@ var PostController = /*#__PURE__*/function () {
                 }]
               });
             case 3:
-              response = _context3.sent;
+              response = _context4.sent;
               if (response) {
-                _context3.next = 6;
+                _context4.next = 6;
                 break;
               }
-              return _context3.abrupt("return", res.status(404).json({
+              return _context4.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
             case 6:
               tagIds = response.tags.map(function (tag) {
                 return tag.id.toString();
               });
-              return _context3.abrupt("return", res.status(200).json(_objectSpread(_objectSpread({}, response.toJSON()), {}, {
+              return _context4.abrupt("return", res.status(200).json(_objectSpread(_objectSpread({}, response.toJSON()), {}, {
                 tags: tagIds
               })));
             case 10:
-              _context3.prev = 10;
-              _context3.t0 = _context3["catch"](0);
-              (0, _generateError.internalServerError)(_context3.t0, res);
+              _context4.prev = 10;
+              _context4.t0 = _context4["catch"](0);
+              (0, _generateError.internalServerError)(_context4.t0, res);
             case 13:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
-        }, _callee3, null, [[0, 10]]);
+        }, _callee4, null, [[0, 10]]);
       }));
-      function getOne(_x5, _x6) {
+      function getOne(_x7, _x8) {
         return _getOne.apply(this, arguments);
       }
       return getOne;
@@ -228,25 +270,25 @@ var PostController = /*#__PURE__*/function () {
   }, {
     key: "getAllStatus",
     value: function () {
-      var _getAllStatus = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(_, res) {
+      var _getAllStatus = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(_, res) {
         var response;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              _context4.prev = 0;
+              _context5.prev = 0;
               response = _PostStatusEnum["default"].getAll();
-              return _context4.abrupt("return", res.status(200).json(response));
+              return _context5.abrupt("return", res.status(200).json(response));
             case 5:
-              _context4.prev = 5;
-              _context4.t0 = _context4["catch"](0);
-              (0, _generateError.internalServerError)(_context4.t0, res);
+              _context5.prev = 5;
+              _context5.t0 = _context5["catch"](0);
+              (0, _generateError.internalServerError)(_context5.t0, res);
             case 8:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
-        }, _callee4, null, [[0, 5]]);
+        }, _callee5, null, [[0, 5]]);
       }));
-      function getAllStatus(_x7, _x8) {
+      function getAllStatus(_x9, _x10) {
         return _getAllStatus.apply(this, arguments);
       }
       return getAllStatus;
@@ -254,16 +296,16 @@ var PostController = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function () {
-      var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+      var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
         var _photo$file4, _photo$file5, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, response, _photo$file6, _photo2$file, _photo2;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              _context5.prev = 0;
+              _context6.prev = 0;
               // change this
               _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(1), updated_by = _generateUpdatedBy.updated_by;
               _req$body2 = req.body, title = _req$body2.title, photo = _req$body2.photo, tags = _req$body2.tags, rest = _objectWithoutProperties(_req$body2, _excluded2);
-              _context5.next = 5;
+              _context6.next = 5;
               return _models["default"].Post.findOne({
                 where: {
                   id: req.params.id
@@ -271,8 +313,8 @@ var PostController = /*#__PURE__*/function () {
                 attributes: ["filename"]
               });
             case 5:
-              oldImage = _context5.sent;
-              _context5.next = 8;
+              oldImage = _context6.sent;
+              _context6.next = 8;
               return _models["default"].Post.update({
                 rest: rest,
                 slug: (0, _generateSlug["default"])(title),
@@ -285,36 +327,36 @@ var PostController = /*#__PURE__*/function () {
                 }
               });
             case 8:
-              response = _context5.sent;
+              response = _context6.sent;
               if (!(response[0] === 0)) {
-                _context5.next = 13;
+                _context6.next = 13;
                 break;
               }
               if (photo) cloudinary.uploader.destroy(photo === null || photo === void 0 || (_photo$file6 = photo.file) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.response) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.data) === null || _photo$file6 === void 0 ? void 0 : _photo$file6.filename);
               if (req.body.status === _PostStatusEnum["default"].SCHEDULE) {
                 _PostSchedule["default"].schedulePost(req.params.id);
               }
-              return _context5.abrupt("return", res.status(404).json({
+              return _context6.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
             case 13:
               if (response[0] > 0 && photo && oldImage) cloudinary.uploader.destroy(oldImage.filename);
-              return _context5.abrupt("return", res.status(200).json({
+              return _context6.abrupt("return", res.status(200).json({
                 message: "Cập nhật bài viết thành công"
               }));
             case 17:
-              _context5.prev = 17;
-              _context5.t0 = _context5["catch"](0);
+              _context6.prev = 17;
+              _context6.t0 = _context6["catch"](0);
               _photo2 = req.body.photo;
               if (_photo2) cloudinary.uploader.destroy(_photo2 === null || _photo2 === void 0 || (_photo2$file = _photo2.file) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.response) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.data) === null || _photo2$file === void 0 ? void 0 : _photo2$file.filename);
-              (0, _generateError.internalServerError)(_context5.t0, res);
+              (0, _generateError.internalServerError)(_context6.t0, res);
             case 22:
             case "end":
-              return _context5.stop();
+              return _context6.stop();
           }
-        }, _callee5, null, [[0, 17]]);
+        }, _callee6, null, [[0, 17]]);
       }));
-      function update(_x9, _x10) {
+      function update(_x11, _x12) {
         return _update.apply(this, arguments);
       }
       return update;
@@ -322,42 +364,42 @@ var PostController = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function () {
-      var _destroy = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+      var _destroy = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
         var response;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              _context6.prev = 0;
-              _context6.next = 3;
+              _context7.prev = 0;
+              _context7.next = 3;
               return _models["default"].Post.destroy({
                 where: {
                   id: req.params.id
                 }
               });
             case 3:
-              response = _context6.sent;
+              response = _context7.sent;
               if (!(response === 0)) {
-                _context6.next = 6;
+                _context7.next = 6;
                 break;
               }
-              return _context6.abrupt("return", res.status(404).json({
+              return _context7.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
             case 6:
-              return _context6.abrupt("return", res.status(200).json({
+              return _context7.abrupt("return", res.status(200).json({
                 message: "Xóa bài viết thành công"
               }));
             case 9:
-              _context6.prev = 9;
-              _context6.t0 = _context6["catch"](0);
-              return _context6.abrupt("return", (0, _generateError.internalServerError)(_context6.t0, res));
+              _context7.prev = 9;
+              _context7.t0 = _context7["catch"](0);
+              return _context7.abrupt("return", (0, _generateError.internalServerError)(_context7.t0, res));
             case 12:
             case "end":
-              return _context6.stop();
+              return _context7.stop();
           }
-        }, _callee6, null, [[0, 9]]);
+        }, _callee7, null, [[0, 9]]);
       }));
-      function destroy(_x11, _x12) {
+      function destroy(_x13, _x14) {
         return _destroy.apply(this, arguments);
       }
       return destroy;

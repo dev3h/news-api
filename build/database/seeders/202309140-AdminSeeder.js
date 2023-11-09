@@ -30,7 +30,7 @@ module.exports = {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return hashPassword("1");
+            return hashPassword("Abcd1234@");
           case 3:
             password = _context.sent;
             admins = _toConsumableArray(Array(20)).map(function (item) {
@@ -39,7 +39,8 @@ module.exports = {
                 display_name: faker.person.fullName(),
                 email: faker.internet.email(),
                 password: password,
-                role: 0,
+                role: Math.round(Math.random()),
+                // Tạo giá trị 0 hoặc 1 ngẫu nhiên,
                 created_at: faker.date.past(),
                 updated_at: faker.date.recent()
               };

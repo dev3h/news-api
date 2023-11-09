@@ -30,7 +30,7 @@ module.exports = {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return hashPassword("1");
+            return hashPassword("Abcd1234@");
           case 3:
             password = _context.sent;
             users = _toConsumableArray(Array(20)).map(function (item) {

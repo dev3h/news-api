@@ -8,6 +8,7 @@ require("dotenv/config");
 var _api = require("@bull-board/api");
 var _bullAdapter = require("@bull-board/api/bullAdapter");
 var _express2 = require("@bull-board/express");
+var _bodyParser = _interopRequireDefault(require("body-parser"));
 var _database = _interopRequireDefault(require("./config/database"));
 var _routes = _interopRequireDefault(require("./routes"));
 var _queues = require("./queues");
@@ -20,6 +21,9 @@ var corsOption = {
   origin: [process.env.URL_CLIENT]
 };
 app.use((0, _cors["default"])(corsOption));
+app.use(_bodyParser["default"].json({
+  limit: "10mb"
+}));
 app.use((0, _cookieParser["default"])());
 app.use((0, _express.json)());
 app.use((0, _express.urlencoded)({
