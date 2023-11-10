@@ -34,22 +34,17 @@ var ProductController = /*#__PURE__*/function () {
               return _ProductServices["default"].getAll(req.query);
             case 3:
               response = _context.sent;
-              if (!(response.error === 1)) {
-                _context.next = 6;
-                break;
-              }
-              return _context.abrupt("return", (0, _handle_error.badRequest)(response.mes, res));
-            case 6:
+              if (response.error === 1) (0, _handle_error.badRequest)(response.mes, res);
               return _context.abrupt("return", res.status(200).json(response));
-            case 9:
-              _context.prev = 9;
+            case 8:
+              _context.prev = 8;
               _context.t0 = _context["catch"](0);
               return _context.abrupt("return", (0, _handle_error.internalServerError)(res));
-            case 12:
+            case 11:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[0, 9]]);
+        }, _callee, null, [[0, 8]]);
       }));
       function getAll(_x, _x2) {
         return _getAll.apply(this, arguments);
@@ -74,22 +69,17 @@ var ProductController = /*#__PURE__*/function () {
                       return _ProductServices["default"].create(req.body, fileData);
                     case 4:
                       response = _context2.sent;
-                      if (!(response.error === 1)) {
-                        _context2.next = 7;
-                        break;
-                      }
-                      return _context2.abrupt("return", (0, _handle_error.badRequest)(response.mes, res));
-                    case 7:
+                      if (response.error === 1) (0, _handle_error.badRequest)(response.mes, res);
                       return _context2.abrupt("return", res.status(200).json(response));
-                    case 10:
-                      _context2.prev = 10;
+                    case 9:
+                      _context2.prev = 9;
                       _context2.t0 = _context2["catch"](0);
                       return _context2.abrupt("return", (0, _handle_error.internalServerError)(res));
-                    case 13:
+                    case 12:
                     case "end":
                       return _context2.stop();
                   }
-                }, _callee2, null, [[0, 10]]);
+                }, _callee2, null, [[0, 9]]);
               })));
             case 1:
             case "end":
@@ -115,22 +105,17 @@ var ProductController = /*#__PURE__*/function () {
               return _ProductServices["default"].getOne(req.params.id);
             case 3:
               response = _context4.sent;
-              if (!(response.error === 1)) {
-                _context4.next = 6;
-                break;
-              }
-              return _context4.abrupt("return", (0, _handle_error.badRequest)(response.mes, res));
-            case 6:
+              if (response.error === 1) (0, _handle_error.badRequest)(response.mes, res);
               return _context4.abrupt("return", res.status(200).json(response));
-            case 9:
-              _context4.prev = 9;
+            case 8:
+              _context4.prev = 8;
               _context4.t0 = _context4["catch"](0);
               return _context4.abrupt("return", (0, _handle_error.internalServerError)(res));
-            case 12:
+            case 11:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 9]]);
+        }, _callee4, null, [[0, 8]]);
       }));
       function getOne(_x5, _x6) {
         return _getOne.apply(this, arguments);
@@ -155,22 +140,17 @@ var ProductController = /*#__PURE__*/function () {
                       return _ProductServices["default"].update(req.body, fileData);
                     case 4:
                       response = _context5.sent;
-                      if (!(response.error === 1)) {
-                        _context5.next = 7;
-                        break;
-                      }
-                      return _context5.abrupt("return", (0, _handle_error.badRequest)(response.mes, res));
-                    case 7:
+                      if (response.error === 1) (0, _handle_error.badRequest)(response.mes, res);
                       return _context5.abrupt("return", res.status(200).json(response));
-                    case 10:
-                      _context5.prev = 10;
+                    case 9:
+                      _context5.prev = 9;
                       _context5.t0 = _context5["catch"](0);
                       return _context5.abrupt("return", (0, _handle_error.internalServerError)(res));
-                    case 13:
+                    case 12:
                     case "end":
                       return _context5.stop();
                   }
-                }, _callee5, null, [[0, 10]]);
+                }, _callee5, null, [[0, 9]]);
               })));
             case 1:
             case "end":
@@ -196,22 +176,17 @@ var ProductController = /*#__PURE__*/function () {
               return _ProductServices["default"].destroy(req.params.id);
             case 3:
               response = _context7.sent;
-              if (!(response.error === 1)) {
-                _context7.next = 6;
-                break;
-              }
-              return _context7.abrupt("return", (0, _handle_error.badRequest)(response.mes, res));
-            case 6:
+              if (response.error === 1) (0, _handle_error.badRequest)(response.mes, res);
               return _context7.abrupt("return", res.status(200).json(response));
-            case 9:
-              _context7.prev = 9;
+            case 8:
+              _context7.prev = 8;
               _context7.t0 = _context7["catch"](0);
               return _context7.abrupt("return", (0, _handle_error.internalServerError)(res));
-            case 12:
+            case 11:
             case "end":
               return _context7.stop();
           }
-        }, _callee7, null, [[0, 9]]);
+        }, _callee7, null, [[0, 8]]);
       }));
       function destroy(_x9, _x10) {
         return _destroy.apply(this, arguments);

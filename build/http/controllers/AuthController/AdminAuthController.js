@@ -49,23 +49,18 @@ var AdminAuthController = /*#__PURE__*/function () {
               });
             case 3:
               admin = _context.sent;
-              if (admin) {
-                _context.next = 6;
-                break;
-              }
-              return _context.abrupt("return", (0, _generateError.badRequest)(new Error("Username không tồn tại"), res));
-            case 6:
+              if (!admin) (0, _generateError.badRequest)(new Error("Username không tồn tại"), res);
               id = admin.id, password = admin.password, role = admin.role, rest = _objectWithoutProperties(admin, _excluded);
-              _context.next = 9;
+              _context.next = 8;
               return _bcryptjs["default"].compare((_req$body2 = req.body) === null || _req$body2 === void 0 ? void 0 : _req$body2.password, password);
-            case 9:
+            case 8:
               comparePassword = _context.sent;
               accessToken = comparePassword ? (0, _jwt.generateToken)({
                 id: id,
                 role: role
               }) : null;
               newRefreshToken = comparePassword ? (0, _jwt.generateRefreshToken)(id) : null;
-              _context.next = 14;
+              _context.next = 13;
               return _models["default"].Admin.update({
                 refresh_token: newRefreshToken
               }, {
@@ -73,17 +68,13 @@ var AdminAuthController = /*#__PURE__*/function () {
                   id: id
                 }
               });
-            case 14:
+            case 13:
               if (newRefreshToken) res.cookie("refreshToken", newRefreshToken, {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
               });
-              if (accessToken) {
-                _context.next = 17;
-                break;
-              }
-              return _context.abrupt("return", (0, _generateError.badRequest)(new Error("Sai mật khẩu"), res));
-            case 17:
+
+              if (!accessToken) (0, _generateError.badRequest)(new Error("Sai mật khẩu"), res);
               return _context.abrupt("return", res.status(200).json({
                 accessToken: accessToken,
                 data: _objectSpread(_objectSpread({}, rest), {}, {
@@ -94,15 +85,15 @@ var AdminAuthController = /*#__PURE__*/function () {
                 }),
                 message: "Login thành công"
               }));
-            case 20:
-              _context.prev = 20;
+            case 18:
+              _context.prev = 18;
               _context.t0 = _context["catch"](0);
-              return _context.abrupt("return", (0, _generateError.internalServerError)(_context.t0, res));
-            case 23:
+              (0, _generateError.internalServerError)(_context.t0, res);
+            case 21:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[0, 20]]);
+        }, _callee, null, [[0, 18]]);
       }));
       function login(_x, _x2) {
         return _login.apply(this, arguments);
@@ -119,31 +110,21 @@ var AdminAuthController = /*#__PURE__*/function () {
             case 0:
               _context2.prev = 0;
               cookie = req.cookies;
-              if (!(!cookie && !cookie.refreshToken)) {
-                _context2.next = 4;
-                break;
-              }
-              return _context2.abrupt("return", (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res));
-            case 4:
-              _context2.next = 6;
+              if (!cookie && !cookie.refreshToken) (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res);
+              _context2.next = 5;
               return _jsonwebtoken["default"].verify(cookie.refreshToken, process.env.JWT_SECRET);
-            case 6:
+            case 5:
               verifyRefreshToken = _context2.sent;
-              _context2.next = 9;
+              _context2.next = 8;
               return _models["default"].User.findOne({
                 where: {
                   id: verifyRefreshToken.id,
                   refresh_token: cookie.refreshToken
                 }
               });
-            case 9:
+            case 8:
               response = _context2.sent;
-              if (response) {
-                _context2.next = 12;
-                break;
-              }
-              return _context2.abrupt("return", (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res));
-            case 12:
+              if (!response) (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res);
               newAccessToken = (0, _jwt.generateToken)({
                 id: response.id,
                 role: response.role
@@ -152,15 +133,15 @@ var AdminAuthController = /*#__PURE__*/function () {
                 accessToken: newAccessToken,
                 message: "Refresh token thành công"
               }));
-            case 16:
-              _context2.prev = 16;
+            case 14:
+              _context2.prev = 14;
               _context2.t0 = _context2["catch"](0);
-              return _context2.abrupt("return", (0, _generateError.internalServerError)(_context2.t0, res));
-            case 19:
+              (0, _generateError.internalServerError)(_context2.t0, res);
+            case 17:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 16]]);
+        }, _callee2, null, [[0, 14]]);
       }));
       function refreshAccessToken(_x3, _x4) {
         return _refreshAccessToken.apply(this, arguments);
@@ -177,18 +158,13 @@ var AdminAuthController = /*#__PURE__*/function () {
             case 0:
               _context3.prev = 0;
               cookie = req.cookies;
-              if (!(!cookie && !cookie.refreshToken)) {
-                _context3.next = 4;
-                break;
-              }
-              return _context3.abrupt("return", (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res));
-            case 4:
-              _context3.next = 6;
+              if (!cookie && !cookie.refreshToken) (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res);
+              _context3.next = 5;
               return _jsonwebtoken["default"].verify(cookie.refreshToken, process.env.JWT_SECRET);
-            case 6:
+            case 5:
               verifyRefreshToken = _context3.sent;
               id = verifyRefreshToken.id;
-              _context3.next = 10;
+              _context3.next = 9;
               return _models["default"].Admin.findOne({
                 where: {
                   id: id,
@@ -196,15 +172,10 @@ var AdminAuthController = /*#__PURE__*/function () {
                 },
                 raw: true
               });
-            case 10:
+            case 9:
               response = _context3.sent;
-              if (response) {
-                _context3.next = 13;
-                break;
-              }
-              return _context3.abrupt("return", (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res));
-            case 13:
-              _context3.next = 15;
+              if (!response) (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res);
+              _context3.next = 13;
               return _models["default"].Admin.update({
                 refresh_token: null
               }, {
@@ -212,7 +183,7 @@ var AdminAuthController = /*#__PURE__*/function () {
                   id: id
                 }
               });
-            case 15:
+            case 13:
               res.clearCookie("refreshToken", "", {
                 httpOnly: true,
                 secure: true
@@ -220,15 +191,15 @@ var AdminAuthController = /*#__PURE__*/function () {
               return _context3.abrupt("return", res.status(200).json({
                 message: "Logout thành công"
               }));
-            case 19:
-              _context3.prev = 19;
+            case 17:
+              _context3.prev = 17;
               _context3.t0 = _context3["catch"](0);
-              return _context3.abrupt("return", (0, _generateError.internalServerError)(_context3.t0, res));
-            case 22:
+              (0, _generateError.internalServerError)(_context3.t0, res);
+            case 20:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 19]]);
+        }, _callee3, null, [[0, 17]]);
       }));
       function logout(_x5, _x6) {
         return _logout.apply(this, arguments);
@@ -253,7 +224,7 @@ var AdminAuthController = /*#__PURE__*/function () {
             case 6:
               _context4.prev = 6;
               _context4.t0 = _context4["catch"](0);
-              return _context4.abrupt("return", (0, _generateError.internalServerError)(_context4.t0, res));
+              (0, _generateError.internalServerError)(_context4.t0, res);
             case 9:
             case "end":
               return _context4.stop();
@@ -284,12 +255,7 @@ var AdminAuthController = /*#__PURE__*/function () {
               });
             case 4:
               user = _context5.sent;
-              if (user) {
-                _context5.next = 7;
-                break;
-              }
-              return _context5.abrupt("return", (0, _generateError.badRequest)(new Error("Không tìm thấy user"), res));
-            case 7:
+              if (!user) (0, _generateError.badRequest)(new Error("Không tìm thấy user"), res);
               return _context5.abrupt("return", res.status(200).json({
                 data: _objectSpread(_objectSpread({}, user), {}, {
                   role: {
@@ -298,15 +264,15 @@ var AdminAuthController = /*#__PURE__*/function () {
                   }
                 })
               }));
-            case 10:
-              _context5.prev = 10;
+            case 9:
+              _context5.prev = 9;
               _context5.t0 = _context5["catch"](0);
-              return _context5.abrupt("return", (0, _generateError.internalServerError)(_context5.t0, res));
-            case 13:
+              (0, _generateError.internalServerError)(_context5.t0, res);
+            case 12:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, null, [[0, 10]]);
+        }, _callee5, null, [[0, 9]]);
       }));
       function getCurrent(_x9, _x10) {
         return _getCurrent.apply(this, arguments);

@@ -392,7 +392,7 @@ var PostController = /*#__PURE__*/function () {
             case 9:
               _context7.prev = 9;
               _context7.t0 = _context7["catch"](0);
-              return _context7.abrupt("return", (0, _generateError.internalServerError)(_context7.t0, res));
+              (0, _generateError.internalServerError)(_context7.t0, res);
             case 12:
             case "end":
               return _context7.stop();

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _joi = _interopRequireDefault(require("joi"));
+var _PasswordRule = _interopRequireDefault(require("../../rule/PasswordRule"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -13,17 +14,13 @@ function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key i
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var UserAuthRequest = function UserAuthRequest(req, res, next) {
-  var rules = {
+  var rules = _objectSpread({
     email: _joi["default"].string().email().required().messages({
       "string.email": "Email không đúng định dạng",
       "string.empty": "Email không được để trống",
       "any.required": "Email là bắt buộc"
-    }),
-    password: _joi["default"].string().required().messages({
-      "string.empty": "Mật khẩu không được để trống",
-      "any.required": "Mật khẩu là bắt buộc"
     })
-  };
+  }, (0, _PasswordRule["default"])());
   var _joi$object$validate = _joi["default"].object(rules).validate(_objectSpread({}, req.body)),
     error = _joi$object$validate.error;
   if (error) {

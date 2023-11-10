@@ -36,7 +36,12 @@ module.exports = function (sequelize, DataTypes) {
        * This method is not a part of Sequelize lifecycle.
        * The `models/index` file will call this method automatically.
        */
-      function associate(models) {}
+      function associate(models) {
+        Admin.hasMany(models.Post, {
+          foreignKey: "created_by",
+          as: "posts"
+        });
+      }
     }]);
     return Admin;
   }(Model);

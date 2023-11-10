@@ -68,61 +68,53 @@ var ManagerAuthorController = /*#__PURE__*/function () {
     key: "create",
     value: function () {
       var _create = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _generateCreatedByAnd, created_by, updated_by, _req$body, username, email, existEmail, response;
+        var _req$body, username, email, existEmail, response;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
               // change this
-              _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(1), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
               _req$body = req.body, username = _req$body.username, email = _req$body.email;
-              _context2.next = 5;
+              _context2.next = 4;
               return _models["default"].Admin.findOne({
                 where: {
                   email: email
                 }
               });
-            case 5:
+            case 4:
               existEmail = _context2.sent;
-              if (!existEmail) {
-                _context2.next = 8;
-                break;
-              }
-              return _context2.abrupt("return", (0, _generateError.badRequest)(new Error("Email đã tồn tại"), res));
-            case 8:
-              _context2.next = 10;
+              if (existEmail) (0, _generateError.badRequest)(new Error("Email đã tồn tại"), res);
+              _context2.next = 8;
               return _models["default"].Admin.findOrCreate({
                 where: {
                   username: username
                 },
                 defaults: _objectSpread(_objectSpread({}, req.body), {}, {
-                  role: _RoleSysEnum["default"].AUTHOR,
-                  created_by: created_by,
-                  updated_by: updated_by
+                  role: _RoleSysEnum["default"].AUTHOR
                 })
               });
-            case 10:
+            case 8:
               response = _context2.sent;
               if (!(response[1] === false)) {
-                _context2.next = 13;
+                _context2.next = 11;
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
                 message: "Tác giả đã tồn tại"
               }));
-            case 13:
+            case 11:
               return _context2.abrupt("return", res.status(200).json({
                 message: "Tạo tác giả thành công"
               }));
-            case 16:
-              _context2.prev = 16;
+            case 14:
+              _context2.prev = 14;
               _context2.t0 = _context2["catch"](0);
               (0, _generateError.internalServerError)(_context2.t0, res);
-            case 19:
+            case 17:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 16]]);
+        }, _callee2, null, [[0, 14]]);
       }));
       function create(_x3, _x4) {
         return _create.apply(this, arguments);
@@ -139,7 +131,16 @@ var ManagerAuthorController = /*#__PURE__*/function () {
             case 0:
               _context3.prev = 0;
               _context3.next = 3;
-              return _models["default"].Admin.findByPk(req.params.id, {});
+              return _models["default"].Admin.findOne({
+                where: {
+                  id: req.params.id
+                },
+                include: [{
+                  model: _models["default"].Post,
+                  as: "posts",
+                  attributes: ["id", "title"]
+                }]
+              });
             case 3:
               response = _context3.sent;
               if (response) {
@@ -150,16 +151,20 @@ var ManagerAuthorController = /*#__PURE__*/function () {
                 message: "Không tìm thấy tác giả"
               }));
             case 6:
+              response.dataValues.roleInfo = {
+                id: response.role,
+                name: _RoleSysEnum["default"].getRoleSysName(response.role)
+              };
               return _context3.abrupt("return", res.status(200).json(response));
-            case 9:
-              _context3.prev = 9;
+            case 10:
+              _context3.prev = 10;
               _context3.t0 = _context3["catch"](0);
               (0, _generateError.internalServerError)(_context3.t0, res);
-            case 12:
+            case 13:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 9]]);
+        }, _callee3, null, [[0, 10]]);
       }));
       function getOne(_x5, _x6) {
         return _getOne.apply(this, arguments);
@@ -170,43 +175,39 @@ var ManagerAuthorController = /*#__PURE__*/function () {
     key: "update",
     value: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-        var _generateUpdatedBy, updated_by, response;
+        var response;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              // change this
-              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(1), updated_by = _generateUpdatedBy.updated_by;
-              _context4.next = 4;
-              return _models["default"].Admin.update(_objectSpread(_objectSpread({}, req.body), {}, {
-                updated_by: updated_by
-              }), {
+              _context4.next = 3;
+              return _models["default"].Admin.update(req.body, {
                 where: {
                   id: req.params.id
                 }
               });
-            case 4:
+            case 3:
               response = _context4.sent;
               if (!(response[0] === 0)) {
-                _context4.next = 7;
+                _context4.next = 6;
                 break;
               }
               return _context4.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy tác giả"
               }));
-            case 7:
+            case 6:
               return _context4.abrupt("return", res.status(200).json({
                 message: "Cập nhật tác giả thành công"
               }));
-            case 10:
-              _context4.prev = 10;
+            case 9:
+              _context4.prev = 9;
               _context4.t0 = _context4["catch"](0);
               (0, _generateError.internalServerError)(_context4.t0, res);
-            case 13:
+            case 12:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 10]]);
+        }, _callee4, null, [[0, 9]]);
       }));
       function update(_x7, _x8) {
         return _update.apply(this, arguments);
@@ -244,7 +245,7 @@ var ManagerAuthorController = /*#__PURE__*/function () {
             case 9:
               _context5.prev = 9;
               _context5.t0 = _context5["catch"](0);
-              return _context5.abrupt("return", (0, _generateError.internalServerError)(_context5.t0, res));
+              (0, _generateError.internalServerError)(_context5.t0, res);
             case 12:
             case "end":
               return _context5.stop();

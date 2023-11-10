@@ -244,7 +244,7 @@ var GroupCategoryController = /*#__PURE__*/function () {
             case 9:
               _context5.prev = 9;
               _context5.t0 = _context5["catch"](0);
-              return _context5.abrupt("return", (0, _generateError.internalServerError)(_context5.t0, res));
+              (0, _generateError.internalServerError)(_context5.t0, res);
             case 12:
             case "end":
               return _context5.stop();

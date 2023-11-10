@@ -13,9 +13,10 @@ var verifyAccessToken = exports.verifyAccessToken = function verifyAccessToken(r
   if (token !== null && token !== void 0 && token.startsWith("Bearer")) {
     var accessToken = token.split(" ")[1];
     _jsonwebtoken["default"].verify(accessToken, process.env.JWT_SECRET, function (err, decode) {
-      if (err) (0, _generateError.notAuth)(new Error("Access Token không hợp lệ"), res);
-      req.user = decode;
-      next();
+      if (err) (0, _generateError.notAuth)(new Error("Access Token không hợp lệ"), res);else {
+        req.user = decode;
+        next();
+      }
     });
   } else {
     (0, _generateError.notAuth)(new Error("Yêu cầu đăng nhập"), res);

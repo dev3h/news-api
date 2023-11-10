@@ -54,48 +54,39 @@ var UserAuthController = /*#__PURE__*/function () {
               });
             case 4:
               user = _context2.sent;
-              if (!user) {
-                _context2.next = 7;
-                break;
-              }
-              return _context2.abrupt("return", (0, _generateError.badRequest)(new Error("Email đã tồn tại"), res));
-            case 7:
+              if (user) (0, _generateError.badRequest)(new Error("Email đã tồn tại"), res);
+
               // lưu tạm thời thông tin đăng ký vào db
               // lưu 1 email kèm theo token vào db
               // nếu người dùng xác nhận email thì trả lại email cho người dùng ban đầu
               token = (0, _uuid.v4)();
               emailEdited = (0, _buffer.btoa)(email) + "@" + token;
-              _context2.next = 11;
+              _context2.next = 10;
               return _models["default"].User.create({
                 email: emailEdited,
                 password: (0, _hashPassword["default"])(password)
               });
-            case 11:
+            case 10:
               newUser = _context2.sent;
-              if (newUser) {
-                _context2.next = 14;
-                break;
-              }
-              return _context2.abrupt("return", (0, _generateError.badRequest)(new Error("Đăng ký thất bại"), res));
-            case 14:
+              if (!newUser) (0, _generateError.badRequest)(new Error("Đăng ký thất bại"), res);
               html = "<h2>M\xE3 \u0111\u0103ng k\xFD: </h2> <blockquote>".concat(token, "</blockquote>");
               data = {
                 email: email,
                 html: html,
                 subject: "Xác nhận đăng ký tài khoản"
               };
-              _context2.prev = 16;
-              _context2.next = 19;
+              _context2.prev = 14;
+              _context2.next = 17;
               return _queues.emailQueue.add(data);
-            case 19:
-              _context2.next = 25;
+            case 17:
+              _context2.next = 23;
               break;
-            case 21:
-              _context2.prev = 21;
-              _context2.t0 = _context2["catch"](16);
+            case 19:
+              _context2.prev = 19;
+              _context2.t0 = _context2["catch"](14);
               console.error("Error sending email:", _context2.t0);
-              return _context2.abrupt("return", (0, _generateError.internalServerError)(_context2.t0, res));
-            case 25:
+              (0, _generateError.internalServerError)(_context2.t0, res);
+            case 23:
               setTimeout( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
                 var user;
                 return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -127,15 +118,15 @@ var UserAuthController = /*#__PURE__*/function () {
               return _context2.abrupt("return", res.status(200).json({
                 message: "Vui lòng kiểm tra email để hoàn tất đăng ký"
               }));
-            case 29:
-              _context2.prev = 29;
+            case 27:
+              _context2.prev = 27;
               _context2.t1 = _context2["catch"](0);
-              return _context2.abrupt("return", (0, _generateError.internalServerError)(_context2.t1, res));
-            case 32:
+              (0, _generateError.internalServerError)(_context2.t1, res);
+            case 30:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 29], [16, 21]]);
+        }, _callee2, null, [[0, 27], [14, 19]]);
       }));
       function register(_x, _x2) {
         return _register.apply(this, arguments);
@@ -160,29 +151,24 @@ var UserAuthController = /*#__PURE__*/function () {
               });
             case 4:
               notVerifyEmail = _context3.sent;
-              if (notVerifyEmail) {
-                _context3.next = 7;
-                break;
-              }
-              return _context3.abrupt("return", (0, _generateError.badRequest)(new Error("Email không tồn tại"), res));
-            case 7:
+              if (!notVerifyEmail) (0, _generateError.badRequest)(new Error("Email không tồn tại"), res);
               notVerifyEmail.email = (0, _buffer.atob)(notVerifyEmail === null || notVerifyEmail === void 0 || (_notVerifyEmail$email = notVerifyEmail.email) === null || _notVerifyEmail$email === void 0 ? void 0 : _notVerifyEmail$email.split("@")[0]);
               notVerifyEmail.email_verified_at = new Date();
-              _context3.next = 11;
+              _context3.next = 10;
               return notVerifyEmail.save();
-            case 11:
+            case 10:
               return _context3.abrupt("return", res.status(200).json({
                 message: "Xác minh email thành công. Vui lòng đăng nhập"
               }));
-            case 14:
-              _context3.prev = 14;
+            case 13:
+              _context3.prev = 13;
               _context3.t0 = _context3["catch"](0);
-              return _context3.abrupt("return", (0, _generateError.internalServerError)(_context3.t0, res));
-            case 17:
+              (0, _generateError.internalServerError)(_context3.t0, res);
+            case 16:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 14]]);
+        }, _callee3, null, [[0, 13]]);
       }));
       function verifyRegister(_x3, _x4) {
         return _verifyRegister.apply(this, arguments);
@@ -207,22 +193,17 @@ var UserAuthController = /*#__PURE__*/function () {
               });
             case 3:
               user = _context4.sent;
-              if (user) {
-                _context4.next = 6;
-                break;
-              }
-              return _context4.abrupt("return", (0, _generateError.badRequest)(new Error("Email không tồn tại"), res));
-            case 6:
+              if (!user) (0, _generateError.badRequest)(new Error("Email không tồn tại"), res);
               id = user.id, password = user.password, refresh_token = user.refresh_token, rest = _objectWithoutProperties(user, _excluded);
-              _context4.next = 9;
+              _context4.next = 8;
               return _bcryptjs["default"].compare((_req$body3 = req.body) === null || _req$body3 === void 0 ? void 0 : _req$body3.password, password);
-            case 9:
+            case 8:
               comparePassword = _context4.sent;
               accessToken = comparePassword ? (0, _jwt.generateToken)({
                 id: id
               }) : null;
               newRefreshToken = comparePassword ? (0, _jwt.generateRefreshToken)(id) : null;
-              _context4.next = 14;
+              _context4.next = 13;
               return _models["default"].User.update({
                 refresh_token: newRefreshToken
               }, {
@@ -230,31 +211,27 @@ var UserAuthController = /*#__PURE__*/function () {
                   id: id
                 }
               });
-            case 14:
+            case 13:
               if (newRefreshToken) res.cookie("refreshTokenUser", newRefreshToken, {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
               });
-              if (accessToken) {
-                _context4.next = 17;
-                break;
-              }
-              return _context4.abrupt("return", (0, _generateError.badRequest)(new Error("Sai mật khẩu"), res));
-            case 17:
+
+              if (!accessToken) (0, _generateError.badRequest)(new Error("Sai mật khẩu"), res);
               return _context4.abrupt("return", res.status(200).json({
                 accessToken: accessToken,
                 data: _objectSpread({}, rest),
                 message: "Login thành công"
               }));
-            case 20:
-              _context4.prev = 20;
+            case 18:
+              _context4.prev = 18;
               _context4.t0 = _context4["catch"](0);
-              return _context4.abrupt("return", (0, _generateError.internalServerError)(_context4.t0, res));
-            case 23:
+              (0, _generateError.internalServerError)(_context4.t0, res);
+            case 21:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 20]]);
+        }, _callee4, null, [[0, 18]]);
       }));
       function login(_x5, _x6) {
         return _login.apply(this, arguments);
@@ -271,31 +248,21 @@ var UserAuthController = /*#__PURE__*/function () {
             case 0:
               _context5.prev = 0;
               cookie = req.cookies;
-              if (!(!cookie && !cookie.refreshTokenUser)) {
-                _context5.next = 4;
-                break;
-              }
-              return _context5.abrupt("return", (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res));
-            case 4:
-              _context5.next = 6;
+              if (!cookie && !cookie.refreshTokenUser) (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res);
+              _context5.next = 5;
               return _jsonwebtoken["default"].verify(cookie.refreshTokenUser, process.env.JWT_SECRET);
-            case 6:
+            case 5:
               verifyRefreshToken = _context5.sent;
-              _context5.next = 9;
+              _context5.next = 8;
               return _models["default"].User.findOne({
                 where: {
                   id: verifyRefreshToken.id,
                   refresh_token: cookie.refreshTokenUser
                 }
               });
-            case 9:
+            case 8:
               response = _context5.sent;
-              if (response) {
-                _context5.next = 12;
-                break;
-              }
-              return _context5.abrupt("return", (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res));
-            case 12:
+              if (!response) (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res);
               newAccessToken = (0, _jwt.generateToken)({
                 id: response.id
               });
@@ -303,15 +270,15 @@ var UserAuthController = /*#__PURE__*/function () {
                 accessToken: newAccessToken,
                 message: "Refresh token thành công"
               }));
-            case 16:
-              _context5.prev = 16;
+            case 14:
+              _context5.prev = 14;
               _context5.t0 = _context5["catch"](0);
-              return _context5.abrupt("return", (0, _generateError.internalServerError)(_context5.t0, res));
-            case 19:
+              (0, _generateError.internalServerError)(_context5.t0, res);
+            case 17:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, null, [[0, 16]]);
+        }, _callee5, null, [[0, 14]]);
       }));
       function refreshAccessToken(_x7, _x8) {
         return _refreshAccessToken.apply(this, arguments);
@@ -328,18 +295,13 @@ var UserAuthController = /*#__PURE__*/function () {
             case 0:
               _context6.prev = 0;
               cookie = req.cookies;
-              if (!(!cookie && !cookie.refreshTokenUser)) {
-                _context6.next = 4;
-                break;
-              }
-              return _context6.abrupt("return", (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res));
-            case 4:
-              _context6.next = 6;
+              if (!cookie && !cookie.refreshTokenUser) (0, _generateError.badRequest)(new Error("Không có refreshToken trong cookie"), res);
+              _context6.next = 5;
               return _jsonwebtoken["default"].verify(cookie.refreshTokenUser, process.env.JWT_SECRET);
-            case 6:
+            case 5:
               verifyRefreshToken = _context6.sent;
               id = verifyRefreshToken.id;
-              _context6.next = 10;
+              _context6.next = 9;
               return _models["default"].User.findOne({
                 where: {
                   id: id,
@@ -347,15 +309,10 @@ var UserAuthController = /*#__PURE__*/function () {
                 },
                 raw: true
               });
-            case 10:
+            case 9:
               response = _context6.sent;
-              if (response) {
-                _context6.next = 13;
-                break;
-              }
-              return _context6.abrupt("return", (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res));
-            case 13:
-              _context6.next = 15;
+              if (!response) (0, _generateError.badRequest)(new Error("Refresh token không tồn tại"), res);
+              _context6.next = 13;
               return _models["default"].User.update({
                 refresh_token: null
               }, {
@@ -363,7 +320,7 @@ var UserAuthController = /*#__PURE__*/function () {
                   id: id
                 }
               });
-            case 15:
+            case 13:
               res.clearCookie("refreshTokenUser", "", {
                 httpOnly: true,
                 secure: true
@@ -371,15 +328,15 @@ var UserAuthController = /*#__PURE__*/function () {
               return _context6.abrupt("return", res.status(200).json({
                 message: "Logout thành công"
               }));
-            case 19:
-              _context6.prev = 19;
+            case 17:
+              _context6.prev = 17;
               _context6.t0 = _context6["catch"](0);
-              return _context6.abrupt("return", (0, _generateError.internalServerError)(_context6.t0, res));
-            case 22:
+              (0, _generateError.internalServerError)(_context6.t0, res);
+            case 20:
             case "end":
               return _context6.stop();
           }
-        }, _callee6, null, [[0, 19]]);
+        }, _callee6, null, [[0, 17]]);
       }));
       function logout(_x9, _x10) {
         return _logout.apply(this, arguments);
@@ -395,29 +352,19 @@ var UserAuthController = /*#__PURE__*/function () {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               email = req.query.email;
-              if (email) {
-                _context7.next = 3;
-                break;
-              }
-              return _context7.abrupt("return", (0, _generateError.badRequest)(new Error("Cung cấp email"), res));
-            case 3:
-              _context7.next = 5;
+              if (!email) (0, _generateError.badRequest)(new Error("Cung cấp email"), res);
+              _context7.next = 4;
               return _models["default"].User.findOne({
                 where: {
                   email: email
                 }
               });
-            case 5:
+            case 4:
               user = _context7.sent;
-              if (user) {
-                _context7.next = 8;
-                break;
-              }
-              return _context7.abrupt("return", (0, _generateError.badRequest)(new Error("Email không tồn tại"), res));
-            case 8:
-              _context7.next = 10;
+              if (!user) (0, _generateError.badRequest)(new Error("Email không tồn tại"), res);
+              _context7.next = 8;
               return (0, _createPasswordChangeToken["default"])(user);
-            case 10:
+            case 8:
               resetToken = _context7.sent;
               html = "Vui l\xF2ng click v\xE0o link \u0111\u1EC3 \u0111\u1ED5i m\u1EADt kh\u1EA9u. Link n\xE0y h\u1EBFt h\u1EA1n sau 15p: <a href=".concat(process.env.URL_CLIENT, "/auth/reset-password?token=").concat(resetToken, "&email=").concat(user.email, ">B\u1EA5m v\xE0o \u0111\xE2y</a>");
               data = {
@@ -425,26 +372,26 @@ var UserAuthController = /*#__PURE__*/function () {
                 html: html,
                 subject: "Đổi mật khẩu"
               };
-              _context7.prev = 13;
-              _context7.next = 16;
+              _context7.prev = 11;
+              _context7.next = 14;
               return _queues.emailQueue.add(data);
-            case 16:
-              _context7.next = 22;
+            case 14:
+              _context7.next = 20;
               break;
-            case 18:
-              _context7.prev = 18;
-              _context7.t0 = _context7["catch"](13);
+            case 16:
+              _context7.prev = 16;
+              _context7.t0 = _context7["catch"](11);
               console.error("Error sending email:", _context7.t0);
               throw _context7.t0;
-            case 22:
+            case 20:
               return _context7.abrupt("return", res.status(200).json({
                 message: "Vui lòng kiểm tra email để đổi mật khẩu"
               }));
-            case 23:
+            case 21:
             case "end":
               return _context7.stop();
           }
-        }, _callee7, null, [[13, 18]]);
+        }, _callee7, null, [[11, 16]]);
       }));
       function forgotPassword(_x11, _x12) {
         return _forgotPassword.apply(this, arguments);
@@ -461,28 +408,18 @@ var UserAuthController = /*#__PURE__*/function () {
             case 0:
               _context8.prev = 0;
               _req$body4 = req.body, token = _req$body4.token, password = _req$body4.password, email = _req$body4.email;
-              if (!(!token || !password || !email)) {
-                _context8.next = 4;
-                break;
-              }
-              return _context8.abrupt("return", (0, _generateError.badRequest)(new Error("Yêu cầu cung cấp token, email và mật khẩu mới"), res));
-            case 4:
+              if (!token || !password || !email) (0, _generateError.badRequest)(new Error("Yêu cầu cung cấp token, email và mật khẩu mới"), res);
               passwordChangeToken = _crypto["default"].createHash("sha256").update(token).digest("hex");
-              _context8.next = 7;
+              _context8.next = 6;
               return _models["default"].User.findOne({
                 where: {
                   email: email
                 }
               });
-            case 7:
+            case 6:
               user = _context8.sent;
-              if (user) {
-                _context8.next = 10;
-                break;
-              }
-              return _context8.abrupt("return", (0, _generateError.badRequest)(new Error("Email không tồn tại"), res));
-            case 10:
-              _context8.next = 12;
+              if (!user) (0, _generateError.badRequest)(new Error("Email không tồn tại"), res);
+              _context8.next = 10;
               return _models["default"].User.findOne({
                 where: {
                   email: email,
@@ -490,34 +427,29 @@ var UserAuthController = /*#__PURE__*/function () {
                   password_reset_token_expired_at: _defineProperty({}, _sequelize.Op.gte, Date.now())
                 }
               });
-            case 12:
+            case 10:
               userWithToken = _context8.sent;
-              if (userWithToken) {
-                _context8.next = 15;
-                break;
-              }
-              return _context8.abrupt("return", (0, _generateError.badRequest)(new Error("Token không hợp lệ hoặc hết hạn"), res));
-            case 15:
-              _context8.next = 17;
+              if (!userWithToken) (0, _generateError.badRequest)(new Error("Token không hợp lệ hoặc hết hạn"), res);
+              _context8.next = 14;
               return user.update({
                 password: (0, _hashPassword["default"])(password),
                 password_reset_token: null,
                 password_reset_token_expired_at: null,
                 password_changed_at: Date.now()
               });
-            case 17:
+            case 14:
               return _context8.abrupt("return", res.status(200).json({
                 message: "Đổi mật khẩu thành công"
               }));
-            case 20:
-              _context8.prev = 20;
+            case 17:
+              _context8.prev = 17;
               _context8.t0 = _context8["catch"](0);
-              return _context8.abrupt("return", (0, _generateError.internalServerError)(_context8.t0, res));
-            case 23:
+              (0, _generateError.internalServerError)(_context8.t0, res);
+            case 20:
             case "end":
               return _context8.stop();
           }
-        }, _callee8, null, [[0, 20]]);
+        }, _callee8, null, [[0, 17]]);
       }));
       function resetPassword(_x13, _x14) {
         return _resetPassword.apply(this, arguments);
@@ -543,24 +475,19 @@ var UserAuthController = /*#__PURE__*/function () {
               });
             case 4:
               user = _context9.sent;
-              if (user) {
-                _context9.next = 7;
-                break;
-              }
-              return _context9.abrupt("return", (0, _generateError.badRequest)(new Error("Không tìm thấy user"), res));
-            case 7:
+              if (!user) (0, _generateError.badRequest)(new Error("Không tìm thấy user"), res);
               return _context9.abrupt("return", res.status(200).json({
                 data: user
               }));
-            case 10:
-              _context9.prev = 10;
+            case 9:
+              _context9.prev = 9;
               _context9.t0 = _context9["catch"](0);
-              return _context9.abrupt("return", (0, _generateError.internalServerError)(_context9.t0, res));
-            case 13:
+              (0, _generateError.internalServerError)(_context9.t0, res);
+            case 12:
             case "end":
               return _context9.stop();
           }
-        }, _callee9, null, [[0, 10]]);
+        }, _callee9, null, [[0, 9]]);
       }));
       function getCurrent(_x15, _x16) {
         return _getCurrent.apply(this, arguments);
