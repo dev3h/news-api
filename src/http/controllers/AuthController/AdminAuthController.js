@@ -13,7 +13,7 @@ class AdminAuthController {
         where: { username: req.body?.username },
         raw: true,
       });
-      if (!admin) return badRequest(new Error("Username không tồn tại"), res);
+      if (!admin) badRequest(new Error("Username không tồn tại"), res);
 
       const { id, password, role, ...rest } = admin;
 
@@ -29,7 +29,7 @@ class AdminAuthController {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-      if (!accessToken) return badRequest(new Error("Sai mật khẩu"), res);
+      if (!accessToken) badRequest(new Error("Sai mật khẩu"), res);
       return res.status(200).json({
         accessToken,
         data: {
@@ -42,14 +42,14 @@ class AdminAuthController {
         message: "Login thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async refreshAccessToken(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshToken)
-        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+        badRequest(new Error("Không có refreshToken trong cookie"), res);
       const verifyRefreshToken = await jwt.verify(
         cookie.refreshToken,
         process.env.JWT_SECRET
@@ -61,21 +61,21 @@ class AdminAuthController {
         },
       });
 
-      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      if (!response) badRequest(new Error("Refresh token không tồn tại"), res);
       const newAccessToken = generateToken({ id: response.id, role: response.role });
       return res.status(200).json({
         accessToken: newAccessToken,
         message: "Refresh token thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async logout(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshToken)
-        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+        badRequest(new Error("Không có refreshToken trong cookie"), res);
       const verifyRefreshToken = await jwt.verify(
         cookie.refreshToken,
         process.env.JWT_SECRET
@@ -88,7 +88,7 @@ class AdminAuthController {
         },
         raw: true,
       });
-      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      if (!response) badRequest(new Error("Refresh token không tồn tại"), res);
       await db.Admin.update({ refresh_token: null }, { where: { id } });
 
       res.clearCookie("refreshToken", "", {
@@ -99,7 +99,7 @@ class AdminAuthController {
         message: "Logout thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async checkRole(req, res) {
@@ -111,7 +111,7 @@ class AdminAuthController {
         role_name: roleName,
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async getCurrent(req, res) {
@@ -121,7 +121,7 @@ class AdminAuthController {
         where: { id },
         raw: true,
       });
-      if (!user) return badRequest(new Error("Không tìm thấy user"), res);
+      if (!user) badRequest(new Error("Không tìm thấy user"), res);
       return res.status(200).json({
         data: {
           ...user,
@@ -132,7 +132,7 @@ class AdminAuthController {
         },
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }

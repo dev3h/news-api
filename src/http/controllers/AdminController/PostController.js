@@ -233,7 +233,7 @@ class PostController {
         message: "Xóa bài viết thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }

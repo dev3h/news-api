@@ -36,20 +36,17 @@ class ManagerAuthorController {
   static async create(req, res) {
     try {
       // change this
-      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
       const { username, email } = req.body;
       const existEmail = await db.Admin.findOne({
         where: { email },
       });
-      if (existEmail) return badRequest(new Error("Email đã tồn tại"), res);
+      if (existEmail) badRequest(new Error("Email đã tồn tại"), res);
 
       const response = await db.Admin.findOrCreate({
         where: { username },
         defaults: {
           ...req.body,
           role: RoleSysEnum.AUTHOR,
-          created_by,
-          updated_by,
         },
       });
       if (response[1] === false)
@@ -66,11 +63,26 @@ class ManagerAuthorController {
 
   static async getOne(req, res) {
     try {
-      const response = await db.Admin.findByPk(req.params.id, {});
+      const response = await db.Admin.findOne({
+        where: {
+          id: req.params.id,
+        },
+        include: [
+          {
+            model: db.Post,
+            as: "posts",
+            attributes: ["id", "title"],
+          },
+        ],
+      });
       if (!response)
         return res.status(404).json({
           message: "Không tìm thấy tác giả",
         });
+      response.dataValues.roleInfo = {
+        id: response.role,
+        name: RoleSysEnum.getRoleSysName(response.role),
+      };
       return res.status(200).json(response);
     } catch (error) {
       internalServerError(error, res);
@@ -80,16 +92,9 @@ class ManagerAuthorController {
   static async update(req, res) {
     try {
       // change this
-      const { updated_by } = generateUpdatedBy(1);
-      const response = await db.Admin.update(
-        {
-          ...req.body,
-          updated_by,
-        },
-        {
-          where: { id: req.params.id },
-        }
-      );
+      const response = await db.Admin.update(req.body, {
+        where: { id: req.params.id },
+      });
       if (response[0] === 0)
         return res.status(404).json({
           message: "Không tìm thấy tác giả",
@@ -115,7 +120,7 @@ class ManagerAuthorController {
         message: "Xóa tác giả thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }

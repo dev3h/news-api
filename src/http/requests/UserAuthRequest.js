@@ -1,4 +1,5 @@
 import joi from "joi";
+import passwordRule from "rule/PasswordRule";
 
 const UserAuthRequest = (req, res, next) => {
   const rules = {
@@ -7,10 +8,7 @@ const UserAuthRequest = (req, res, next) => {
       "string.empty": "Email không được để trống",
       "any.required": "Email là bắt buộc",
     }),
-    password: joi.string().required().messages({
-      "string.empty": "Mật khẩu không được để trống",
-      "any.required": "Mật khẩu là bắt buộc",
-    }),
+    ...passwordRule(),
   };
   const { error } = joi.object(rules).validate({
     ...req.body,

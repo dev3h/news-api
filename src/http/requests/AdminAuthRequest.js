@@ -1,4 +1,5 @@
 import joi from "joi";
+import passwordRule from "rule/PasswordRule";
 
 const AdminAuthRequest = (req, res, next) => {
   const { error } = joi
@@ -7,10 +8,7 @@ const AdminAuthRequest = (req, res, next) => {
         "string.empty": "Tên đăng nhập không được để trống",
         "any.required": "Tên đăng nhập là bắt buộc",
       }),
-      password: joi.string().required().messages({
-        "string.empty": "Mật khẩu không được để trống",
-        "any.required": "Mật khẩu là bắt buộc",
-      }),
+      ...passwordRule(),
     })
     .validate({
       ...req.body,

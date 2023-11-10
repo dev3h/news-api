@@ -19,7 +19,7 @@ class UserAuthController {
       const user = await db.User.findOne({
         where: { email },
       });
-      if (user) return badRequest(new Error("Email đã tồn tại"), res);
+      if (user) badRequest(new Error("Email đã tồn tại"), res);
 
       // lưu tạm thời thông tin đăng ký vào db
       // lưu 1 email kèm theo token vào db
@@ -30,7 +30,7 @@ class UserAuthController {
         email: emailEdited,
         password: hashPassword(password),
       });
-      if (!newUser) return badRequest(new Error("Đăng ký thất bại"), res);
+      if (!newUser) badRequest(new Error("Đăng ký thất bại"), res);
       const html = `<h2>Mã đăng ký: </h2> <blockquote>${token}</blockquote>`;
       const data = {
         email,
@@ -41,7 +41,7 @@ class UserAuthController {
         await emailQueue.add(data);
       } catch (error) {
         console.error("Error sending email:", error);
-        return internalServerError(error, res);
+        internalServerError(error, res);
       }
       setTimeout(async () => {
         const user = await db.User.findOne({
@@ -58,7 +58,7 @@ class UserAuthController {
         message: "Vui lòng kiểm tra email để hoàn tất đăng ký",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 
@@ -68,7 +68,7 @@ class UserAuthController {
       const notVerifyEmail = await db.User.findOne({
         where: { email: { [Op.like]: `%${token}` } },
       });
-      if (!notVerifyEmail) return badRequest(new Error("Email không tồn tại"), res);
+      if (!notVerifyEmail) badRequest(new Error("Email không tồn tại"), res);
       notVerifyEmail.email = atob(notVerifyEmail?.email?.split("@")[0]);
       notVerifyEmail.email_verified_at = new Date();
       await notVerifyEmail.save();
@@ -77,7 +77,7 @@ class UserAuthController {
         message: "Xác minh email thành công. Vui lòng đăng nhập",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 
@@ -87,7 +87,7 @@ class UserAuthController {
         where: { email: req.body?.email },
         raw: true,
       });
-      if (!user) return badRequest(new Error("Email không tồn tại"), res);
+      if (!user) badRequest(new Error("Email không tồn tại"), res);
 
       const { id, password, refresh_token, ...rest } = user;
 
@@ -101,7 +101,7 @@ class UserAuthController {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-      if (!accessToken) return badRequest(new Error("Sai mật khẩu"), res);
+      if (!accessToken) badRequest(new Error("Sai mật khẩu"), res);
       return res.status(200).json({
         accessToken,
         data: {
@@ -110,14 +110,14 @@ class UserAuthController {
         message: "Login thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async refreshAccessToken(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshTokenUser)
-        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+        badRequest(new Error("Không có refreshToken trong cookie"), res);
       const verifyRefreshToken = await jwt.verify(
         cookie.refreshTokenUser,
         process.env.JWT_SECRET
@@ -129,21 +129,21 @@ class UserAuthController {
         },
       });
 
-      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      if (!response) badRequest(new Error("Refresh token không tồn tại"), res);
       const newAccessToken = generateToken({ id: response.id });
       return res.status(200).json({
         accessToken: newAccessToken,
         message: "Refresh token thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async logout(req, res) {
     try {
       const cookie = req.cookies;
       if (!cookie && !cookie.refreshTokenUser)
-        return badRequest(new Error("Không có refreshToken trong cookie"), res);
+        badRequest(new Error("Không có refreshToken trong cookie"), res);
       const verifyRefreshToken = await jwt.verify(
         cookie.refreshTokenUser,
         process.env.JWT_SECRET
@@ -156,7 +156,7 @@ class UserAuthController {
         },
         raw: true,
       });
-      if (!response) return badRequest(new Error("Refresh token không tồn tại"), res);
+      if (!response) badRequest(new Error("Refresh token không tồn tại"), res);
       await db.User.update({ refresh_token: null }, { where: { id } });
 
       res.clearCookie("refreshTokenUser", "", {
@@ -167,15 +167,15 @@ class UserAuthController {
         message: "Logout thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 
   static async forgotPassword(req, res) {
     const { email } = req.query;
-    if (!email) return badRequest(new Error("Cung cấp email"), res);
+    if (!email) badRequest(new Error("Cung cấp email"), res);
     const user = await db.User.findOne({ where: { email } });
-    if (!user) return badRequest(new Error("Email không tồn tại"), res);
+    if (!user) badRequest(new Error("Email không tồn tại"), res);
     const resetToken = await createPasswordChangeToken(user);
 
     const html = `Vui lòng click vào link để đổi mật khẩu. Link này hết hạn sau 15p: <a href=${process.env.URL_CLIENT}/auth/reset-password?token=${resetToken}&email=${user.email}>Bấm vào đây</a>`;
@@ -200,10 +200,7 @@ class UserAuthController {
     try {
       const { token, password, email } = req.body;
       if (!token || !password || !email)
-        return badRequest(
-          new Error("Yêu cầu cung cấp token, email và mật khẩu mới"),
-          res
-        );
+        badRequest(new Error("Yêu cầu cung cấp token, email và mật khẩu mới"), res);
 
       const passwordChangeToken = crypto.createHash("sha256").update(token).digest("hex");
       const user = await db.User.findOne({
@@ -211,7 +208,7 @@ class UserAuthController {
           email,
         },
       });
-      if (!user) return badRequest(new Error("Email không tồn tại"), res);
+      if (!user) badRequest(new Error("Email không tồn tại"), res);
       const userWithToken = await db.User.findOne({
         where: {
           email,
@@ -221,8 +218,7 @@ class UserAuthController {
           },
         },
       });
-      if (!userWithToken)
-        return badRequest(new Error("Token không hợp lệ hoặc hết hạn"), res);
+      if (!userWithToken) badRequest(new Error("Token không hợp lệ hoặc hết hạn"), res);
 
       await user.update({
         password: hashPassword(password),
@@ -234,7 +230,7 @@ class UserAuthController {
         message: "Đổi mật khẩu thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
   static async getCurrent(req, res) {
@@ -244,12 +240,12 @@ class UserAuthController {
         where: { id },
         raw: true,
       });
-      if (!user) return badRequest(new Error("Không tìm thấy user"), res);
+      if (!user) badRequest(new Error("Không tìm thấy user"), res);
       return res.status(200).json({
         data: user,
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }

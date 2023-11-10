@@ -7,8 +7,10 @@ const verifyAccessToken = (req, res, next) => {
     const accessToken = token.split(" ")[1];
     jwt.verify(accessToken, process.env.JWT_SECRET, (err, decode) => {
       if (err) notAuth(new Error("Access Token không hợp lệ"), res);
-      req.user = decode;
-      next();
+      else {
+        req.user = decode;
+        next();
+      }
     });
   } else {
     notAuth(new Error("Yêu cầu đăng nhập"), res);

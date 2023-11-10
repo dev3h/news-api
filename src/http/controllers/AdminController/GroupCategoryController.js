@@ -128,7 +128,7 @@ class GroupCategoryController {
         message: "Xóa nhóm thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }

@@ -11,10 +11,10 @@ router.put("/reset-password", UserAuthController.resetPassword);
 
 router.get("/logout", UserAuthController.logout);
 router.get("/current", verifyAccessToken, UserAuthController.getCurrent);
+router.post("/refresh-token", UserAuthController.refreshAccessToken);
 
 router.use(UserAuthRequest);
 router.post("/register", UserAuthController.register);
 router.post("/login", UserAuthController.login);
-router.post("/refresh-token", UserAuthController.refreshAccessToken);
 
 export default router;

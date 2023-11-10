@@ -1,8 +1,8 @@
 import { Op } from "sequelize";
 import db from "models";
 import { getPagination, getPagingData } from "helpers/pagination";
-import { generateOrderBasic } from "helpers/generateOrder";
 import RoleSysEnum from "../enums/RoleSysEnum";
+import { generateOrderAuthor } from "helpers/generateOrder";
 
 class AuthorFilter {
   static async handleList({ search, sortBy, sortType, page, flimit }) {
@@ -16,7 +16,7 @@ class AuthorFilter {
         ],
       };
     }
-    const order = generateOrderBasic(sortBy, sortType);
+    const order = generateOrderAuthor(sortBy, sortType);
     queries.order = order;
     const { limit, offset } = getPagination(page, flimit);
     if (limit !== Number.MAX_SAFE_INTEGER) {
@@ -26,13 +26,24 @@ class AuthorFilter {
 
     const data = await db.Admin.findAndCountAll({
       ...queries,
-      where: { ...queries.where, role: RoleSysEnum.AUTHOR },
+      // where: { ...queries.where, role: RoleSysEnum.AUTHOR },
+      where: { ...queries.where },
     });
+    const newRows = data?.rows?.map((item) => {
+      return {
+        ...item?.dataValues,
+        roleInfo: {
+          id: item?.role,
+          name: RoleSysEnum.getRoleSysName(item?.role),
+        },
+      };
+    });
+    const newData = { ...data, rows: newRows };
     if (limit !== Number.MAX_SAFE_INTEGER) {
-      const response = getPagingData(data, page, limit);
+      const response = getPagingData(newData, page, limit);
       return response;
     } else {
-      const response = data;
+      const response = newData;
 
       return response;
     }

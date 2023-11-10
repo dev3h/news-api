@@ -129,7 +129,7 @@ class CategoryController {
         message: "Xóa danh mục thành công",
       });
     } catch (error) {
-      return internalServerError(error, res);
+      internalServerError(error, res);
     }
   }
 }
