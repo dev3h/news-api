@@ -7,7 +7,6 @@ exports["default"] = void 0;
 var _models = _interopRequireDefault(require("../../../models"));
 var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-var _uuid = require("uuid");
 var _queues = require("../../../queues");
 var _sequelize = require("sequelize");
 var _crypto = _interopRequireDefault(require("crypto"));
@@ -16,6 +15,7 @@ var _generateError = require("../../../helpers/generateError");
 var _jwt = require("../../../helpers/jwt");
 var _hashPassword = _interopRequireDefault(require("../../../helpers/hashPassword"));
 var _createPasswordChangeToken = _interopRequireDefault(require("../../../helpers/createPasswordChangeToken"));
+var _generateCodeVerifyEmail = _interopRequireDefault(require("../../../helpers/generateCodeVerifyEmail"));
 var _excluded = ["id", "password", "refresh_token"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -31,7 +31,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); } // for production
 var UserAuthController = /*#__PURE__*/function () {
   function UserAuthController() {
     _classCallCheck(this, UserAuthController);
@@ -55,11 +55,11 @@ var UserAuthController = /*#__PURE__*/function () {
             case 4:
               user = _context2.sent;
               if (user) (0, _generateError.badRequest)(new Error("Email đã tồn tại"), res);
-
               // lưu tạm thời thông tin đăng ký vào db
               // lưu 1 email kèm theo token vào db
               // nếu người dùng xác nhận email thì trả lại email cho người dùng ban đầu
-              token = (0, _uuid.v4)();
+              // tạo 1 token random 4 chữ số
+              token = (0, _generateCodeVerifyEmail["default"])();
               emailEdited = (0, _buffer.btoa)(email) + "@" + token;
               _context2.next = 10;
               return _models["default"].User.create({
