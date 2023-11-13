@@ -45,6 +45,17 @@ const PostRequest = (req, res, next) => {
       .messages({
         "string.base": "Ảnh phải là chuỗi",
         "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg",
+      })
+      .custom((value, helpers) => {
+        // Kiểm tra kích thước file
+        const maxSizeInMB = 5;
+        const fileSizeInMB = fileData.size / 1024 / 1024;
+
+        if (fileSizeInMB > maxSizeInMB) {
+          return helpers.message(`Ảnh phải có kích thước nhỏ hơn ${maxSizeInMB}MB`);
+        }
+
+        return value;
       });
   }
   if (req.body.published_at) {

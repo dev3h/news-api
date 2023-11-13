@@ -106,7 +106,6 @@ class PostController {
   }
   static async deletePhoto(req, res) {
     try {
-      console.log(req.body);
       const { filename } = req.body;
       if (!filename)
         return res.status(400).json({
@@ -189,7 +188,7 @@ class PostController {
       });
       const response = await db.Post.update(
         {
-          rest,
+          ...rest,
           slug: generateSlug(title),
           photo: photo?.file?.response?.data?.path,
           filename: photo?.file?.response?.data?.filename,
