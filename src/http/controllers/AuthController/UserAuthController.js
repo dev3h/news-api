@@ -1,16 +1,17 @@
 import db from "models";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 import { emailQueue } from "queues";
 import { Op } from "sequelize";
 import crypto from "crypto";
+// for production
 import { atob, btoa } from "buffer";
 
 import { badRequest, internalServerError } from "helpers/generateError";
 import { generateToken, generateRefreshToken } from "helpers/jwt";
 import hashPassword from "helpers/hashPassword";
 import createPasswordChangeToken from "helpers/createPasswordChangeToken";
+import generateCodeVerifyEmail from "helpers/generateCodeVerifyEmail";
 
 class UserAuthController {
   static async register(req, res) {
@@ -20,11 +21,11 @@ class UserAuthController {
         where: { email },
       });
       if (user) badRequest(new Error("Email đã tồn tại"), res);
-
       // lưu tạm thời thông tin đăng ký vào db
       // lưu 1 email kèm theo token vào db
       // nếu người dùng xác nhận email thì trả lại email cho người dùng ban đầu
-      const token = uuidv4();
+      // tạo 1 token random 4 chữ số
+      const token = generateCodeVerifyEmail();
       const emailEdited = btoa(email) + "@" + token;
       const newUser = await db.User.create({
         email: emailEdited,
