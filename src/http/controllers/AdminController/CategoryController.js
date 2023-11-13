@@ -36,7 +36,8 @@ class CategoryController {
   static async create(req, res) {
     try {
       // change this
-      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
+      const { id } = req.user;
+      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(id);
       const { name } = req.body;
       const response = await db.Category.findOrCreate({
         where: { name },
@@ -93,7 +94,8 @@ class CategoryController {
   static async update(req, res) {
     try {
       // change this
-      const { updated_by } = generateUpdatedBy(1);
+      const { id } = req.user;
+      const { updated_by } = generateUpdatedBy(id);
       const response = await db.Category.update(
         {
           ...req.body,

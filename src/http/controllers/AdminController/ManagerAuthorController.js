@@ -35,7 +35,6 @@ class ManagerAuthorController {
 
   static async create(req, res) {
     try {
-      // change this
       const { username, email } = req.body;
       const existEmail = await db.Admin.findOne({
         where: { email },
@@ -91,7 +90,6 @@ class ManagerAuthorController {
 
   static async update(req, res) {
     try {
-      // change this
       const response = await db.Admin.update(req.body, {
         where: { id: req.params.id },
       });

@@ -10,6 +10,5 @@ router.post("/refresh-token", AdminAuthController.refreshAccessToken);
 router.get("/current", verifyAccessToken, AdminAuthController.getCurrent);
 
 router.get("/logout", AdminAuthController.logout);
-router.use(verifyAccessToken);
-router.get("/check-role", AdminAuthController.checkRole);
+router.get("/check-role", verifyAccessToken, AdminAuthController.checkRole);
 export default router;

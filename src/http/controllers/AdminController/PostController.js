@@ -39,7 +39,8 @@ class PostController {
 
   static async create(req, res) {
     try {
-      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
+      const { id } = req.user;
+      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(id);
       const { title, photo, tags, ...rest } = req.body;
 
       const response = await db.Post.findOrCreate({
@@ -179,7 +180,8 @@ class PostController {
   static async update(req, res) {
     try {
       // change this
-      const { updated_by } = generateUpdatedBy(1);
+      const { id } = req.user;
+      const { updated_by } = generateUpdatedBy(id);
       const { title, photo, tags, ...rest } = req.body;
       const oldImage = await db.Post.findOne({
         where: { id: req.params.id },

@@ -35,7 +35,8 @@ class TagController {
   static async create(req, res) {
     try {
       // change this
-      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(1);
+      const { id } = req.user;
+      const { created_by, updated_by } = generateCreatedByAndUpdatedBy(id);
       const { name } = req.body;
       const response = await db.Tag.findOrCreate({
         where: { name },
