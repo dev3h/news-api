@@ -75,14 +75,15 @@ var PostController = /*#__PURE__*/function () {
     key: "create",
     value: function () {
       var _create = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _photo$file, _photo$file2, _generateCreatedByAnd, created_by, updated_by, _req$body, title, photo, tags, rest, response, _photo$file3, _photo;
+        var _photo$file, _photo$file2, id, _generateCreatedByAnd, created_by, updated_by, _req$body, title, photo, tags, rest, response, _photo$file3, _photo;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(1), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
+              id = req.user.id;
+              _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(id), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
               _req$body = req.body, title = _req$body.title, photo = _req$body.photo, tags = _req$body.tags, rest = _objectWithoutProperties(_req$body, _excluded);
-              _context2.next = 5;
+              _context2.next = 6;
               return _models["default"].Post.findOrCreate({
                 where: {
                   title: title
@@ -95,16 +96,16 @@ var PostController = /*#__PURE__*/function () {
                   updated_by: updated_by
                 })
               });
-            case 5:
+            case 6:
               response = _context2.sent;
               if (!(response[1] === false)) {
-                _context2.next = 10;
+                _context2.next = 11;
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
                 message: "Tên bài viết đã tồn tại"
               }));
-            case 10:
+            case 11:
               if (response[0].status === _PostStatusEnum["default"].SCHEDULE) {
                 _PostSchedule["default"].schedulePost(response[0].id);
               }
@@ -112,20 +113,20 @@ var PostController = /*#__PURE__*/function () {
               return _context2.abrupt("return", res.status(200).json({
                 message: "Tạo bài viết thành công"
               }));
-            case 13:
-              _context2.next = 20;
+            case 14:
+              _context2.next = 21;
               break;
-            case 15:
-              _context2.prev = 15;
+            case 16:
+              _context2.prev = 16;
               _context2.t0 = _context2["catch"](0);
               _photo = req.body.photo;
               if (_photo) cloudinary.uploader.destroy(_photo === null || _photo === void 0 || (_photo$file3 = _photo.file) === null || _photo$file3 === void 0 || (_photo$file3 = _photo$file3.response) === null || _photo$file3 === void 0 || (_photo$file3 = _photo$file3.data) === null || _photo$file3 === void 0 ? void 0 : _photo$file3.filename);
               (0, _generateError.internalServerError)(_context2.t0, res);
-            case 20:
+            case 21:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 15]]);
+        }, _callee2, null, [[0, 16]]);
       }));
       function create(_x3, _x4) {
         return _create.apply(this, arguments);
@@ -297,24 +298,25 @@ var PostController = /*#__PURE__*/function () {
     key: "update",
     value: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-        var _photo$file4, _photo$file5, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, response, _photo$file6, _photo2$file, _photo2;
+        var _photo$file4, _photo$file5, id, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, response, _photo$file6, _photo2$file, _photo2;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.prev = 0;
               // change this
-              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(1), updated_by = _generateUpdatedBy.updated_by;
+              id = req.user.id;
+              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(id), updated_by = _generateUpdatedBy.updated_by;
               _req$body2 = req.body, title = _req$body2.title, photo = _req$body2.photo, tags = _req$body2.tags, rest = _objectWithoutProperties(_req$body2, _excluded2);
-              _context6.next = 5;
+              _context6.next = 6;
               return _models["default"].Post.findOne({
                 where: {
                   id: req.params.id
                 },
                 attributes: ["filename"]
               });
-            case 5:
+            case 6:
               oldImage = _context6.sent;
-              _context6.next = 8;
+              _context6.next = 9;
               return _models["default"].Post.update({
                 rest: rest,
                 slug: (0, _generateSlug["default"])(title),
@@ -326,10 +328,10 @@ var PostController = /*#__PURE__*/function () {
                   id: req.params.id
                 }
               });
-            case 8:
+            case 9:
               response = _context6.sent;
               if (!(response[0] === 0)) {
-                _context6.next = 13;
+                _context6.next = 14;
                 break;
               }
               if (photo) cloudinary.uploader.destroy(photo === null || photo === void 0 || (_photo$file6 = photo.file) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.response) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.data) === null || _photo$file6 === void 0 ? void 0 : _photo$file6.filename);
@@ -339,22 +341,22 @@ var PostController = /*#__PURE__*/function () {
               return _context6.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
-            case 13:
+            case 14:
               if (response[0] > 0 && photo && oldImage) cloudinary.uploader.destroy(oldImage.filename);
               return _context6.abrupt("return", res.status(200).json({
                 message: "Cập nhật bài viết thành công"
               }));
-            case 17:
-              _context6.prev = 17;
+            case 18:
+              _context6.prev = 18;
               _context6.t0 = _context6["catch"](0);
               _photo2 = req.body.photo;
               if (_photo2) cloudinary.uploader.destroy(_photo2 === null || _photo2 === void 0 || (_photo2$file = _photo2.file) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.response) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.data) === null || _photo2$file === void 0 ? void 0 : _photo2$file.filename);
               (0, _generateError.internalServerError)(_context6.t0, res);
-            case 22:
+            case 23:
             case "end":
               return _context6.stop();
           }
-        }, _callee6, null, [[0, 17]]);
+        }, _callee6, null, [[0, 18]]);
       }));
       function update(_x11, _x12) {
         return _update.apply(this, arguments);

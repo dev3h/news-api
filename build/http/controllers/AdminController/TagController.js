@@ -67,15 +67,16 @@ var TagController = /*#__PURE__*/function () {
     key: "create",
     value: function () {
       var _create = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _generateCreatedByAnd, created_by, updated_by, name, response;
+        var id, _generateCreatedByAnd, created_by, updated_by, name, response;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
               // change this
-              _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(1), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
+              id = req.user.id;
+              _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(id), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
               name = req.body.name;
-              _context2.next = 5;
+              _context2.next = 6;
               return _models["default"].Tag.findOrCreate({
                 where: {
                   name: name
@@ -86,28 +87,28 @@ var TagController = /*#__PURE__*/function () {
                   updated_by: updated_by
                 })
               });
-            case 5:
+            case 6:
               response = _context2.sent;
               if (!(response[1] === false)) {
-                _context2.next = 8;
+                _context2.next = 9;
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
                 message: "Tên tag đã tồn tại"
               }));
-            case 8:
+            case 9:
               return _context2.abrupt("return", res.status(200).json({
                 message: "Tạo tag thành công"
               }));
-            case 11:
-              _context2.prev = 11;
+            case 12:
+              _context2.prev = 12;
               _context2.t0 = _context2["catch"](0);
               (0, _generateError.internalServerError)(_context2.t0, res);
-            case 14:
+            case 15:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 11]]);
+        }, _callee2, null, [[0, 12]]);
       }));
       function create(_x3, _x4) {
         return _create.apply(this, arguments);

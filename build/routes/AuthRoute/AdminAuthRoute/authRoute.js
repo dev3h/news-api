@@ -14,6 +14,5 @@ router.post("/login", _AdminAuthRequest["default"], _AdminAuthController["defaul
 router.post("/refresh-token", _AdminAuthController["default"].refreshAccessToken);
 router.get("/current", _verifyToken.verifyAccessToken, _AdminAuthController["default"].getCurrent);
 router.get("/logout", _AdminAuthController["default"].logout);
-router.use(_verifyToken.verifyAccessToken);
-router.get("/check-role", _AdminAuthController["default"].checkRole);
+router.get("/check-role", _verifyToken.verifyAccessToken, _AdminAuthController["default"].checkRole);
 var _default = exports["default"] = router;

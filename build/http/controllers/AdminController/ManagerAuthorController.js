@@ -73,7 +73,6 @@ var ManagerAuthorController = /*#__PURE__*/function () {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              // change this
               _req$body = req.body, username = _req$body.username, email = _req$body.email;
               _context2.next = 4;
               return _models["default"].Admin.findOne({
