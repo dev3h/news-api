@@ -2,13 +2,22 @@ import { Op } from "sequelize";
 import db from "models";
 import { getPagination, getPagingData } from "helpers/pagination";
 import { generateOrderPost } from "helpers/generateOrder";
+import RoleSysEnum from "enums/RoleSysEnum";
 
 class PostFilter {
-  static async handleList({ search, sortBy, sortType, page, flimit }) {
+  static async handleList({ search, sortBy, sortType, page, flimit, user = {} }) {
     const queries = {};
     if (search) {
       queries.where = {
         [Op.or]: [{ title: { [Op.like]: `%${search}%` } }, { id: search }],
+      };
+    }
+    if (user?.role === RoleSysEnum.AUTHOR) {
+      queries.where = {
+        ...queries.where,
+        [Op.or]: [
+          { created_by: user?.id }, // Thay userId bằng id của người đó
+        ],
       };
     }
     const order = generateOrderPost(sortBy, sortType);

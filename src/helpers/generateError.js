@@ -18,6 +18,15 @@ const notAuth = (err, res) => {
   });
 };
 
+// 403
+const forbidden = (err, res) => {
+  const error = createError.Forbidden(err);
+
+  return res.status(error.status).json({
+    message: err.message,
+  });
+};
+
 // 404
 const notFoundRoute = (req, res) => {
   const error = createError.NotFound("Route không tồn tại!");
@@ -36,4 +45,4 @@ const internalServerError = (err, res) => {
   });
 };
 
-export { internalServerError, badRequest, notFoundRoute, notAuth };
+export { internalServerError, badRequest, notFoundRoute, notAuth, forbidden };

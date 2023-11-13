@@ -7,15 +7,17 @@ import {
   generateCreatedByAndUpdatedBy,
   generateUpdatedBy,
 } from "helpers/generateCreatedByAndUpdatedBy";
-import { internalServerError } from "helpers/generateError";
+import { internalServerError, forbidden } from "helpers/generateError";
 import PostFilter from "modelFilters/PostFilter";
 import PostStatusEnum from "enums/PostStatusEnum";
+import RoleSysEnum from "enums/RoleSysEnum";
 import PostObservers from "observers/PostObservers";
 import PostSchedule from "schedule/PostSchedule";
 
 class PostController {
   static async getAll(req, res) {
     try {
+      const { user } = req;
       const {
         search = "",
         sortBy = "id",
@@ -29,6 +31,7 @@ class PostController {
         sortType,
         page,
         flimit,
+        user,
       };
       const response = await PostFilter.handleList(filter);
       return res.status(200).json(response);
@@ -179,13 +182,19 @@ class PostController {
   static async update(req, res) {
     try {
       // change this
-      const { id } = req.user;
-      const { updated_by } = generateUpdatedBy(id);
+      const { user } = req;
+      const { updated_by } = generateUpdatedBy(user?.id);
       const { title, photo, tags, ...rest } = req.body;
       const oldImage = await db.Post.findOne({
         where: { id: req.params.id },
         attributes: ["filename"],
       });
+      const post = await db.Post.findByPk(req.params.id);
+      if (post) {
+        if (user.role !== RoleSysEnum.ADMIN && post.created_by !== user.id)
+          return forbidden(new Error("Bạn không có quyền cập nhật bài viết này"), res);
+      }
+
       const response = await db.Post.update(
         {
           ...rest,
@@ -222,6 +231,12 @@ class PostController {
 
   static async destroy(req, res) {
     try {
+      const { user } = req;
+      const post = await db.Post.findByPk(req.params.id);
+      if (post) {
+        if (user.role !== RoleSysEnum.ADMIN && post.created_by !== user.id)
+          return forbidden(new Error("Bạn không có quyền xóa bài viết này"), res);
+      }
       const response = await db.Post.destroy({
         where: { id: req.params.id },
       });

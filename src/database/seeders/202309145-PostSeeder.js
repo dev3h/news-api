@@ -3,12 +3,9 @@ const { faker } = require("@faker-js/faker");
 
 /** @type {import('sequelize-cli').Migration} */
 const getAdmins = async (queryInterface) => {
-  const data = await queryInterface.sequelize.query(
-    "SELECT id FROM admins where role=0",
-    {
-      type: queryInterface.sequelize.QueryTypes.SELECT,
-    }
-  );
+  const data = await queryInterface.sequelize.query("SELECT id FROM admins", {
+    type: queryInterface.sequelize.QueryTypes.SELECT,
+  });
   return data;
 };
 const getCategories = async (queryInterface) => {
