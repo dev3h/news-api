@@ -47,6 +47,14 @@ var PostRequest = function PostRequest(req, res, next) {
     rules.photo = _joi["default"].string().pattern(/\.jpg$|\.png$|\.jpeg$/).messages({
       "string.base": "Ảnh phải là chuỗi",
       "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg"
+    }).custom(function (value, helpers) {
+      // Kiểm tra kích thước file
+      var maxSizeInMB = 5;
+      var fileSizeInMB = fileData.size / 1024 / 1024;
+      if (fileSizeInMB > maxSizeInMB) {
+        return helpers.message("\u1EA2nh ph\u1EA3i c\xF3 k\xEDch th\u01B0\u1EDBc nh\u1ECF h\u01A1n ".concat(maxSizeInMB, "MB"));
+      }
+      return value;
     });
   }
   if (req.body.published_at) {

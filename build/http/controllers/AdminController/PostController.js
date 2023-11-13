@@ -172,16 +172,15 @@ var PostController = /*#__PURE__*/function () {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
-              console.log(req.body);
               filename = req.body.filename;
               if (filename) {
-                _context3.next = 5;
+                _context3.next = 4;
                 break;
               }
               return _context3.abrupt("return", res.status(400).json({
                 message: "Không có file nào được gửi lên"
               }));
-            case 5:
+            case 4:
               cloudinary.uploader.destroy(filename, function (error, result) {
                 if (error) {
                   console.error("Lỗi khi xóa file cũ trên Cloudinary: " + error);
@@ -190,15 +189,15 @@ var PostController = /*#__PURE__*/function () {
               return _context3.abrupt("return", res.status(200).json({
                 message: "Xóa ảnh thành công"
               }));
-            case 9:
-              _context3.prev = 9;
+            case 8:
+              _context3.prev = 8;
               _context3.t0 = _context3["catch"](0);
               (0, _generateError.internalServerError)(_context3.t0, res);
-            case 12:
+            case 11:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 9]]);
+        }, _callee3, null, [[0, 8]]);
       }));
       function deletePhoto(_x5, _x6) {
         return _deletePhoto.apply(this, arguments);
@@ -317,13 +316,12 @@ var PostController = /*#__PURE__*/function () {
             case 6:
               oldImage = _context6.sent;
               _context6.next = 9;
-              return _models["default"].Post.update({
-                rest: rest,
+              return _models["default"].Post.update(_objectSpread(_objectSpread({}, rest), {}, {
                 slug: (0, _generateSlug["default"])(title),
                 photo: photo === null || photo === void 0 || (_photo$file4 = photo.file) === null || _photo$file4 === void 0 || (_photo$file4 = _photo$file4.response) === null || _photo$file4 === void 0 || (_photo$file4 = _photo$file4.data) === null || _photo$file4 === void 0 ? void 0 : _photo$file4.path,
                 filename: photo === null || photo === void 0 || (_photo$file5 = photo.file) === null || _photo$file5 === void 0 || (_photo$file5 = _photo$file5.response) === null || _photo$file5 === void 0 || (_photo$file5 = _photo$file5.data) === null || _photo$file5 === void 0 ? void 0 : _photo$file5.filename,
                 updated_by: updated_by
-              }, {
+              }), {
                 where: {
                   id: req.params.id
                 }

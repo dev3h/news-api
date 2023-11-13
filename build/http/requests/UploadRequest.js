@@ -20,6 +20,14 @@ var UploadRequest = /*#__PURE__*/function () {
           rules = {};
           if (fileData) rules.photo = joi.string().pattern(/\.jpg$|\.png$|\.jpeg$/).messages({
             "string.pattern.base": "Ảnh phải có định dạng jpg, png, jpeg"
+          }).custom(function (value, helpers) {
+            // Kiểm tra kích thước file
+            var maxSizeInMB = 5;
+            var fileSizeInMB = fileData.size / 1024 / 1024;
+            if (fileSizeInMB > maxSizeInMB) {
+              return helpers.message("\u1EA2nh ph\u1EA3i c\xF3 k\xEDch th\u01B0\u1EDBc nh\u1ECF h\u01A1n ".concat(maxSizeInMB, "MB"));
+            }
+            return value;
           });
           _joi$object$validate = joi.object(rules).validate({
             photo: fileData === null || fileData === void 0 ? void 0 : fileData.path
