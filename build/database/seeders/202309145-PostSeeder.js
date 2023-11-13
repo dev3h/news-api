@@ -21,7 +21,7 @@ var getAdmins = /*#__PURE__*/function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return queryInterface.sequelize.query("SELECT id FROM admins where role=0", {
+          return queryInterface.sequelize.query("SELECT id FROM admins", {
             type: queryInterface.sequelize.QueryTypes.SELECT
           });
         case 2:

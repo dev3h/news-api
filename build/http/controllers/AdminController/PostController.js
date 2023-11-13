@@ -10,6 +10,7 @@ var _generateCreatedByAndUpdatedBy = require("../../../helpers/generateCreatedBy
 var _generateError = require("../../../helpers/generateError");
 var _PostFilter = _interopRequireDefault(require("../../../modelFilters/PostFilter"));
 var _PostStatusEnum = _interopRequireDefault(require("../../../enums/PostStatusEnum"));
+var _RoleSysEnum = _interopRequireDefault(require("../../../enums/RoleSysEnum"));
 var _PostObservers = _interopRequireDefault(require("../../../observers/PostObservers"));
 var _PostSchedule = _interopRequireDefault(require("../../../schedule/PostSchedule"));
 var _excluded = ["title", "photo", "tags"],
@@ -38,33 +39,35 @@ var PostController = /*#__PURE__*/function () {
     key: "getAll",
     value: function () {
       var _getAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-        var _req$query, _req$query$search, search, _req$query$sortBy, sortBy, _req$query$sortType, sortType, _req$query$page, page, flimit, filter, response;
+        var user, _req$query, _req$query$search, search, _req$query$sortBy, sortBy, _req$query$sortType, sortType, _req$query$page, page, flimit, filter, response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
+              user = req.user;
               _req$query = req.query, _req$query$search = _req$query.search, search = _req$query$search === void 0 ? "" : _req$query$search, _req$query$sortBy = _req$query.sortBy, sortBy = _req$query$sortBy === void 0 ? "id" : _req$query$sortBy, _req$query$sortType = _req$query.sortType, sortType = _req$query$sortType === void 0 ? "ASC" : _req$query$sortType, _req$query$page = _req$query.page, page = _req$query$page === void 0 ? 1 : _req$query$page, flimit = _req$query.flimit;
               filter = {
                 search: search,
                 sortBy: sortBy,
                 sortType: sortType,
                 page: page,
-                flimit: flimit
+                flimit: flimit,
+                user: user
               };
-              _context.next = 5;
+              _context.next = 6;
               return _PostFilter["default"].handleList(filter);
-            case 5:
+            case 6:
               response = _context.sent;
               return _context.abrupt("return", res.status(200).json(response));
-            case 9:
-              _context.prev = 9;
+            case 10:
+              _context.prev = 10;
               _context.t0 = _context["catch"](0);
               (0, _generateError.internalServerError)(_context.t0, res);
-            case 12:
+            case 13:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[0, 9]]);
+        }, _callee, null, [[0, 10]]);
       }));
       function getAll(_x, _x2) {
         return _getAll.apply(this, arguments);
@@ -297,14 +300,14 @@ var PostController = /*#__PURE__*/function () {
     key: "update",
     value: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-        var _photo$file4, _photo$file5, id, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, response, _photo$file6, _photo2$file, _photo2;
+        var _photo$file4, _photo$file5, user, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, post, response, _photo$file6, _photo2$file, _photo2;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.prev = 0;
               // change this
-              id = req.user.id;
-              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(id), updated_by = _generateUpdatedBy.updated_by;
+              user = req.user;
+              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(user === null || user === void 0 ? void 0 : user.id), updated_by = _generateUpdatedBy.updated_by;
               _req$body2 = req.body, title = _req$body2.title, photo = _req$body2.photo, tags = _req$body2.tags, rest = _objectWithoutProperties(_req$body2, _excluded2);
               _context6.next = 6;
               return _models["default"].Post.findOne({
@@ -316,6 +319,20 @@ var PostController = /*#__PURE__*/function () {
             case 6:
               oldImage = _context6.sent;
               _context6.next = 9;
+              return _models["default"].Post.findByPk(req.params.id);
+            case 9:
+              post = _context6.sent;
+              if (!post) {
+                _context6.next = 13;
+                break;
+              }
+              if (!(user.role !== _RoleSysEnum["default"].ADMIN && post.created_by !== user.id)) {
+                _context6.next = 13;
+                break;
+              }
+              return _context6.abrupt("return", (0, _generateError.forbidden)(new Error("Bạn không có quyền cập nhật bài viết này"), res));
+            case 13:
+              _context6.next = 15;
               return _models["default"].Post.update(_objectSpread(_objectSpread({}, rest), {}, {
                 slug: (0, _generateSlug["default"])(title),
                 photo: photo === null || photo === void 0 || (_photo$file4 = photo.file) === null || _photo$file4 === void 0 || (_photo$file4 = _photo$file4.response) === null || _photo$file4 === void 0 || (_photo$file4 = _photo$file4.data) === null || _photo$file4 === void 0 ? void 0 : _photo$file4.path,
@@ -326,10 +343,10 @@ var PostController = /*#__PURE__*/function () {
                   id: req.params.id
                 }
               });
-            case 9:
+            case 15:
               response = _context6.sent;
               if (!(response[0] === 0)) {
-                _context6.next = 14;
+                _context6.next = 20;
                 break;
               }
               if (photo) cloudinary.uploader.destroy(photo === null || photo === void 0 || (_photo$file6 = photo.file) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.response) === null || _photo$file6 === void 0 || (_photo$file6 = _photo$file6.data) === null || _photo$file6 === void 0 ? void 0 : _photo$file6.filename);
@@ -339,22 +356,22 @@ var PostController = /*#__PURE__*/function () {
               return _context6.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
-            case 14:
+            case 20:
               if (response[0] > 0 && photo && oldImage) cloudinary.uploader.destroy(oldImage.filename);
               return _context6.abrupt("return", res.status(200).json({
                 message: "Cập nhật bài viết thành công"
               }));
-            case 18:
-              _context6.prev = 18;
+            case 24:
+              _context6.prev = 24;
               _context6.t0 = _context6["catch"](0);
               _photo2 = req.body.photo;
               if (_photo2) cloudinary.uploader.destroy(_photo2 === null || _photo2 === void 0 || (_photo2$file = _photo2.file) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.response) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.data) === null || _photo2$file === void 0 ? void 0 : _photo2$file.filename);
               (0, _generateError.internalServerError)(_context6.t0, res);
-            case 23:
+            case 29:
             case "end":
               return _context6.stop();
           }
-        }, _callee6, null, [[0, 18]]);
+        }, _callee6, null, [[0, 24]]);
       }));
       function update(_x11, _x12) {
         return _update.apply(this, arguments);
@@ -365,39 +382,54 @@ var PostController = /*#__PURE__*/function () {
     key: "destroy",
     value: function () {
       var _destroy = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-        var response;
+        var user, post, response;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               _context7.prev = 0;
-              _context7.next = 3;
+              user = req.user;
+              _context7.next = 4;
+              return _models["default"].Post.findByPk(req.params.id);
+            case 4:
+              post = _context7.sent;
+              if (!post) {
+                _context7.next = 8;
+                break;
+              }
+              if (!(user.role !== _RoleSysEnum["default"].ADMIN && post.created_by !== user.id)) {
+                _context7.next = 8;
+                break;
+              }
+              return _context7.abrupt("return", (0, _generateError.forbidden)(new Error("Bạn không có quyền xóa bài viết này"), res));
+            case 8:
+              _context7.next = 10;
               return _models["default"].Post.destroy({
                 where: {
                   id: req.params.id
                 }
               });
-            case 3:
+            case 10:
               response = _context7.sent;
               if (!(response === 0)) {
-                _context7.next = 6;
+                _context7.next = 13;
                 break;
               }
               return _context7.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
-            case 6:
+            case 13:
               return _context7.abrupt("return", res.status(200).json({
                 message: "Xóa bài viết thành công"
               }));
-            case 9:
-              _context7.prev = 9;
+            case 16:
+              _context7.prev = 16;
               _context7.t0 = _context7["catch"](0);
               (0, _generateError.internalServerError)(_context7.t0, res);
-            case 12:
+            case 19:
             case "end":
               return _context7.stop();
           }
-        }, _callee7, null, [[0, 9]]);
+        }, _callee7, null, [[0, 16]]);
       }));
       function destroy(_x13, _x14) {
         return _destroy.apply(this, arguments);

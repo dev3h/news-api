@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.notFoundRoute = exports.notAuth = exports.internalServerError = exports.badRequest = void 0;
+exports.notFoundRoute = exports.notAuth = exports.internalServerError = exports.forbidden = exports.badRequest = void 0;
 var _httpErrors = _interopRequireDefault(require("http-errors"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 // 400
@@ -17,6 +17,14 @@ var badRequest = exports.badRequest = function badRequest(err, res) {
 // 401
 var notAuth = exports.notAuth = function notAuth(err, res) {
   var error = _httpErrors["default"].Unauthorized(err);
+  return res.status(error.status).json({
+    message: err.message
+  });
+};
+
+// 403
+var forbidden = exports.forbidden = function forbidden(err, res) {
+  var error = _httpErrors["default"].Forbidden(err);
   return res.status(error.status).json({
     message: err.message
   });
