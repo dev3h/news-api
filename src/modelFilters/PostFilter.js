@@ -3,6 +3,7 @@ import db from "models";
 import { getPagination, getPagingData } from "helpers/pagination";
 import { generateOrderPost } from "helpers/generateOrder";
 import RoleSysEnum from "enums/RoleSysEnum";
+import PostStatusEnum from "enums/PostStatusEnum";
 
 class PostFilter {
   static async handleList({ search, sortBy, sortType, page, flimit, user = {} }) {
@@ -28,7 +29,7 @@ class PostFilter {
       queries.offset = offset;
     }
 
-    const data = await db.Post.findAndCountAll({
+    const postData = await db.Post.findAndCountAll({
       ...queries,
       include: [
         {
@@ -47,8 +48,26 @@ class PostFilter {
           attributes: ["id", "name"],
         },
       ],
+      raw: true,
+      nest: true,
       attributes: { exclude: ["created_by", "updated_by"] },
     });
+    const rowData = postData?.rows?.map((post) => {
+      const statusPost = {
+        id: post?.status,
+        name: PostStatusEnum.getLabel(post?.status),
+      };
+
+      return {
+        ...post,
+        statusPost,
+      };
+    });
+    const data = {
+      count: postData?.count,
+      rows: rowData,
+    };
+
     if (limit !== Number.MAX_SAFE_INTEGER) {
       const response = getPagingData(data, page, limit);
       return response;

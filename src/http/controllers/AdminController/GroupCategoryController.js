@@ -92,7 +92,6 @@ class GroupCategoryController {
 
   static async update(req, res) {
     try {
-      // change this
       const { id } = req.user;
       const { updated_by } = generateUpdatedBy(id);
       const response = await db.GroupCategory.update(
