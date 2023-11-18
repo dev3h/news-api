@@ -72,7 +72,6 @@ var TagController = /*#__PURE__*/function () {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              // change this
               id = req.user.id;
               _generateCreatedByAnd = (0, _generateCreatedByAndUpdatedBy.generateCreatedByAndUpdatedBy)(id), created_by = _generateCreatedByAnd.created_by, updated_by = _generateCreatedByAnd.updated_by;
               name = req.body.name;
@@ -94,11 +93,11 @@ var TagController = /*#__PURE__*/function () {
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
-                message: "Tên tag đã tồn tại"
+                message: "Tên thẻ đã tồn tại"
               }));
             case 9:
               return _context2.abrupt("return", res.status(200).json({
-                message: "Tạo tag thành công"
+                message: "Tạo thẻ thành công"
               }));
             case 12:
               _context2.prev = 12;
@@ -114,6 +113,144 @@ var TagController = /*#__PURE__*/function () {
         return _create.apply(this, arguments);
       }
       return create;
+    }()
+  }, {
+    key: "getOne",
+    value: function () {
+      var _getOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.prev = 0;
+              _context3.next = 3;
+              return _models["default"].Tag.findByPk(req.params.id, {
+                include: [{
+                  model: _models["default"].Admin,
+                  as: "created_by_admin",
+                  attributes: ["id", "username", "email"]
+                }, {
+                  model: _models["default"].Admin,
+                  as: "updated_by_admin",
+                  attributes: ["id", "username", "email"]
+                }]
+              });
+            case 3:
+              response = _context3.sent;
+              if (response) {
+                _context3.next = 6;
+                break;
+              }
+              return _context3.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy thẻ"
+              }));
+            case 6:
+              return _context3.abrupt("return", res.status(200).json(response));
+            case 9:
+              _context3.prev = 9;
+              _context3.t0 = _context3["catch"](0);
+              (0, _generateError.internalServerError)(_context3.t0, res);
+            case 12:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, null, [[0, 9]]);
+      }));
+      function getOne(_x5, _x6) {
+        return _getOne.apply(this, arguments);
+      }
+      return getOne;
+    }()
+  }, {
+    key: "update",
+    value: function () {
+      var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+        var id, _generateUpdatedBy, updated_by, response;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.prev = 0;
+              id = req.user.id;
+              _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(id), updated_by = _generateUpdatedBy.updated_by;
+              _context4.next = 5;
+              return _models["default"].Tag.update(_objectSpread(_objectSpread({}, req.body), {}, {
+                slug: (0, _generateSlug["default"])(req.body.name),
+                updated_by: updated_by
+              }), {
+                where: {
+                  id: req.params.id
+                }
+              });
+            case 5:
+              response = _context4.sent;
+              if (!(response[0] === 0)) {
+                _context4.next = 8;
+                break;
+              }
+              return _context4.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy thẻ"
+              }));
+            case 8:
+              return _context4.abrupt("return", res.status(200).json({
+                message: "Cập nhật thẻ thành công"
+              }));
+            case 11:
+              _context4.prev = 11;
+              _context4.t0 = _context4["catch"](0);
+              (0, _generateError.internalServerError)(_context4.t0, res);
+            case 14:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, null, [[0, 11]]);
+      }));
+      function update(_x7, _x8) {
+        return _update.apply(this, arguments);
+      }
+      return update;
+    }()
+  }, {
+    key: "destroy",
+    value: function () {
+      var _destroy = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.prev = 0;
+              _context5.next = 3;
+              return _models["default"].Tag.destroy({
+                where: {
+                  id: req.params.id
+                }
+              });
+            case 3:
+              response = _context5.sent;
+              if (!(response === 0)) {
+                _context5.next = 6;
+                break;
+              }
+              return _context5.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy thẻ"
+              }));
+            case 6:
+              return _context5.abrupt("return", res.status(200).json({
+                message: "Xóa thẻ thành công"
+              }));
+            case 9:
+              _context5.prev = 9;
+              _context5.t0 = _context5["catch"](0);
+              (0, _generateError.internalServerError)(_context5.t0, res);
+            case 12:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5, null, [[0, 9]]);
+      }));
+      function destroy(_x9, _x10) {
+        return _destroy.apply(this, arguments);
+      }
+      return destroy;
     }()
   }]);
   return TagController;

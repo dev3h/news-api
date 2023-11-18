@@ -175,7 +175,6 @@ var GroupCategoryController = /*#__PURE__*/function () {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              // change this
               id = req.user.id;
               _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(id), updated_by = _generateUpdatedBy.updated_by;
               _context4.next = 5;

@@ -11,6 +11,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var router = _express["default"].Router();
 router.get("", _PostController["default"].getAll);
 router.get("/:slug/detail", _PostController["default"].getOne);
+router.post("/:slug/increase-view", _PostController["default"].increaseViewOfPost);
 router.use(_verifyToken.verifyAccessToken);
 router.put("/:slug/like", _PostController["default"].toggleLike);
 router.post("/:slug/comment", _PostController["default"].createComment);

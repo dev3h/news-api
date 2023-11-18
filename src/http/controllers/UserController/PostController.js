@@ -1,6 +1,7 @@
 import db from "models";
 import PostFilter from "modelFilters/PostFilter";
 import { internalServerError } from "helpers/generateError";
+import UserCache from "cache/UserCache";
 
 class PostController {
   static async getAll(req, res) {
@@ -144,6 +145,39 @@ class PostController {
         user_id,
       });
       return res.status(200).json(response);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+  static async increaseViewOfPost(req, res) {
+    try {
+      const { ip } = req.body;
+
+      const post = await db.Post.findOne({
+        where: {
+          slug: req.params.slug,
+        },
+      });
+      if (!post)
+        return res.status(404).json({
+          message: "Không tìm thấy bài viết",
+        });
+      const key = `views:${post.id}:${ip}`;
+      const lastView = UserCache.get(key);
+      if (lastView !== ip) {
+        const a = UserCache.set(key, ip, 86400); // 1 day
+        await db.Post.update(
+          {
+            view: post.view + 1,
+          },
+          {
+            where: { id: post.id },
+          }
+        );
+      }
+      return res.status(200).json({
+        message: "Tăng lượt xem thành công",
+      });
     } catch (error) {
       internalServerError(error, res);
     }

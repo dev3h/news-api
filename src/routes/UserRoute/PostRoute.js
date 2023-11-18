@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("", PostController.getAll);
 router.get("/:slug/detail", PostController.getOne);
+router.post("/:slug/increase-view", PostController.increaseViewOfPost);
 
 router.use(verifyAccessToken);
 router.put("/:slug/like", PostController.toggleLike);
