@@ -39,7 +39,7 @@ class AdminAuthController {
             role_name: RoleSysEnum.getRoleSysName(role),
           },
         },
-        message: "Login thành công",
+        message: "Đăng nhập thành công",
       });
     } catch (error) {
       internalServerError(error, res);

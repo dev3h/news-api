@@ -13,7 +13,7 @@ const verifyAccessToken = (req, res, next) => {
       }
     });
   } else {
-    notAuth(new Error("Yêu cầu đăng nhập"), res);
+    notAuth(new Error("Yêu cầu đăng nhập"), res, true);
   }
 };
 

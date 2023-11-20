@@ -10,11 +10,12 @@ const badRequest = (err, res) => {
 };
 
 // 401
-const notAuth = (err, res) => {
+const notAuth = (err, res, authError = false) => {
   const error = createError.Unauthorized(err);
 
   return res.status(error.status).json({
     message: err.message,
+    authError: authError,
   });
 };
 
