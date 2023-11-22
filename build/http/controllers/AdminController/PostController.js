@@ -358,20 +358,21 @@ var PostController = /*#__PURE__*/function () {
               }));
             case 20:
               if (response[0] > 0 && photo && oldImage) cloudinary.uploader.destroy(oldImage.filename);
+              _PostObservers["default"].saved(post.id, tags);
               return _context6.abrupt("return", res.status(200).json({
                 message: "Cập nhật bài viết thành công"
               }));
-            case 24:
-              _context6.prev = 24;
+            case 25:
+              _context6.prev = 25;
               _context6.t0 = _context6["catch"](0);
               _photo2 = req.body.photo;
               if (_photo2) cloudinary.uploader.destroy(_photo2 === null || _photo2 === void 0 || (_photo2$file = _photo2.file) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.response) === null || _photo2$file === void 0 || (_photo2$file = _photo2$file.data) === null || _photo2$file === void 0 ? void 0 : _photo2$file.filename);
               (0, _generateError.internalServerError)(_context6.t0, res);
-            case 29:
+            case 30:
             case "end":
               return _context6.stop();
           }
-        }, _callee6, null, [[0, 24]]);
+        }, _callee6, null, [[0, 25]]);
       }));
       function update(_x11, _x12) {
         return _update.apply(this, arguments);

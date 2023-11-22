@@ -35,7 +35,7 @@ module.exports = {
             password = _context.sent;
             admins = _toConsumableArray(Array(20)).map(function (item) {
               return {
-                username: faker.internet.userName(),
+                username: faker.internet.userName().replace(/[^a-zA-Z0-9]/g, ""),
                 display_name: faker.person.fullName(),
                 email: faker.internet.email(),
                 password: password,

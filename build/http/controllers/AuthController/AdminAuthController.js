@@ -83,7 +83,7 @@ var AdminAuthController = /*#__PURE__*/function () {
                     role_name: _RoleSysEnum["default"].getRoleSysName(role)
                   }
                 }),
-                message: "Login thành công"
+                message: "Đăng nhập thành công"
               }));
             case 18:
               _context.prev = 18;

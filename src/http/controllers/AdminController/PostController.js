@@ -218,7 +218,7 @@ class PostController {
       }
       if (response[0] > 0 && photo && oldImage)
         cloudinary.uploader.destroy(oldImage.filename);
-
+      PostObservers.saved(post.id, tags);
       return res.status(200).json({
         message: "Cập nhật bài viết thành công",
       });

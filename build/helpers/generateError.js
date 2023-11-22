@@ -16,9 +16,11 @@ var badRequest = exports.badRequest = function badRequest(err, res) {
 
 // 401
 var notAuth = exports.notAuth = function notAuth(err, res) {
+  var authError = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var error = _httpErrors["default"].Unauthorized(err);
   return res.status(error.status).json({
-    message: err.message
+    message: err.message,
+    authError: authError
   });
 };
 

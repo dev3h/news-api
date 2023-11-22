@@ -16,7 +16,7 @@ import generateCodeVerifyEmail from "helpers/generateCodeVerifyEmail";
 class UserAuthController {
   static async register(req, res) {
     try {
-      const { email, password } = req.body;
+      const { email, password, name } = req.body;
       const user = await db.User.findOne({
         where: { email },
       });
@@ -30,6 +30,7 @@ class UserAuthController {
       const newUser = await db.User.create({
         email: emailEdited,
         password: hashPassword(password),
+        name,
       });
       if (!newUser) badRequest(new Error("Đăng ký thất bại"), res);
       const html = `<h2>Mã đăng ký: </h2> <blockquote>${token}</blockquote>`;
@@ -75,7 +76,7 @@ class UserAuthController {
       await notVerifyEmail.save();
 
       return res.status(200).json({
-        message: "Xác minh email thành công. Vui lòng đăng nhập",
+        message: "Xác minh email thành công. Vui lòng đăng nhập lại",
       });
     } catch (error) {
       internalServerError(error, res);
@@ -108,7 +109,7 @@ class UserAuthController {
         data: {
           ...rest,
         },
-        message: "Login thành công",
+        message: "Đăng nhập thành công",
       });
     } catch (error) {
       internalServerError(error, res);
