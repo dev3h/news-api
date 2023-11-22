@@ -15,7 +15,7 @@ module.exports = {
     try {
       const password = await hashPassword("Abcd1234@");
       const admins = [...Array(20)].map((item) => ({
-        username: faker.internet.userName(),
+        username: faker.internet.userName().replace(/[^a-zA-Z0-9]/g, ""),
         display_name: faker.person.fullName(),
         email: faker.internet.email(),
         password: password,

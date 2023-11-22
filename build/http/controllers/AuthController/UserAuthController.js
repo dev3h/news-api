@@ -40,12 +40,12 @@ var UserAuthController = /*#__PURE__*/function () {
     key: "register",
     value: function () {
       var _register = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _req$body, email, password, user, token, emailEdited, newUser, html, data;
+        var _req$body, email, password, name, user, token, emailEdited, newUser, html, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              _req$body = req.body, email = _req$body.email, password = _req$body.password;
+              _req$body = req.body, email = _req$body.email, password = _req$body.password, name = _req$body.name;
               _context2.next = 4;
               return _models["default"].User.findOne({
                 where: {
@@ -64,7 +64,8 @@ var UserAuthController = /*#__PURE__*/function () {
               _context2.next = 10;
               return _models["default"].User.create({
                 email: emailEdited,
-                password: (0, _hashPassword["default"])(password)
+                password: (0, _hashPassword["default"])(password),
+                name: name
               });
             case 10:
               newUser = _context2.sent;
@@ -158,7 +159,7 @@ var UserAuthController = /*#__PURE__*/function () {
               return notVerifyEmail.save();
             case 10:
               return _context3.abrupt("return", res.status(200).json({
-                message: "Xác minh email thành công. Vui lòng đăng nhập"
+                message: "Xác minh email thành công. Vui lòng đăng nhập lại"
               }));
             case 13:
               _context3.prev = 13;
@@ -221,7 +222,7 @@ var UserAuthController = /*#__PURE__*/function () {
               return _context4.abrupt("return", res.status(200).json({
                 accessToken: accessToken,
                 data: _objectSpread({}, rest),
-                message: "Login thành công"
+                message: "Đăng nhập thành công"
               }));
             case 18:
               _context4.prev = 18;

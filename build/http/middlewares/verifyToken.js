@@ -19,6 +19,6 @@ var verifyAccessToken = exports.verifyAccessToken = function verifyAccessToken(r
       }
     });
   } else {
-    (0, _generateError.notAuth)(new Error("Yêu cầu đăng nhập"), res);
+    (0, _generateError.notAuth)(new Error("Yêu cầu đăng nhập"), res, true);
   }
 };
