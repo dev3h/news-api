@@ -6,15 +6,26 @@ import PostStatusEnum from "enums/PostStatusEnum";
 const PostRequest = (req, res, next) => {
   const fileData = req?.body?.photo?.file;
   const rules = {
-    title: joi.string().required().messages({
-      "string.base": "Tên bài viết phải là chuỗi",
-      "string.empty": "Tên bài viết không được để trống",
-      "any.required": "Tên bài viết là bắt buộc",
-    }),
-    content: joi.string().required().messages({
+    title: joi
+      .string()
+      .required()
+      .min(5)
+      .max(100)
+      .trim()
+      .pattern(/^[a-zA-Z0-9 ]+$/)
+      .messages({
+        "string.base": "Tên bài viết phải là chuỗi",
+        "string.empty": "Tên bài viết không được để trống",
+        "any.required": "Tên bài viết là bắt buộc",
+        "string.min": "Tên bài viết phải có ít nhất 5 ký tự",
+        "string.max": "Tên bài viết không được vượt quá 100 ký tự",
+        "string.pattern.base": "Tên bài viết không được chứa ký tự đặc biệt",
+      }),
+    content: joi.string().max(1000).required().messages({
       "string.base": "Nội dung bài viết phải là chuỗi",
       "string.empty": "Nội dung bài viết không được để trống",
       "any.required": "Nội dung bài viết là bắt buộc",
+      "string.max": "Nội dung bài viết không được vượt quá 1000 ký tự",
     }),
     status: joi
       .required()
