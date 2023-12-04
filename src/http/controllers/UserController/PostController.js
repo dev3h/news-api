@@ -27,6 +27,94 @@ class PostController {
     }
   }
 
+  static async getGroupCategory(req, res) {
+    try {
+      const response = await db.GroupCategory.findAll({
+        attributes: ["id", "name", "slug"],
+      });
+      return res.status(200).json(response);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+
+  static async getPostOfGroup(req, res) {
+    try {
+      const response = await db.GroupCategory.findAll({
+        attributes: ["id", "name", "slug"],
+        include: [
+          {
+            model: db.Category,
+            as: "categories",
+            attributes: ["id", "name", "slug"],
+            include: [
+              {
+                model: db.Post,
+                as: "posts",
+                attributes: ["id", "title", "slug", "photo", "view", "created_at"],
+                limit: 5,
+                order: [["view", "DESC"]],
+                include: [
+                  {
+                    model: db.User,
+                    as: "users_like",
+                    through: {
+                      model: db.PostUserLike,
+                    },
+                    attributes: ["email"],
+                  },
+                  {
+                    model: db.PostComment,
+                    as: "comments",
+                    attributes: ["id", "user_id"],
+                    order: [["created_at", "DESC"]],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      const postsOfGroupCategory = response.map((groupCategory) => {
+        const { categories } = groupCategory;
+        const filteredCategories = categories.filter(
+          (category) => category.posts.length > 0
+        );
+
+        if (filteredCategories.length === 0) return null;
+
+        const posts = filteredCategories.map((category) => {
+          const { posts } = category;
+          const newPosts = posts.map((post) => {
+            const { users_like, comments } = post;
+            return {
+              ...post.toJSON(),
+              users_like: users_like.length,
+              comments: comments.length,
+            };
+          });
+          return {
+            ...category.toJSON(),
+            posts: newPosts,
+          };
+        });
+
+        return {
+          ...groupCategory.toJSON(),
+          categories: posts,
+        };
+      });
+
+      const filteredResult = postsOfGroupCategory.filter(
+        (groupCategory) => groupCategory !== null
+      );
+
+      return res.status(200).json(filteredResult);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+
   static async getOne(req, res) {
     try {
       const response = await db.Post.findOne({

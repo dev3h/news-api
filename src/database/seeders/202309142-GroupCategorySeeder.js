@@ -17,7 +17,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     try {
       const admins = await getAdmins(queryInterface);
-      const group_categories = [...Array(20)].map((item) => ({
+      const group_categories = [...Array(5)].map((item) => ({
         name: faker.lorem.word(),
         slug: faker.lorem.slug(),
         created_by: faker.helpers.arrayElement(admins).id,

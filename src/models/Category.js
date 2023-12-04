@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Category.hasMany(models.Post, {
+        foreignKey: "category_id",
+        as: "posts",
+      });
       Category.belongsTo(models.Admin, {
         foreignKey: "created_by",
         as: "created_by_admin",
