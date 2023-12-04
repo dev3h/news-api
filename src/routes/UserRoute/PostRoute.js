@@ -4,6 +4,8 @@ import { verifyAccessToken } from "http/middlewares/verifyToken";
 const router = express.Router();
 
 router.get("", PostController.getAll);
+router.get("/post-of-group", PostController.getPostOfGroup);
+router.get("/group-category", PostController.getGroupCategory);
 router.get("/:slug/detail", PostController.getOne);
 router.post("/:slug/increase-view", PostController.increaseViewOfPost);
 

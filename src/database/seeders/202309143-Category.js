@@ -24,7 +24,7 @@ module.exports = {
     try {
       const groupCategories = await getGroupCategories(queryInterface);
       const admins = await getAdmins(queryInterface);
-      const categories = [...Array(50)].map((item) => ({
+      const categories = [...Array(20)].map((item) => ({
         name: faker.lorem.word(),
         slug: faker.lorem.slug(),
         group_category_id: faker.helpers.arrayElement(groupCategories).id,
