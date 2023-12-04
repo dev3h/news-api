@@ -26,11 +26,12 @@ var ManagerAuthorRequest = function ManagerAuthorRequest(req, res, next) {
       "string.empty": "Tên hiển thị không được để trống",
       "any.required": "Tên hiển thị là bắt buộc"
     }),
-    email: _joi["default"].string().email().required().messages({
+    email: _joi["default"].string().max(50).trim().regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/).required().messages({
       "string.base": "Email phải là chuỗi",
       "string.empty": "Email không được để trống",
-      "string.email": "Email không hợp lệ",
-      "any.required": "Email là bắt buộc"
+      "any.required": "Email là bắt buộc",
+      "string.max": "Email không được quá 50 ký tự",
+      "string.pattern.base": "Email không hợp lệ"
     })
   };
   if (role) {

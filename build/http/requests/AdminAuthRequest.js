@@ -15,9 +15,11 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
   var _joi$object$validate = _joi["default"].object(_objectSpread({
-      username: _joi["default"].string().required().messages({
+      username: _joi["default"].string().required().min(3).max(50).messages({
         "string.empty": "Tên đăng nhập không được để trống",
-        "any.required": "Tên đăng nhập là bắt buộc"
+        "any.required": "Tên đăng nhập là bắt buộc",
+        "string.min": "Tên đăng nhập phải có ít nhất 3 ký tự",
+        "string.max": "Tên đăng nhập không được vượt quá 50 ký tự"
       })
     }, (0, _PasswordRule["default"])())).validate(_objectSpread({}, req.body)),
     error = _joi$object$validate.error;

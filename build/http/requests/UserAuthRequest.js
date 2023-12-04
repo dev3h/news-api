@@ -15,10 +15,11 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var UserAuthRequest = function UserAuthRequest(req, res, next) {
   var rules = _objectSpread({
-    email: _joi["default"].string().email().required().messages({
-      "string.email": "Email không đúng định dạng",
+    email: _joi["default"].string().max(50).trim().regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/).required().messages({
       "string.empty": "Email không được để trống",
-      "any.required": "Email là bắt buộc"
+      "any.required": "Email là bắt buộc",
+      "string.max": "Email không được quá 50 ký tự",
+      "string.pattern.base": "Email không đúng định dạng"
     })
   }, (0, _PasswordRule["default"])());
   var _joi$object$validate = _joi["default"].object(rules).validate(_objectSpread({}, req.body)),
