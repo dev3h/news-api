@@ -77,7 +77,7 @@ module.exports = {
             return getAdmins(queryInterface);
           case 6:
             admins = _context3.sent;
-            categories = _toConsumableArray(Array(50)).map(function (item) {
+            categories = _toConsumableArray(Array(20)).map(function (item) {
               return {
                 name: faker.lorem.word(),
                 slug: faker.lorem.slug(),
