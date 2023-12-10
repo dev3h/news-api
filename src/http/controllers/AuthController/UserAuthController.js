@@ -253,17 +253,17 @@ class UserAuthController {
   static async updatePassword(req, res) {
     try {
       const { id } = req.user;
-      const { password, newPassword } = req.body;
+      const { password, new_password } = req.body;
       const user = await db.User.findOne({
         where: { id },
         raw: true,
       });
       if (!user) badRequest(new Error("Không tìm thấy user"), res);
       const comparePassword = await bcrypt.compare(password, user.password);
-      if (!comparePassword) badRequest(new Error("Mật khẩu cũ không đúng"), res);
+      if (!comparePassword) badRequest(new Error("Mật khẩu hiện tại không đúng"), res);
       await db.User.update(
         {
-          password: hashPassword(newPassword),
+          password: hashPassword(new_password),
           password_changed_at: Date.now(),
         },
         { where: { id } }

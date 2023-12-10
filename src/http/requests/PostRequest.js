@@ -90,7 +90,7 @@ const PostRequest = (req, res, next) => {
   const { error } = joi.object(rules).validate(dataToValidate);
   if (
     error &&
-    error.details[0].path[0] === "name" &&
+    error.details[0].path[0] === "title" &&
     error.details[0].type === "any.required" &&
     req.method === "PUT"
   ) {

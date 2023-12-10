@@ -84,7 +84,7 @@ var PostRequest = function PostRequest(req, res, next) {
   }
   var _joi$object$validate = _joi["default"].object(rules).validate(dataToValidate),
     error = _joi$object$validate.error;
-  if (error && error.details[0].path[0] === "name" && error.details[0].type === "any.required" && req.method === "PUT") {
+  if (error && error.details[0].path[0] === "title" && error.details[0].type === "any.required" && req.method === "PUT") {
     // Nếu là phương thức PUT và không có sửa đổi tên, bỏ qua lỗi required
     next();
   } else if (error) {

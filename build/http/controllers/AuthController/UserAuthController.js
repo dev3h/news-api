@@ -499,13 +499,13 @@ var UserAuthController = /*#__PURE__*/function () {
     key: "updatePassword",
     value: function () {
       var _updatePassword = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
-        var id, _req$body5, password, newPassword, user, comparePassword;
+        var id, _req$body5, password, new_password, user, comparePassword;
         return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) switch (_context10.prev = _context10.next) {
             case 0:
               _context10.prev = 0;
               id = req.user.id;
-              _req$body5 = req.body, password = _req$body5.password, newPassword = _req$body5.newPassword;
+              _req$body5 = req.body, password = _req$body5.password, new_password = _req$body5.new_password;
               _context10.next = 5;
               return _models["default"].User.findOne({
                 where: {
@@ -520,10 +520,10 @@ var UserAuthController = /*#__PURE__*/function () {
               return _bcryptjs["default"].compare(password, user.password);
             case 9:
               comparePassword = _context10.sent;
-              if (!comparePassword) (0, _generateError.badRequest)(new Error("Mật khẩu cũ không đúng"), res);
+              if (!comparePassword) (0, _generateError.badRequest)(new Error("Mật khẩu hiện tại không đúng"), res);
               _context10.next = 13;
               return _models["default"].User.update({
-                password: (0, _hashPassword["default"])(newPassword),
+                password: (0, _hashPassword["default"])(new_password),
                 password_changed_at: Date.now()
               }, {
                 where: {

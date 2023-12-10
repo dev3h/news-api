@@ -190,6 +190,14 @@ class PostController {
         attributes: ["filename"],
       });
       const post = await db.Post.findByPk(req.params.id);
+      const postByTitle = await db.Post.findOne({
+        where: { title },
+        attributes: ["id"],
+      });
+      if (postByTitle && postByTitle.id !== post.id)
+        return res.status(400).json({
+          message: "Tên bài viết đã tồn tại",
+        });
       if (post) {
         if (user.role !== RoleSysEnum.ADMIN && post.created_by !== user.id)
           return forbidden(new Error("Bạn không có quyền cập nhật bài viết này"), res);
@@ -198,6 +206,7 @@ class PostController {
       const response = await db.Post.update(
         {
           ...rest,
+          title,
           slug: generateSlug(title),
           photo: photo?.file?.response?.data?.path,
           filename: photo?.file?.response?.data?.filename,
