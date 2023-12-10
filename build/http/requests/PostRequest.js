@@ -18,20 +18,20 @@ var cloudinary = require("cloudinary").v2;
 var PostRequest = function PostRequest(req, res, next) {
   var _req$body, _fileData$response;
   var fileData = req === null || req === void 0 || (_req$body = req.body) === null || _req$body === void 0 || (_req$body = _req$body.photo) === null || _req$body === void 0 ? void 0 : _req$body.file;
+  var maxContentLength = 10000;
   var rules = {
-    title: _joi["default"].string().required().min(5).max(100).trim().pattern(/^[a-zA-Z0-9 ]+$/).messages({
+    title: _joi["default"].string().required().min(5).max(100).trim().messages({
       "string.base": "Tên bài viết phải là chuỗi",
       "string.empty": "Tên bài viết không được để trống",
       "any.required": "Tên bài viết là bắt buộc",
       "string.min": "Tên bài viết phải có ít nhất 5 ký tự",
-      "string.max": "Tên bài viết không được vượt quá 100 ký tự",
-      "string.pattern.base": "Tên bài viết không được chứa ký tự đặc biệt"
+      "string.max": "Tên bài viết không được vượt quá 100 ký tự"
     }),
-    content: _joi["default"].string().max(1000).required().messages({
+    content: _joi["default"].string().max(maxContentLength).required().messages({
       "string.base": "Nội dung bài viết phải là chuỗi",
       "string.empty": "Nội dung bài viết không được để trống",
       "any.required": "Nội dung bài viết là bắt buộc",
-      "string.max": "Nội dung bài viết không được vượt quá 1000 ký tự"
+      "string.max": "N\u1ED9i dung b\xE0i vi\u1EBFt kh\xF4ng \u0111\u01B0\u1EE3c v\u01B0\u1EE3t qu\xE1 ".concat(maxContentLength, " k\xFD t\u1EF1")
     }),
     status: _joi["default"].required().custom(function (value, helper) {
       if (!Object.values(_PostStatusEnum["default"]).includes(+value)) return helper.message("Trạng thái không hợp lệ");

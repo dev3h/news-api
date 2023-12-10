@@ -495,6 +495,60 @@ var UserAuthController = /*#__PURE__*/function () {
       }
       return getCurrent;
     }()
+  }, {
+    key: "updatePassword",
+    value: function () {
+      var _updatePassword = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
+        var id, _req$body5, password, newPassword, user, comparePassword;
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
+            case 0:
+              _context10.prev = 0;
+              id = req.user.id;
+              _req$body5 = req.body, password = _req$body5.password, newPassword = _req$body5.newPassword;
+              _context10.next = 5;
+              return _models["default"].User.findOne({
+                where: {
+                  id: id
+                },
+                raw: true
+              });
+            case 5:
+              user = _context10.sent;
+              if (!user) (0, _generateError.badRequest)(new Error("Không tìm thấy user"), res);
+              _context10.next = 9;
+              return _bcryptjs["default"].compare(password, user.password);
+            case 9:
+              comparePassword = _context10.sent;
+              if (!comparePassword) (0, _generateError.badRequest)(new Error("Mật khẩu cũ không đúng"), res);
+              _context10.next = 13;
+              return _models["default"].User.update({
+                password: (0, _hashPassword["default"])(newPassword),
+                password_changed_at: Date.now()
+              }, {
+                where: {
+                  id: id
+                }
+              });
+            case 13:
+              return _context10.abrupt("return", res.status(200).json({
+                message: "Đổi mật khẩu thành công"
+              }));
+            case 16:
+              _context10.prev = 16;
+              _context10.t0 = _context10["catch"](0);
+              (0, _generateError.internalServerError)(_context10.t0, res);
+            case 19:
+            case "end":
+              return _context10.stop();
+          }
+        }, _callee10, null, [[0, 16]]);
+      }));
+      function updatePassword(_x17, _x18) {
+        return _updatePassword.apply(this, arguments);
+      }
+      return updatePassword;
+    }()
   }]);
   return UserAuthController;
 }();

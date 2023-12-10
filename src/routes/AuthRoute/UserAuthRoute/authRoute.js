@@ -11,6 +11,7 @@ router.put("/reset-password", UserAuthController.resetPassword);
 
 router.get("/logout", UserAuthController.logout);
 router.get("/current", verifyAccessToken, UserAuthController.getCurrent);
+router.put("/update-password", verifyAccessToken, UserAuthController.updatePassword);
 router.post("/refresh-token", UserAuthController.refreshAccessToken);
 
 router.use(UserAuthRequest);
