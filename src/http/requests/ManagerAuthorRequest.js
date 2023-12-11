@@ -14,12 +14,19 @@ const ManagerAuthorRequest = (req, res, next) => {
       "string.empty": "Tên hiển thị không được để trống",
       "any.required": "Tên hiển thị là bắt buộc",
     }),
-    email: joi.string().email().required().messages({
-      "string.base": "Email phải là chuỗi",
-      "string.empty": "Email không được để trống",
-      "string.email": "Email không hợp lệ",
-      "any.required": "Email là bắt buộc",
-    }),
+    email: joi
+      .string()
+      .max(50)
+      .trim()
+      .regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
+      .required()
+      .messages({
+        "string.base": "Email phải là chuỗi",
+        "string.empty": "Email không được để trống",
+        "any.required": "Email là bắt buộc",
+        "string.max": "Email không được quá 50 ký tự",
+        "string.pattern.base": "Email không hợp lệ",
+      }),
   };
   if (role) {
     rules.role = joi

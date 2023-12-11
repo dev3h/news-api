@@ -80,6 +80,10 @@ module.exports = {
               return {
                 title: faker.lorem.words(),
                 slug: faker.lorem.slug(),
+                view: faker.number["int"]({
+                  min: 100,
+                  max: 500
+                }),
                 content: faker.lorem.paragraphs(5, "<br/>\n"),
                 category_id: faker.helpers.arrayElement(categories).id,
                 created_by: faker.helpers.arrayElement(admins).id,

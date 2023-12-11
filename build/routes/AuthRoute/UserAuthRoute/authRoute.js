@@ -16,6 +16,7 @@ router.get("/forgot-password", _UserAuthController["default"].forgotPassword);
 router.put("/reset-password", _UserAuthController["default"].resetPassword);
 router.get("/logout", _UserAuthController["default"].logout);
 router.get("/current", _verifyToken.verifyAccessToken, _UserAuthController["default"].getCurrent);
+router.put("/update-password", _verifyToken.verifyAccessToken, _UserAuthController["default"].updatePassword);
 router.post("/refresh-token", _UserAuthController["default"].refreshAccessToken);
 router.use(_UserAuthRequest["default"]);
 router.post("/register", _UserAuthController["default"].register);

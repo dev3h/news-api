@@ -5,28 +5,25 @@ import PostStatusEnum from "enums/PostStatusEnum";
 
 const PostRequest = (req, res, next) => {
   const fileData = req?.body?.photo?.file;
+  const maxContentLength = 10000;
   const rules = {
-    title: joi
-      .string()
-      .required()
-      .min(5)
-      .max(100)
-      .trim()
-      .pattern(/^[a-zA-Z0-9 ]+$/)
-      .messages({
-        "string.base": "Tên bài viết phải là chuỗi",
-        "string.empty": "Tên bài viết không được để trống",
-        "any.required": "Tên bài viết là bắt buộc",
-        "string.min": "Tên bài viết phải có ít nhất 5 ký tự",
-        "string.max": "Tên bài viết không được vượt quá 100 ký tự",
-        "string.pattern.base": "Tên bài viết không được chứa ký tự đặc biệt",
-      }),
-    content: joi.string().max(1000).required().messages({
-      "string.base": "Nội dung bài viết phải là chuỗi",
-      "string.empty": "Nội dung bài viết không được để trống",
-      "any.required": "Nội dung bài viết là bắt buộc",
-      "string.max": "Nội dung bài viết không được vượt quá 1000 ký tự",
+    title: joi.string().required().min(5).max(100).trim().messages({
+      "string.base": "Tên bài viết phải là chuỗi",
+      "string.empty": "Tên bài viết không được để trống",
+      "any.required": "Tên bài viết là bắt buộc",
+      "string.min": "Tên bài viết phải có ít nhất 5 ký tự",
+      "string.max": "Tên bài viết không được vượt quá 100 ký tự",
     }),
+    content: joi
+      .string()
+      .max(maxContentLength)
+      .required()
+      .messages({
+        "string.base": "Nội dung bài viết phải là chuỗi",
+        "string.empty": "Nội dung bài viết không được để trống",
+        "any.required": "Nội dung bài viết là bắt buộc",
+        "string.max": `Nội dung bài viết không được vượt quá ${maxContentLength} ký tự`,
+      }),
     status: joi
       .required()
       .custom((value, helper) => {
@@ -93,7 +90,7 @@ const PostRequest = (req, res, next) => {
   const { error } = joi.object(rules).validate(dataToValidate);
   if (
     error &&
-    error.details[0].path[0] === "name" &&
+    error.details[0].path[0] === "title" &&
     error.details[0].type === "any.required" &&
     req.method === "PUT"
   ) {
