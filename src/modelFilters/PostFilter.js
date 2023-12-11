@@ -6,11 +6,25 @@ import RoleSysEnum from "enums/RoleSysEnum";
 import PostStatusEnum from "enums/PostStatusEnum";
 
 class PostFilter {
-  static async handleList({ search, sortBy, sortType, page, flimit, user = {} }) {
+  static async handleList({
+    search,
+    sortBy,
+    sortType,
+    page,
+    flimit,
+    user = {},
+    isPublic = false,
+  }) {
     const queries = {};
     if (search) {
       queries.where = {
         [Op.or]: [{ title: { [Op.like]: `%${search}%` } }, { id: search }],
+      };
+    }
+    if (isPublic) {
+      queries.where = {
+        ...queries.where,
+        status: PostStatusEnum.PUBLIC,
       };
     }
     if (user?.role === RoleSysEnum.AUTHOR) {

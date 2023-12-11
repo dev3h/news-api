@@ -14,7 +14,7 @@ var _RoleSysEnum = _interopRequireDefault(require("../../../enums/RoleSysEnum"))
 var _PostObservers = _interopRequireDefault(require("../../../observers/PostObservers"));
 var _PostSchedule = _interopRequireDefault(require("../../../schedule/PostSchedule"));
 var _excluded = ["title", "photo", "tags"],
-  _excluded2 = ["title", "photo", "tags"];
+  _excluded2 = ["title", "photo", "tags", "filename_old"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -301,7 +301,7 @@ var PostController = /*#__PURE__*/function () {
     key: "update",
     value: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-        var _photo$file4, _photo$file5, user, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, rest, oldImage, post, postByTitle, response, _photo$file6, _photo2$file, _photo2;
+        var _photo$file4, _photo$file5, user, _generateUpdatedBy, updated_by, _req$body2, title, photo, tags, filename_old, rest, oldImage, post, postByTitle, response, _photo$file6, _photo2$file, _photo2;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
@@ -309,11 +309,12 @@ var PostController = /*#__PURE__*/function () {
               // change this
               user = req.user;
               _generateUpdatedBy = (0, _generateCreatedByAndUpdatedBy.generateUpdatedBy)(user === null || user === void 0 ? void 0 : user.id), updated_by = _generateUpdatedBy.updated_by;
-              _req$body2 = req.body, title = _req$body2.title, photo = _req$body2.photo, tags = _req$body2.tags, rest = _objectWithoutProperties(_req$body2, _excluded2);
+              _req$body2 = req.body, title = _req$body2.title, photo = _req$body2.photo, tags = _req$body2.tags, filename_old = _req$body2.filename_old, rest = _objectWithoutProperties(_req$body2, _excluded2);
               _context6.next = 6;
               return _models["default"].Post.findOne({
                 where: {
-                  id: req.params.id
+                  id: req.params.id,
+                  filename: filename_old
                 },
                 attributes: ["filename"]
               });

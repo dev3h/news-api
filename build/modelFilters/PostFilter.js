@@ -32,11 +32,11 @@ var PostFilter = /*#__PURE__*/function () {
     value: function () {
       var _handleList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(_ref) {
         var _postData$rows;
-        var search, sortBy, sortType, page, flimit, _ref$user, user, queries, order, _getPagination, limit, offset, postData, rowData, data, response, _response;
+        var search, sortBy, sortType, page, flimit, _ref$user, user, _ref$isPublic, isPublic, queries, order, _getPagination, limit, offset, postData, rowData, data, response, _response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              search = _ref.search, sortBy = _ref.sortBy, sortType = _ref.sortType, page = _ref.page, flimit = _ref.flimit, _ref$user = _ref.user, user = _ref$user === void 0 ? {} : _ref$user;
+              search = _ref.search, sortBy = _ref.sortBy, sortType = _ref.sortType, page = _ref.page, flimit = _ref.flimit, _ref$user = _ref.user, user = _ref$user === void 0 ? {} : _ref$user, _ref$isPublic = _ref.isPublic, isPublic = _ref$isPublic === void 0 ? false : _ref$isPublic;
               queries = {};
               if (search) {
                 queries.where = _defineProperty({}, _sequelize.Op.or, [{
@@ -44,6 +44,11 @@ var PostFilter = /*#__PURE__*/function () {
                 }, {
                   id: search
                 }]);
+              }
+              if (isPublic) {
+                queries.where = _objectSpread(_objectSpread({}, queries.where), {}, {
+                  status: _PostStatusEnum["default"].PUBLIC
+                });
               }
               if ((user === null || user === void 0 ? void 0 : user.role) === _RoleSysEnum["default"].AUTHOR) {
                 queries.where = _objectSpread(_objectSpread({}, queries.where), {}, _defineProperty({}, _sequelize.Op.or, [{
@@ -58,7 +63,7 @@ var PostFilter = /*#__PURE__*/function () {
                 queries.limit = limit;
                 queries.offset = offset;
               }
-              _context.next = 10;
+              _context.next = 11;
               return _models["default"].Post.findAndCountAll(_objectSpread(_objectSpread({}, queries), {}, {
                 include: [{
                   model: _models["default"].Admin,
@@ -79,7 +84,7 @@ var PostFilter = /*#__PURE__*/function () {
                   exclude: ["created_by", "updated_by"]
                 }
               }));
-            case 10:
+            case 11:
               postData = _context.sent;
               rowData = postData === null || postData === void 0 || (_postData$rows = postData.rows) === null || _postData$rows === void 0 ? void 0 : _postData$rows.map(function (post) {
                 var statusPost = {
@@ -95,15 +100,15 @@ var PostFilter = /*#__PURE__*/function () {
                 rows: rowData
               };
               if (!(limit !== Number.MAX_SAFE_INTEGER)) {
-                _context.next = 18;
+                _context.next = 19;
                 break;
               }
               response = (0, _pagination.getPagingData)(data, page, limit);
               return _context.abrupt("return", response);
-            case 18:
+            case 19:
               _response = data;
               return _context.abrupt("return", _response);
-            case 20:
+            case 21:
             case "end":
               return _context.stop();
           }

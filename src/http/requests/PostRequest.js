@@ -72,6 +72,11 @@ const PostRequest = (req, res, next) => {
       "date.greater": "Ngày đăng bài phải lớn hơn ngày hiện tại",
     });
   }
+  if (req.body.filename_old) {
+    rules.filename_old = joi.string().messages({
+      "string.base": "Tên file cũ phải là chuỗi",
+    });
+  }
   if (req.body.tags) {
     rules.tags = joi.custom((tags, helper) => {
       if (tags.length > 0) {
@@ -86,6 +91,9 @@ const PostRequest = (req, res, next) => {
   const dataToValidate = { ...req.body };
   if (fileData?.response?.data?.path) {
     dataToValidate.photo = fileData.response.data.path;
+  }
+  if (req?.body?.filename_old) {
+    dataToValidate.filename_old = req?.body?.filename_old;
   }
   const { error } = joi.object(rules).validate(dataToValidate);
   if (
