@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       PostTag.belongsTo(models.Post, {
         foreignKey: "post_id",
-        // as: "post",
+        as: "post",
       });
       PostTag.belongsTo(models.Tag, {
         foreignKey: "tag_id",
-        // as: "tag",
+        as: "tag",
       });
     }
   }

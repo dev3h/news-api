@@ -38,7 +38,6 @@ class PostObservers {
             tag_id: +tag_id,
           };
         });
-        console.log("test", post_tags);
         await db.PostTag.bulkCreate(post_tags);
       }
     } else {

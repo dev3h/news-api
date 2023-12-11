@@ -38,13 +38,12 @@ module.exports = function (sequelize, DataTypes) {
        */
       function associate(models) {
         PostTag.belongsTo(models.Post, {
-          foreignKey: "post_id"
-          // as: "post",
+          foreignKey: "post_id",
+          as: "post"
         });
-
         PostTag.belongsTo(models.Tag, {
-          foreignKey: "tag_id"
-          // as: "tag",
+          foreignKey: "tag_id",
+          as: "tag"
         });
       }
     }]);

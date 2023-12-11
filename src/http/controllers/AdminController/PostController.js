@@ -152,7 +152,7 @@ class PostController {
             through: {
               model: db.PostTag,
             },
-            attributes: ["id"],
+            attributes: ["id", "name"],
           },
         ],
       });
@@ -164,6 +164,7 @@ class PostController {
       return res.status(200).json({
         ...response.toJSON(),
         tags: tagIds,
+        tags_info: response.tags,
       });
     } catch (error) {
       internalServerError(error, res);

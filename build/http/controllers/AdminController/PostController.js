@@ -236,7 +236,7 @@ var PostController = /*#__PURE__*/function () {
                   through: {
                     model: _models["default"].PostTag
                   },
-                  attributes: ["id"]
+                  attributes: ["id", "name"]
                 }]
               });
             case 3:
@@ -253,7 +253,8 @@ var PostController = /*#__PURE__*/function () {
                 return tag.id.toString();
               });
               return _context4.abrupt("return", res.status(200).json(_objectSpread(_objectSpread({}, response.toJSON()), {}, {
-                tags: tagIds
+                tags: tagIds,
+                tags_info: response.tags
               })));
             case 10:
               _context4.prev = 10;

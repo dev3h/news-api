@@ -54,7 +54,7 @@ var PostObservers = /*#__PURE__*/function () {
                 return tag.id;
               });
               if (!(tags.length > 0)) {
-                _context.next = 27;
+                _context.next = 26;
                 break;
               }
               same_tags = tags.filter(function (tag) {
@@ -96,7 +96,7 @@ var PostObservers = /*#__PURE__*/function () {
               _context.next = 19;
               return _models["default"].PostTag.bulkCreate(post_tags);
             case 19:
-              _context.next = 25;
+              _context.next = 24;
               break;
             case 21:
               _post_tags = same_tags.map(function (tag_id) {
@@ -105,20 +105,19 @@ var PostObservers = /*#__PURE__*/function () {
                   tag_id: +tag_id
                 };
               });
-              console.log("test", _post_tags);
-              _context.next = 25;
+              _context.next = 24;
               return _models["default"].PostTag.bulkCreate(_post_tags);
-            case 25:
-              _context.next = 29;
+            case 24:
+              _context.next = 28;
               break;
-            case 27:
-              _context.next = 29;
+            case 26:
+              _context.next = 28;
               return _models["default"].PostTag.destroy({
                 where: {
                   post_id: post_id
                 }
               });
-            case 29:
+            case 28:
             case "end":
               return _context.stop();
           }
