@@ -185,9 +185,9 @@ class PostController {
       // change this
       const { user } = req;
       const { updated_by } = generateUpdatedBy(user?.id);
-      const { title, photo, tags, ...rest } = req.body;
+      const { title, photo, tags, filename_old = null, ...rest } = req.body;
       const oldImage = await db.Post.findOne({
-        where: { id: req.params.id },
+        where: { id: req.params.id, filename: filename_old },
         attributes: ["filename"],
       });
       const post = await db.Post.findByPk(req.params.id);

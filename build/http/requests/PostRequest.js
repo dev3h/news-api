@@ -16,7 +16,7 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var cloudinary = require("cloudinary").v2;
 var PostRequest = function PostRequest(req, res, next) {
-  var _req$body, _fileData$response;
+  var _req$body, _fileData$response, _req$body2;
   var fileData = req === null || req === void 0 || (_req$body = req.body) === null || _req$body === void 0 || (_req$body = _req$body.photo) === null || _req$body === void 0 ? void 0 : _req$body.file;
   var maxContentLength = 10000;
   var rules = {
@@ -67,6 +67,11 @@ var PostRequest = function PostRequest(req, res, next) {
       "date.greater": "Ngày đăng bài phải lớn hơn ngày hiện tại"
     });
   }
+  if (req.body.filename_old) {
+    rules.filename_old = _joi["default"].string().messages({
+      "string.base": "Tên file cũ phải là chuỗi"
+    });
+  }
   if (req.body.tags) {
     rules.tags = _joi["default"].custom(function (tags, helper) {
       if (tags.length > 0) {
@@ -81,6 +86,10 @@ var PostRequest = function PostRequest(req, res, next) {
   var dataToValidate = _objectSpread({}, req.body);
   if (fileData !== null && fileData !== void 0 && (_fileData$response = fileData.response) !== null && _fileData$response !== void 0 && (_fileData$response = _fileData$response.data) !== null && _fileData$response !== void 0 && _fileData$response.path) {
     dataToValidate.photo = fileData.response.data.path;
+  }
+  if (req !== null && req !== void 0 && (_req$body2 = req.body) !== null && _req$body2 !== void 0 && _req$body2.filename_old) {
+    var _req$body3;
+    dataToValidate.filename_old = req === null || req === void 0 || (_req$body3 = req.body) === null || _req$body3 === void 0 ? void 0 : _req$body3.filename_old;
   }
   var _joi$object$validate = _joi["default"].object(rules).validate(dataToValidate),
     error = _joi$object$validate.error;

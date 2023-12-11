@@ -8,6 +8,7 @@ var _models = _interopRequireDefault(require("../../../models"));
 var _PostFilter = _interopRequireDefault(require("../../../modelFilters/PostFilter"));
 var _generateError = require("../../../helpers/generateError");
 var _UserCache = _interopRequireDefault(require("../../../cache/UserCache"));
+var _PostStatusEnum = _interopRequireDefault(require("../../../enums/PostStatusEnum"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -40,7 +41,8 @@ var PostController = /*#__PURE__*/function () {
                 sortBy: sortBy,
                 sortType: sortType,
                 page: page,
-                flimit: flimit
+                flimit: flimit,
+                isPublic: true
               };
               _context.next = 5;
               return _PostFilter["default"].handleList(filter);
@@ -127,7 +129,10 @@ var PostController = /*#__PURE__*/function () {
                       as: "comments",
                       attributes: ["id", "user_id"],
                       order: [["created_at", "DESC"]]
-                    }]
+                    }],
+                    where: {
+                      status: _PostStatusEnum["default"].PUBLIC
+                    }
                   }]
                 }]
               });
@@ -188,7 +193,8 @@ var PostController = /*#__PURE__*/function () {
               _context4.next = 3;
               return _models["default"].Post.findOne({
                 where: {
-                  slug: req.params.slug
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
                 },
                 include: [{
                   model: _models["default"].Admin,
@@ -269,7 +275,8 @@ var PostController = /*#__PURE__*/function () {
               _context5.next = 4;
               return _models["default"].Post.findOne({
                 where: {
-                  slug: req.params.slug
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
                 }
               });
             case 4:
@@ -339,7 +346,8 @@ var PostController = /*#__PURE__*/function () {
               _context6.next = 4;
               return _models["default"].Post.findOne({
                 where: {
-                  slug: req.params.slug
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
                 }
               });
             case 4:
@@ -389,7 +397,8 @@ var PostController = /*#__PURE__*/function () {
               _context7.next = 4;
               return _models["default"].Post.findOne({
                 where: {
-                  slug: req.params.slug
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
                 }
               });
             case 4:

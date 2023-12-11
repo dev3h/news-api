@@ -1,5 +1,6 @@
 # Test
 api.http
+src/__test__/*.js
 
 # Logs
 logs

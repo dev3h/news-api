@@ -2,6 +2,7 @@ import db from "models";
 import PostFilter from "modelFilters/PostFilter";
 import { internalServerError } from "helpers/generateError";
 import UserCache from "cache/UserCache";
+import PostStatusEnum from "enums/PostStatusEnum";
 
 class PostController {
   static async getAll(req, res) {
@@ -19,6 +20,7 @@ class PostController {
         sortType,
         page,
         flimit,
+        isPublic: true,
       };
       const response = await PostFilter.handleList(filter);
       return res.status(200).json(response);
@@ -70,6 +72,9 @@ class PostController {
                     order: [["created_at", "DESC"]],
                   },
                 ],
+                where: {
+                  status: PostStatusEnum.PUBLIC,
+                },
               },
             ],
           },
@@ -120,6 +125,7 @@ class PostController {
       const response = await db.Post.findOne({
         where: {
           slug: req.params.slug,
+          status: PostStatusEnum.PUBLIC,
         },
         include: [
           {
@@ -186,6 +192,7 @@ class PostController {
       const post = await db.Post.findOne({
         where: {
           slug: req.params.slug,
+          status: PostStatusEnum.PUBLIC,
         },
       });
       if (!post)
@@ -221,6 +228,7 @@ class PostController {
       const post = await db.Post.findOne({
         where: {
           slug: req.params.slug,
+          status: PostStatusEnum.PUBLIC,
         },
       });
       if (!post)
@@ -244,6 +252,7 @@ class PostController {
       const post = await db.Post.findOne({
         where: {
           slug: req.params.slug,
+          status: PostStatusEnum.PUBLIC,
         },
       });
       if (!post)
