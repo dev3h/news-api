@@ -43,7 +43,7 @@ var AdminAuthController = /*#__PURE__*/function () {
               _context.next = 3;
               return _models["default"].Admin.findOne({
                 where: {
-                  username: (_req$body = req.body) === null || _req$body === void 0 ? void 0 : _req$body.username
+                  username: (_req$body = req.body) === null || _req$body === void 0 || (_req$body = _req$body.username) === null || _req$body === void 0 ? void 0 : _req$body.trim()
                 },
                 raw: true
               });
@@ -52,7 +52,7 @@ var AdminAuthController = /*#__PURE__*/function () {
               if (!admin) (0, _generateError.badRequest)(new Error("Username không tồn tại"), res);
               id = admin.id, password = admin.password, role = admin.role, rest = _objectWithoutProperties(admin, _excluded);
               _context.next = 8;
-              return _bcryptjs["default"].compare((_req$body2 = req.body) === null || _req$body2 === void 0 ? void 0 : _req$body2.password, password);
+              return _bcryptjs["default"].compare((_req$body2 = req.body) === null || _req$body2 === void 0 || (_req$body2 = _req$body2.password) === null || _req$body2 === void 0 ? void 0 : _req$body2.trim(), password);
             case 8:
               comparePassword = _context.sent;
               accessToken = comparePassword ? (0, _jwt.generateToken)({

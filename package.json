@@ -8,7 +8,7 @@
     "swagger": "babel-node src/swapper.js",
     "build": "babel src -d build",
     "start": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll --no-cache --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +49,8 @@
     "@babel/preset-env": "^7.22.9",
     "@faker-js/faker": "^8.0.2",
     "babel-plugin-module-resolver": "^5.0.0",
-    "sequelize-cli": "^6.6.1"
+    "jest": "^29.7.0",
+    "sequelize-cli": "^6.6.1",
+    "supertest": "^6.3.3"
   }
 }

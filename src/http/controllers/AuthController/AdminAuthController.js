@@ -10,14 +10,14 @@ class AdminAuthController {
   static async login(req, res) {
     try {
       const admin = await db.Admin.findOne({
-        where: { username: req.body?.username },
+        where: { username: req.body?.username?.trim() },
         raw: true,
       });
       if (!admin) badRequest(new Error("Username không tồn tại"), res);
 
       const { id, password, role, ...rest } = admin;
 
-      const comparePassword = await bcrypt.compare(req.body?.password, password);
+      const comparePassword = await bcrypt.compare(req.body?.password?.trim(), password);
       const accessToken = comparePassword ? generateToken({ id, role }) : null;
 
       const newRefreshToken = comparePassword ? generateRefreshToken(id) : null;

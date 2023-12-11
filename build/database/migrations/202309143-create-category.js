@@ -43,7 +43,9 @@ module.exports = {
                     tableName: "admins"
                   },
                   key: "id"
-                }
+                },
+                onUpdate: "CASCADE",
+                onDelete: "CASCADE"
               },
               updated_by: {
                 type: Sequelize.INTEGER,
@@ -52,7 +54,9 @@ module.exports = {
                     tableName: "admins"
                   },
                   key: "id"
-                }
+                },
+                onUpdate: "CASCADE",
+                onDelete: "CASCADE"
               },
               created_at: {
                 type: Sequelize.DATE,
