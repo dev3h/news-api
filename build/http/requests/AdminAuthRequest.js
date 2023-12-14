@@ -14,14 +14,18 @@ function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key i
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
+  var _req$body, _req$body2;
   var _joi$object$validate = _joi["default"].object(_objectSpread({
       username: _joi["default"].string().required().min(3).max(50).messages({
-        "string.empty": "Tên đăng nhập không được để trống",
-        "any.required": "Tên đăng nhập là bắt buộc",
-        "string.min": "Tên đăng nhập phải có ít nhất 3 ký tự",
-        "string.max": "Tên đăng nhập không được vượt quá 50 ký tự"
+        "string.empty": "Username là bắt buộc",
+        "any.required": "Username là bắt buộc",
+        "string.min": "Username phải có ít nhất 3 ký tự",
+        "string.max": "Username không được vượt quá 50 ký tự"
       })
-    }, (0, _PasswordRule["default"])())).validate(_objectSpread({}, req.body)),
+    }, (0, _PasswordRule["default"])())).validate({
+      username: (_req$body = req.body) === null || _req$body === void 0 || (_req$body = _req$body.username) === null || _req$body === void 0 ? void 0 : _req$body.trim(),
+      password: (_req$body2 = req.body) === null || _req$body2 === void 0 || (_req$body2 = _req$body2.password) === null || _req$body2 === void 0 ? void 0 : _req$body2.trim()
+    }),
     error = _joi$object$validate.error;
   if (error) {
     return res.status(422).json({
