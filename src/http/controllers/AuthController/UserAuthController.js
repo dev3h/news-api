@@ -17,6 +17,7 @@ class UserAuthController {
   static async register(req, res) {
     try {
       const { email, password, name } = req.body;
+
       const user = await db.User.findOne({
         where: { email },
       });

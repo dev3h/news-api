@@ -41,6 +41,9 @@ var PostObservers = /*#__PURE__*/function () {
           merged_tags,
           post_tags,
           _post_tags,
+          post_tags_ids,
+          _diff_tags,
+          _post_tags2,
           _args = arguments;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
@@ -54,7 +57,7 @@ var PostObservers = /*#__PURE__*/function () {
                 return tag.id;
               });
               if (!(tags.length > 0)) {
-                _context.next = 26;
+                _context.next = 32;
                 break;
               }
               same_tags = tags.filter(function (tag) {
@@ -96,28 +99,46 @@ var PostObservers = /*#__PURE__*/function () {
               _context.next = 19;
               return _models["default"].PostTag.bulkCreate(post_tags);
             case 19:
-              _context.next = 24;
+              _context.next = 30;
               break;
             case 21:
-              _post_tags = same_tags.map(function (tag_id) {
+              _context.next = 23;
+              return _models["default"].PostTag.findAll({
+                where: {
+                  post_id: post_id
+                }
+              });
+            case 23:
+              _post_tags = _context.sent;
+              post_tags_ids = _post_tags.map(function (post_tag) {
+                return post_tag.tag_id;
+              });
+              _diff_tags = tags.filter(function (tag_id) {
+                return !post_tags_ids.includes(+tag_id);
+              });
+              if (!(_diff_tags.length > 0)) {
+                _context.next = 30;
+                break;
+              }
+              _post_tags2 = _diff_tags.map(function (tag_id) {
                 return {
                   post_id: post_id,
                   tag_id: +tag_id
                 };
               });
-              _context.next = 24;
-              return _models["default"].PostTag.bulkCreate(_post_tags);
-            case 24:
-              _context.next = 28;
+              _context.next = 30;
+              return _models["default"].PostTag.bulkCreate(_post_tags2);
+            case 30:
+              _context.next = 34;
               break;
-            case 26:
-              _context.next = 28;
+            case 32:
+              _context.next = 34;
               return _models["default"].PostTag.destroy({
                 where: {
                   post_id: post_id
                 }
               });
-            case 28:
+            case 34:
             case "end":
               return _context.stop();
           }
