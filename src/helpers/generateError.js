@@ -2,6 +2,9 @@ import createError from "http-errors";
 
 // 400
 const badRequest = (err, res) => {
+  if (res.headersSent) {
+    return;
+  }
   const error = createError.BadRequest(err);
 
   return res.status(error.status).json({
@@ -11,6 +14,9 @@ const badRequest = (err, res) => {
 
 // 401
 const notAuth = (err, res, authError = false) => {
+  if (res.headersSent) {
+    return;
+  }
   const error = createError.Unauthorized(err);
 
   return res.status(error.status).json({
@@ -21,6 +27,9 @@ const notAuth = (err, res, authError = false) => {
 
 // 403
 const forbidden = (err, res) => {
+  if (res.headersSent) {
+    return;
+  }
   const error = createError.Forbidden(err);
 
   return res.status(error.status).json({
@@ -30,6 +39,9 @@ const forbidden = (err, res) => {
 
 // 404
 const notFoundRoute = (req, res) => {
+  if (res.headersSent) {
+    return;
+  }
   const error = createError.NotFound("Route không tồn tại!");
 
   return res.status(error.status).json({
@@ -39,6 +51,9 @@ const notFoundRoute = (req, res) => {
 
 // 500
 const internalServerError = (err, res) => {
+  if (res.headersSent) {
+    return;
+  }
   const error = createError.InternalServerError(err);
 
   return res.status(error.status).json({

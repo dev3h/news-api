@@ -32,13 +32,30 @@ class PostObservers {
           await db.PostTag.bulkCreate(post_tags);
         }
       } else {
-        const post_tags = same_tags.map((tag_id) => {
-          return {
+        // kiểm tra xem PostTag của post_id đã tồn tại tag_id nào chưa, nếu chưa có thì tạo mới, còn có rồi thì bỏ qua
+        // const post_tags = tags.map((tag_id) => {
+        //   return {
+        //     post_id,
+        //     tag_id: +tag_id,
+        //   };
+        // });
+        // await db.PostTag.bulkCreate(post_tags);
+        const post_tags = await db.PostTag.findAll({
+          where: {
             post_id,
-            tag_id: +tag_id,
-          };
+          },
         });
-        await db.PostTag.bulkCreate(post_tags);
+        const post_tags_ids = post_tags.map((post_tag) => post_tag.tag_id);
+        const diff_tags = tags.filter((tag_id) => !post_tags_ids.includes(+tag_id));
+        if (diff_tags.length > 0) {
+          const post_tags = diff_tags.map((tag_id) => {
+            return {
+              post_id,
+              tag_id: +tag_id,
+            };
+          });
+          await db.PostTag.bulkCreate(post_tags);
+        }
       }
     } else {
       await db.PostTag.destroy({

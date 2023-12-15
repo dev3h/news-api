@@ -8,6 +8,9 @@ var _httpErrors = _interopRequireDefault(require("http-errors"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 // 400
 var badRequest = exports.badRequest = function badRequest(err, res) {
+  if (res.headersSent) {
+    return;
+  }
   var error = _httpErrors["default"].BadRequest(err);
   return res.status(error.status).json({
     message: err.message
@@ -17,6 +20,9 @@ var badRequest = exports.badRequest = function badRequest(err, res) {
 // 401
 var notAuth = exports.notAuth = function notAuth(err, res) {
   var authError = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  if (res.headersSent) {
+    return;
+  }
   var error = _httpErrors["default"].Unauthorized(err);
   return res.status(error.status).json({
     message: err.message,
@@ -26,6 +32,9 @@ var notAuth = exports.notAuth = function notAuth(err, res) {
 
 // 403
 var forbidden = exports.forbidden = function forbidden(err, res) {
+  if (res.headersSent) {
+    return;
+  }
   var error = _httpErrors["default"].Forbidden(err);
   return res.status(error.status).json({
     message: err.message
@@ -34,6 +43,9 @@ var forbidden = exports.forbidden = function forbidden(err, res) {
 
 // 404
 var notFoundRoute = exports.notFoundRoute = function notFoundRoute(req, res) {
+  if (res.headersSent) {
+    return;
+  }
   var error = _httpErrors["default"].NotFound("Route không tồn tại!");
   return res.status(error.status).json({
     message: error.message
@@ -42,6 +54,9 @@ var notFoundRoute = exports.notFoundRoute = function notFoundRoute(req, res) {
 
 // 500
 var internalServerError = exports.internalServerError = function internalServerError(err, res) {
+  if (res.headersSent) {
+    return;
+  }
   var error = _httpErrors["default"].InternalServerError(err);
   return res.status(error.status).json({
     message: err.message

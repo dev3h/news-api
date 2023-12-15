@@ -14,15 +14,31 @@ function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key i
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var UserAuthRequest = function UserAuthRequest(req, res, next) {
-  var rules = _objectSpread({
+  var _dataToValidate$email, _dataToValidate$passw;
+  var commonRules = _objectSpread({
     email: _joi["default"].string().max(50).trim().regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/).required().messages({
-      "string.empty": "Email không được để trống",
+      "string.empty": "Email là bắt buộc",
       "any.required": "Email là bắt buộc",
-      "string.max": "Email không được quá 50 ký tự",
+      "string.max": "Email phải có tối đa 50 ký tự",
       "string.pattern.base": "Email không đúng định dạng"
     })
   }, (0, _PasswordRule["default"])());
-  var _joi$object$validate = _joi["default"].object(rules).validate(_objectSpread({}, req.body)),
+  var registrationRules = {
+    name: _joi["default"].string().max(50).trim().required().messages({
+      "string.empty": "Name là bắt buộc",
+      "any.required": "Name là bắt buộc",
+      "string.max": "Name phải có tối đa 50 ký tự"
+    })
+  };
+  var rules = req.path === "/register" ? _objectSpread(_objectSpread({}, commonRules), registrationRules) : commonRules;
+  var dataToValidate = _objectSpread({}, req.body);
+  dataToValidate.email = (_dataToValidate$email = dataToValidate.email) === null || _dataToValidate$email === void 0 ? void 0 : _dataToValidate$email.trim();
+  dataToValidate.password = (_dataToValidate$passw = dataToValidate.password) === null || _dataToValidate$passw === void 0 ? void 0 : _dataToValidate$passw.trim();
+  if (req.path === "/register") {
+    var _dataToValidate$name;
+    dataToValidate.name = (_dataToValidate$name = dataToValidate.name) === null || _dataToValidate$name === void 0 ? void 0 : _dataToValidate$name.trim();
+  }
+  var _joi$object$validate = _joi["default"].object(rules).validate(dataToValidate),
     error = _joi$object$validate.error;
   if (error) {
     return res.status(422).json({
