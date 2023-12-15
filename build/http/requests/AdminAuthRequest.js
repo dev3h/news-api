@@ -15,14 +15,6 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
   var _req$body, _req$body2;
-<<<<<<< HEAD
-  var _joi$object$validate = _joi["default"].object(_objectSpread({
-      username: _joi["default"].string().required().min(3).max(50).messages({
-        "string.empty": "Username là bắt buộc",
-        "any.required": "Username là bắt buộc",
-        "string.min": "Username phải có ít nhất 3 ký tự",
-        "string.max": "Username không được vượt quá 50 ký tự"
-=======
   var usenamePattern = /^[a-zA-Z0-9]+$/;
   var _joi$object$validate = _joi["default"].object(_objectSpread({
       username: _joi["default"].string().required().min(3).max(50).pattern(usenamePattern).messages({
@@ -31,7 +23,6 @@ var AdminAuthRequest = function AdminAuthRequest(req, res, next) {
         "string.min": "Username phải có ít nhất 3 ký tự",
         "string.max": "Username không được vượt quá 50 ký tự",
         "string.pattern.base": "Username không được chứa ký tự đặc biệt"
->>>>>>> c282f023b7013ad0b1e5231ea0aa8aa46b7de141
       })
     }, (0, _PasswordRule["default"])())).validate({
       username: (_req$body = req.body) === null || _req$body === void 0 || (_req$body = _req$body.username) === null || _req$body === void 0 ? void 0 : _req$body.trim(),

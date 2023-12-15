@@ -41,7 +41,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", () => {
   // expect: status code 200, message: 'Đăng nhập thành công'
   it("DN06: Nhập UserName tồn tại trong hệ thống", async () => {
     const response = await request.post("/api/v1/auth/admin/login").send({
-      username: "RodolfoLang5",
+      username: "HortenseWatsica27",
       password: "Abcd1234@",
     });
     expect(response.status).toBe(200);
@@ -51,7 +51,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", () => {
   // expect: status code 200, message: 'Đăng nhập thành công'
   it("DN07: Nhập UserName tồn tại trong hệ thống với 3 ký tự", async () => {
     const response = await request.post("/api/v1/auth/admin/login").send({
-      username: "Abc",
+      username: "Bet",
       password: "Abcd1234@",
     });
     expect(response.status).toBe(200);
@@ -71,7 +71,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", () => {
   // expect: status code 200, message: 'Đăng nhập thành công'
   it("DN09: Nhập UserName tồn tại trong hệ thống với 50 ký tự", async () => {
     const response = await request.post("/api/v1/auth/admin/login").send({
-      username: "AbcdefghijklmnopqrstuvwxyzAbcdefghijklmnopqrstuvwx",
+      username: "DiamondCarter49AdditionalText123456789012345678901",
       password: "Abcd1234@",
     });
     expect(response.status).toBe(200);
@@ -109,24 +109,24 @@ describe("Login admin api '/api/v1/auth/admin/login'", () => {
   });
   // Test case DN15: Nhập Password hợp lệ có 8 ký tự
   // expect: status code 200, message: 'Đăng nhập thành công'
-  // it("DN15: Nhập Password hợp lệ có 8 ký tự", async () => {
-  //   const response = await request.post("/api/v1/auth/admin/login").send({
-  //     username: "RodolfoLang5",
-  //     password: "Abcd1234@",
-  //   });
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.message).toBe("Đăng nhập thành công");
-  // });
+  it("DN15: Nhập Password hợp lệ có 8 ký tự", async () => {
+    const response = await request.post("/api/v1/auth/admin/login").send({
+      username: "Mossie44",
+      password: "Abcd123@",
+    });
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Đăng nhập thành công");
+  });
   // Test case DN16: Nhập Password hợp lệ có 20 ký tự
   // expect: status code 200, message: 'Đăng nhập thành công'
-  // it("DN16: Nhập Password hợp lệ có 20 ký tự", async () => {
-  //   const response = await request.post("/api/v1/auth/admin/login").send({
-  //     username: "RodolfoLang5",
-  //     password: "Abcd1234@Abcd1234@Abcd1234@",
-  //   });
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.message).toBe("Đăng nhập thành công");
-  // });
+  it("DN16: Nhập Password hợp lệ có 20 ký tự", async () => {
+    const response = await request.post("/api/v1/auth/admin/login").send({
+      username: "Geovanni88",
+      password: "Acbdefghiklmnop1234@",
+    });
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Đăng nhập thành công");
+  });
   // Test case DN17: Nhập Password hợp lệ có 21 ký tự
   // expect: status code 422, message: 'Password không được vượt quá 20 ký tự'
   it("DN17: Nhập Password hợp lệ có 21 ký tự", async () => {
@@ -141,7 +141,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", () => {
   // expect: status code 200, message: 'Đăng nhập thành công'
   it("DN18: Nhập Password có độ dài hợp lệ [8,20] có cả chữ, số, ký tự đặc biệt", async () => {
     const response = await request.post("/api/v1/auth/admin/login").send({
-      username: "RodolfoLang5",
+      username: "HortenseWatsica27",
       password: "Abcd1234@",
     });
     expect(response.status).toBe(200);

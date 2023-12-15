@@ -86,7 +86,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
         case 0:
           _context4.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "RodolfoLang5",
+            username: "HortenseWatsica27",
             password: "Abcd1234@"
           });
         case 2:
@@ -108,7 +108,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
         case 0:
           _context5.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "Abc",
+            username: "Bet",
             password: "Abcd1234@"
           });
         case 2:
@@ -152,7 +152,7 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
         case 0:
           _context7.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "AbcdefghijklmnopqrstuvwxyzAbcdefghijklmnopqrstuvwx",
+            username: "DiamondCarter49AdditionalText123456789012345678901",
             password: "Abcd1234@"
           });
         case 2:
@@ -233,57 +233,37 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
   })));
   // Test case DN15: Nhập Password hợp lệ có 8 ký tự
   // expect: status code 200, message: 'Đăng nhập thành công'
-  // it("DN15: Nhập Password hợp lệ có 8 ký tự", async () => {
-  //   const response = await request.post("/api/v1/auth/admin/login").send({
-  //     username: "RodolfoLang5",
-  //     password: "Abcd1234@",
-  //   });
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.message).toBe("Đăng nhập thành công");
-  // });
-  // Test case DN16: Nhập Password hợp lệ có 20 ký tự
-  // expect: status code 200, message: 'Đăng nhập thành công'
-  // it("DN16: Nhập Password hợp lệ có 20 ký tự", async () => {
-  //   const response = await request.post("/api/v1/auth/admin/login").send({
-  //     username: "RodolfoLang5",
-  //     password: "Abcd1234@Abcd1234@Abcd1234@",
-  //   });
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.message).toBe("Đăng nhập thành công");
-  // });
-  // Test case DN17: Nhập Password hợp lệ có 21 ký tự
-  // expect: status code 422, message: 'Password không được vượt quá 20 ký tự'
-  it("DN17: Nhập Password hợp lệ có 21 ký tự", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+  it("DN15: Nhập Password hợp lệ có 8 ký tự", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
     var response;
     return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) switch (_context11.prev = _context11.next) {
         case 0:
           _context11.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "RodolfoLang5",
-            password: "Abcd1234@Abcd1234@Abcd1234@A"
+            username: "Mossie44",
+            password: "Abcd123@"
           });
         case 2:
           response = _context11.sent;
-          expect(response.status).toBe(422);
-          expect(response.body.message).toBe("Password không được vượt quá 20 ký tự");
+          expect(response.status).toBe(200);
+          expect(response.body.message).toBe("Đăng nhập thành công");
         case 5:
         case "end":
           return _context11.stop();
       }
     }, _callee11);
   })));
-  // Test case DN18: Nhập Password hợp lệ có cả chữ, số, ký tự đặc biệt
+  // Test case DN16: Nhập Password hợp lệ có 20 ký tự
   // expect: status code 200, message: 'Đăng nhập thành công'
-  it("DN18: Nhập Password có độ dài hợp lệ [8,20] có cả chữ, số, ký tự đặc biệt", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+  it("DN16: Nhập Password hợp lệ có 20 ký tự", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
     var response;
     return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) switch (_context12.prev = _context12.next) {
         case 0:
           _context12.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "RodolfoLang5",
-            password: "Abcd1234@"
+            username: "Geovanni88",
+            password: "Acbdefghiklmnop1234@"
           });
         case 2:
           response = _context12.sent;
@@ -295,9 +275,9 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
       }
     }, _callee12);
   })));
-  // Test case DN19: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ hoa
-  // expect: status code 422, message: 'Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)'
-  it("DN19: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ hoa", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+  // Test case DN17: Nhập Password hợp lệ có 21 ký tự
+  // expect: status code 422, message: 'Password không được vượt quá 20 ký tự'
+  it("DN17: Nhập Password hợp lệ có 21 ký tự", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
     var response;
     return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) switch (_context13.prev = _context13.next) {
@@ -305,38 +285,82 @@ describe("Login admin api '/api/v1/auth/admin/login'", function () {
           _context13.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
             username: "RodolfoLang5",
-            password: "ABCDEF123@"
+            password: "Abcd1234@Abcd1234@Abcd1234@A"
           });
         case 2:
           response = _context13.sent;
           expect(response.status).toBe(422);
-          expect(response.body.message).toBe("Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)");
+          expect(response.body.message).toBe("Password không được vượt quá 20 ký tự");
         case 5:
         case "end":
           return _context13.stop();
       }
     }, _callee13);
   })));
-  // Test case DN20: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ thường
-  // expect: status code 422, message: 'Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)'
-  it("DN20: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ thường", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
+  // Test case DN18: Nhập Password hợp lệ có cả chữ, số, ký tự đặc biệt
+  // expect: status code 200, message: 'Đăng nhập thành công'
+  it("DN18: Nhập Password có độ dài hợp lệ [8,20] có cả chữ, số, ký tự đặc biệt", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
     var response;
     return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) switch (_context14.prev = _context14.next) {
         case 0:
           _context14.next = 2;
           return request.post("/api/v1/auth/admin/login").send({
-            username: "RodolfoLang5",
-            password: "abcdef123@"
+            username: "HortenseWatsica27",
+            password: "Abcd1234@"
           });
         case 2:
           response = _context14.sent;
-          expect(response.status).toBe(422);
-          expect(response.body.message).toBe("Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)");
+          expect(response.status).toBe(200);
+          expect(response.body.message).toBe("Đăng nhập thành công");
         case 5:
         case "end":
           return _context14.stop();
       }
     }, _callee14);
+  })));
+  // Test case DN19: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ hoa
+  // expect: status code 422, message: 'Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)'
+  it("DN19: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ hoa", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
+    var response;
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
+        case 0:
+          _context15.next = 2;
+          return request.post("/api/v1/auth/admin/login").send({
+            username: "RodolfoLang5",
+            password: "ABCDEF123@"
+          });
+        case 2:
+          response = _context15.sent;
+          expect(response.status).toBe(422);
+          expect(response.body.message).toBe("Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)");
+        case 5:
+        case "end":
+          return _context15.stop();
+      }
+    }, _callee15);
+  })));
+  // Test case DN20: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ thường
+  // expect: status code 422, message: 'Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)'
+  it("DN20: Nhập Password có độ dài [8,20] nhưng chứa toàn chữ thường", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee16() {
+    var response;
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.next = 2;
+          return request.post("/api/v1/auth/admin/login").send({
+            username: "RodolfoLang5",
+            password: "abcdef123@"
+          });
+        case 2:
+          response = _context16.sent;
+          expect(response.status).toBe(422);
+          expect(response.body.message).toBe("Password phải bao gồm cả chữ chữ hoa, chữ thường, số và ký tự đặc biệt (@#$%^&+=!)");
+        case 5:
+        case "end":
+          return _context16.stop();
+      }
+    }, _callee16);
   })));
 });
