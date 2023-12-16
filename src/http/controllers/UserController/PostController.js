@@ -3,6 +3,7 @@ import PostFilter from "modelFilters/PostFilter";
 import { internalServerError } from "helpers/generateError";
 import UserCache from "cache/UserCache";
 import PostStatusEnum from "enums/PostStatusEnum";
+import GroupPostFilter from "modelFilters/GroupPostFilter";
 
 class PostController {
   static async getAll(req, res) {
@@ -29,11 +30,55 @@ class PostController {
     }
   }
 
+  static async getAllPostByGroupAndCategory(req, res) {
+    try {
+      const { sortBy = "id", sortType = "ASC", page = 1, flimit } = req.query;
+      const { groupSlug, categorySlug } = req.params;
+      const filter = {
+        sortBy,
+        sortType,
+        page,
+        flimit,
+        groupSlug,
+        categorySlug,
+      };
+      const response = await GroupPostFilter.handleList(filter);
+      return res.status(200).json(response);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+
   static async getGroupCategory(req, res) {
     try {
       const response = await db.GroupCategory.findAll({
         attributes: ["id", "name", "slug"],
       });
+      return res.status(200).json(response);
+    } catch (error) {
+      internalServerError(error, res);
+    }
+  }
+
+  static async getCategoriesByGroup(req, res) {
+    try {
+      const response = await db.GroupCategory.findOne({
+        where: {
+          slug: req.params?.slug,
+        },
+        attributes: ["id", "name", "slug"],
+        include: [
+          {
+            model: db.Category,
+            as: "categories",
+            attributes: ["id", "name", "slug"],
+          },
+        ],
+      });
+      if (!response)
+        return res.status(404).json({
+          message: "Không tìm thấy nhóm danh mục",
+        });
       return res.status(200).json(response);
     } catch (error) {
       internalServerError(error, res);

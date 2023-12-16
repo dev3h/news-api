@@ -9,6 +9,7 @@ var _PostFilter = _interopRequireDefault(require("../../../modelFilters/PostFilt
 var _generateError = require("../../../helpers/generateError");
 var _UserCache = _interopRequireDefault(require("../../../cache/UserCache"));
 var _PostStatusEnum = _interopRequireDefault(require("../../../enums/PostStatusEnum"));
+var _GroupPostFilter = _interopRequireDefault(require("../../../modelFilters/GroupPostFilter"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -65,46 +66,132 @@ var PostController = /*#__PURE__*/function () {
       return getAll;
     }()
   }, {
-    key: "getGroupCategory",
+    key: "getAllPostByGroupAndCategory",
     value: function () {
-      var _getGroupCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var response;
+      var _getAllPostByGroupAndCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+        var _req$query2, _req$query2$sortBy, sortBy, _req$query2$sortType, sortType, _req$query2$page, page, flimit, _req$params, groupSlug, categorySlug, filter, response;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              _context2.next = 3;
-              return _models["default"].GroupCategory.findAll({
-                attributes: ["id", "name", "slug"]
-              });
-            case 3:
+              _req$query2 = req.query, _req$query2$sortBy = _req$query2.sortBy, sortBy = _req$query2$sortBy === void 0 ? "id" : _req$query2$sortBy, _req$query2$sortType = _req$query2.sortType, sortType = _req$query2$sortType === void 0 ? "ASC" : _req$query2$sortType, _req$query2$page = _req$query2.page, page = _req$query2$page === void 0 ? 1 : _req$query2$page, flimit = _req$query2.flimit;
+              _req$params = req.params, groupSlug = _req$params.groupSlug, categorySlug = _req$params.categorySlug;
+              filter = {
+                sortBy: sortBy,
+                sortType: sortType,
+                page: page,
+                flimit: flimit,
+                groupSlug: groupSlug,
+                categorySlug: categorySlug
+              };
+              _context2.next = 6;
+              return _GroupPostFilter["default"].handleList(filter);
+            case 6:
               response = _context2.sent;
               return _context2.abrupt("return", res.status(200).json(response));
-            case 7:
-              _context2.prev = 7;
+            case 10:
+              _context2.prev = 10;
               _context2.t0 = _context2["catch"](0);
               (0, _generateError.internalServerError)(_context2.t0, res);
-            case 10:
+            case 13:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 7]]);
+        }, _callee2, null, [[0, 10]]);
       }));
-      function getGroupCategory(_x3, _x4) {
-        return _getGroupCategory.apply(this, arguments);
+      function getAllPostByGroupAndCategory(_x3, _x4) {
+        return _getAllPostByGroupAndCategory.apply(this, arguments);
       }
-      return getGroupCategory;
+      return getAllPostByGroupAndCategory;
     }()
   }, {
-    key: "getPostOfGroup",
+    key: "getGroupCategory",
     value: function () {
-      var _getPostOfGroup = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-        var response, postsOfGroupCategory, filteredResult;
+      var _getGroupCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+        var response;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
               _context3.next = 3;
+              return _models["default"].GroupCategory.findAll({
+                attributes: ["id", "name", "slug"]
+              });
+            case 3:
+              response = _context3.sent;
+              return _context3.abrupt("return", res.status(200).json(response));
+            case 7:
+              _context3.prev = 7;
+              _context3.t0 = _context3["catch"](0);
+              (0, _generateError.internalServerError)(_context3.t0, res);
+            case 10:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, null, [[0, 7]]);
+      }));
+      function getGroupCategory(_x5, _x6) {
+        return _getGroupCategory.apply(this, arguments);
+      }
+      return getGroupCategory;
+    }()
+  }, {
+    key: "getCategoriesByGroup",
+    value: function () {
+      var _getCategoriesByGroup = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+        var _req$params2, response;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.prev = 0;
+              _context4.next = 3;
+              return _models["default"].GroupCategory.findOne({
+                where: {
+                  slug: (_req$params2 = req.params) === null || _req$params2 === void 0 ? void 0 : _req$params2.slug
+                },
+                attributes: ["id", "name", "slug"],
+                include: [{
+                  model: _models["default"].Category,
+                  as: "categories",
+                  attributes: ["id", "name", "slug"]
+                }]
+              });
+            case 3:
+              response = _context4.sent;
+              if (response) {
+                _context4.next = 6;
+                break;
+              }
+              return _context4.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy nhóm danh mục"
+              }));
+            case 6:
+              return _context4.abrupt("return", res.status(200).json(response));
+            case 9:
+              _context4.prev = 9;
+              _context4.t0 = _context4["catch"](0);
+              (0, _generateError.internalServerError)(_context4.t0, res);
+            case 12:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, null, [[0, 9]]);
+      }));
+      function getCategoriesByGroup(_x7, _x8) {
+        return _getCategoriesByGroup.apply(this, arguments);
+      }
+      return getCategoriesByGroup;
+    }()
+  }, {
+    key: "getPostOfGroup",
+    value: function () {
+      var _getPostOfGroup = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+        var response, postsOfGroupCategory, filteredResult;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.prev = 0;
+              _context5.next = 3;
               return _models["default"].GroupCategory.findAll({
                 attributes: ["id", "name", "slug"],
                 include: [{
@@ -137,7 +224,7 @@ var PostController = /*#__PURE__*/function () {
                 }]
               });
             case 3:
-              response = _context3.sent;
+              response = _context5.sent;
               postsOfGroupCategory = response.map(function (groupCategory) {
                 var categories = groupCategory.categories;
                 var filteredCategories = categories.filter(function (category) {
@@ -165,18 +252,18 @@ var PostController = /*#__PURE__*/function () {
               filteredResult = postsOfGroupCategory.filter(function (groupCategory) {
                 return groupCategory !== null;
               });
-              return _context3.abrupt("return", res.status(200).json(filteredResult));
+              return _context5.abrupt("return", res.status(200).json(filteredResult));
             case 9:
-              _context3.prev = 9;
-              _context3.t0 = _context3["catch"](0);
-              (0, _generateError.internalServerError)(_context3.t0, res);
+              _context5.prev = 9;
+              _context5.t0 = _context5["catch"](0);
+              (0, _generateError.internalServerError)(_context5.t0, res);
             case 12:
             case "end":
-              return _context3.stop();
+              return _context5.stop();
           }
-        }, _callee3, null, [[0, 9]]);
+        }, _callee5, null, [[0, 9]]);
       }));
-      function getPostOfGroup(_x5, _x6) {
+      function getPostOfGroup(_x9, _x10) {
         return _getPostOfGroup.apply(this, arguments);
       }
       return getPostOfGroup;
@@ -184,13 +271,13 @@ var PostController = /*#__PURE__*/function () {
   }, {
     key: "getOne",
     value: function () {
-      var _getOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+      var _getOne = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
         var response;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              _context4.prev = 0;
-              _context4.next = 3;
+              _context6.prev = 0;
+              _context6.next = 3;
               return _models["default"].Post.findOne({
                 where: {
                   slug: req.params.slug,
@@ -237,27 +324,27 @@ var PostController = /*#__PURE__*/function () {
                 }]
               });
             case 3:
-              response = _context4.sent;
+              response = _context6.sent;
               if (response) {
-                _context4.next = 6;
+                _context6.next = 6;
                 break;
               }
-              return _context4.abrupt("return", res.status(404).json({
+              return _context6.abrupt("return", res.status(404).json({
                 message: "Không tìm thấy bài viết"
               }));
             case 6:
-              return _context4.abrupt("return", res.status(200).json(response));
+              return _context6.abrupt("return", res.status(200).json(response));
             case 9:
-              _context4.prev = 9;
-              _context4.t0 = _context4["catch"](0);
-              (0, _generateError.internalServerError)(_context4.t0, res);
+              _context6.prev = 9;
+              _context6.t0 = _context6["catch"](0);
+              (0, _generateError.internalServerError)(_context6.t0, res);
             case 12:
             case "end":
-              return _context4.stop();
+              return _context6.stop();
           }
-        }, _callee4, null, [[0, 9]]);
+        }, _callee6, null, [[0, 9]]);
       }));
-      function getOne(_x7, _x8) {
+      function getOne(_x11, _x12) {
         return _getOne.apply(this, arguments);
       }
       return getOne;
@@ -265,135 +352,13 @@ var PostController = /*#__PURE__*/function () {
   }, {
     key: "toggleLike",
     value: function () {
-      var _toggleLike = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+      var _toggleLike = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
         var user_id, post, postUserLike;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
-            case 0:
-              _context5.prev = 0;
-              user_id = req.user.id;
-              _context5.next = 4;
-              return _models["default"].Post.findOne({
-                where: {
-                  slug: req.params.slug,
-                  status: _PostStatusEnum["default"].PUBLIC
-                }
-              });
-            case 4:
-              post = _context5.sent;
-              if (post) {
-                _context5.next = 7;
-                break;
-              }
-              return _context5.abrupt("return", res.status(404).json({
-                message: "Không tìm thấy bài viết"
-              }));
-            case 7:
-              _context5.next = 9;
-              return _models["default"].PostUserLike.findOne({
-                where: {
-                  post_id: post.id,
-                  user_id: user_id
-                }
-              });
-            case 9:
-              postUserLike = _context5.sent;
-              if (!postUserLike) {
-                _context5.next = 14;
-                break;
-              }
-              _context5.next = 13;
-              return postUserLike.destroy();
-            case 13:
-              return _context5.abrupt("return", res.status(200).json({
-                message: "Bỏ thích thành công"
-              }));
-            case 14:
-              _context5.next = 16;
-              return _models["default"].PostUserLike.create({
-                post_id: post.id,
-                user_id: user_id
-              });
-            case 16:
-              return _context5.abrupt("return", res.status(200).json({
-                message: "Thích thành công"
-              }));
-            case 19:
-              _context5.prev = 19;
-              _context5.t0 = _context5["catch"](0);
-              (0, _generateError.internalServerError)(_context5.t0, res);
-            case 22:
-            case "end":
-              return _context5.stop();
-          }
-        }, _callee5, null, [[0, 19]]);
-      }));
-      function toggleLike(_x9, _x10) {
-        return _toggleLike.apply(this, arguments);
-      }
-      return toggleLike;
-    }()
-  }, {
-    key: "createComment",
-    value: function () {
-      var _createComment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-        var _req$body, user_id, post, response;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
-            case 0:
-              _context6.prev = 0;
-              user_id = req.user.id;
-              _context6.next = 4;
-              return _models["default"].Post.findOne({
-                where: {
-                  slug: req.params.slug,
-                  status: _PostStatusEnum["default"].PUBLIC
-                }
-              });
-            case 4:
-              post = _context6.sent;
-              if (post) {
-                _context6.next = 7;
-                break;
-              }
-              return _context6.abrupt("return", res.status(404).json({
-                message: "Không tìm thấy bài viết"
-              }));
-            case 7:
-              _context6.next = 9;
-              return _models["default"].PostComment.create({
-                content: (_req$body = req.body) === null || _req$body === void 0 ? void 0 : _req$body.content,
-                post_id: post.id,
-                user_id: user_id
-              });
-            case 9:
-              response = _context6.sent;
-              return _context6.abrupt("return", res.status(200).json(response));
-            case 13:
-              _context6.prev = 13;
-              _context6.t0 = _context6["catch"](0);
-              (0, _generateError.internalServerError)(_context6.t0, res);
-            case 16:
-            case "end":
-              return _context6.stop();
-          }
-        }, _callee6, null, [[0, 13]]);
-      }));
-      function createComment(_x11, _x12) {
-        return _createComment.apply(this, arguments);
-      }
-      return createComment;
-    }()
-  }, {
-    key: "increaseViewOfPost",
-    value: function () {
-      var _increaseViewOfPost = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-        var ip, post, key, lastView, a;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
               _context7.prev = 0;
-              ip = req.body.ip;
+              user_id = req.user.id;
               _context7.next = 4;
               return _models["default"].Post.findOne({
                 where: {
@@ -411,14 +376,136 @@ var PostController = /*#__PURE__*/function () {
                 message: "Không tìm thấy bài viết"
               }));
             case 7:
+              _context7.next = 9;
+              return _models["default"].PostUserLike.findOne({
+                where: {
+                  post_id: post.id,
+                  user_id: user_id
+                }
+              });
+            case 9:
+              postUserLike = _context7.sent;
+              if (!postUserLike) {
+                _context7.next = 14;
+                break;
+              }
+              _context7.next = 13;
+              return postUserLike.destroy();
+            case 13:
+              return _context7.abrupt("return", res.status(200).json({
+                message: "Bỏ thích thành công"
+              }));
+            case 14:
+              _context7.next = 16;
+              return _models["default"].PostUserLike.create({
+                post_id: post.id,
+                user_id: user_id
+              });
+            case 16:
+              return _context7.abrupt("return", res.status(200).json({
+                message: "Thích thành công"
+              }));
+            case 19:
+              _context7.prev = 19;
+              _context7.t0 = _context7["catch"](0);
+              (0, _generateError.internalServerError)(_context7.t0, res);
+            case 22:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7, null, [[0, 19]]);
+      }));
+      function toggleLike(_x13, _x14) {
+        return _toggleLike.apply(this, arguments);
+      }
+      return toggleLike;
+    }()
+  }, {
+    key: "createComment",
+    value: function () {
+      var _createComment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+        var _req$body, user_id, post, response;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              _context8.prev = 0;
+              user_id = req.user.id;
+              _context8.next = 4;
+              return _models["default"].Post.findOne({
+                where: {
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
+                }
+              });
+            case 4:
+              post = _context8.sent;
+              if (post) {
+                _context8.next = 7;
+                break;
+              }
+              return _context8.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy bài viết"
+              }));
+            case 7:
+              _context8.next = 9;
+              return _models["default"].PostComment.create({
+                content: (_req$body = req.body) === null || _req$body === void 0 ? void 0 : _req$body.content,
+                post_id: post.id,
+                user_id: user_id
+              });
+            case 9:
+              response = _context8.sent;
+              return _context8.abrupt("return", res.status(200).json(response));
+            case 13:
+              _context8.prev = 13;
+              _context8.t0 = _context8["catch"](0);
+              (0, _generateError.internalServerError)(_context8.t0, res);
+            case 16:
+            case "end":
+              return _context8.stop();
+          }
+        }, _callee8, null, [[0, 13]]);
+      }));
+      function createComment(_x15, _x16) {
+        return _createComment.apply(this, arguments);
+      }
+      return createComment;
+    }()
+  }, {
+    key: "increaseViewOfPost",
+    value: function () {
+      var _increaseViewOfPost = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+        var ip, post, key, lastView, a;
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
+            case 0:
+              _context9.prev = 0;
+              ip = req.body.ip;
+              _context9.next = 4;
+              return _models["default"].Post.findOne({
+                where: {
+                  slug: req.params.slug,
+                  status: _PostStatusEnum["default"].PUBLIC
+                }
+              });
+            case 4:
+              post = _context9.sent;
+              if (post) {
+                _context9.next = 7;
+                break;
+              }
+              return _context9.abrupt("return", res.status(404).json({
+                message: "Không tìm thấy bài viết"
+              }));
+            case 7:
               key = "views:".concat(post.id, ":").concat(ip);
               lastView = _UserCache["default"].get(key);
               if (!(lastView !== ip)) {
-                _context7.next = 13;
+                _context9.next = 13;
                 break;
               }
               a = _UserCache["default"].set(key, ip, 86400); // 1 day
-              _context7.next = 13;
+              _context9.next = 13;
               return _models["default"].Post.update({
                 view: post.view + 1
               }, {
@@ -427,20 +514,20 @@ var PostController = /*#__PURE__*/function () {
                 }
               });
             case 13:
-              return _context7.abrupt("return", res.status(200).json({
+              return _context9.abrupt("return", res.status(200).json({
                 message: "Tăng lượt xem thành công"
               }));
             case 16:
-              _context7.prev = 16;
-              _context7.t0 = _context7["catch"](0);
-              (0, _generateError.internalServerError)(_context7.t0, res);
+              _context9.prev = 16;
+              _context9.t0 = _context9["catch"](0);
+              (0, _generateError.internalServerError)(_context9.t0, res);
             case 19:
             case "end":
-              return _context7.stop();
+              return _context9.stop();
           }
-        }, _callee7, null, [[0, 16]]);
+        }, _callee9, null, [[0, 16]]);
       }));
-      function increaseViewOfPost(_x13, _x14) {
+      function increaseViewOfPost(_x17, _x18) {
         return _increaseViewOfPost.apply(this, arguments);
       }
       return increaseViewOfPost;
