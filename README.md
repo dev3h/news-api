@@ -1,1 +1,1 @@
-This is api for warehouse management system
+This is api for news website
