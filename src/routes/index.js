@@ -14,6 +14,7 @@ const initRoutes = (app) => {
   UserRoute(app);
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.use("/health", (_, res) => res.sendStatus(200));
 
   return app.use(notFoundRoute);
 };
