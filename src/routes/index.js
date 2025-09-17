@@ -6,15 +6,17 @@ import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
 import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
 import UserAuthRoute from "./AuthRoute/UserAuthRoute";
+import HealthRoute from "./HealthRoute";
 
 const initRoutes = (app) => {
+  app.use("/health", HealthRoute);
+
   AdminAuthRoute(app);
   UserAuthRoute(app);
   AdminRoute(app);
   UserRoute(app);
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  app.use("/health", (_, res) => res.sendStatus(200));
 
   return app.use(notFoundRoute);
 };
