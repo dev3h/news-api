@@ -8,9 +8,17 @@ import initRoutes from "routes";
 
 const app = express();
 
+const whitelist = [process.env.URL_CLIENT, process.env.URL_SERVER];
+
 const corsOption = {
   credentials: true,
-  origin: [process.env.URL_CLIENT],
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
 };
 
 app.use(cors(corsOption));

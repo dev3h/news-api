@@ -1,10 +1,11 @@
 import swaggerAutogen from "swagger-autogen";
 import fs from 'fs';
 import glob from 'glob';
+import "dotenv/config";
 
 function getRouteFilesByPattern() {
   const patterns = [
-    "./src/routes/HealthRoute.js",
+    "./src/routes/index.js",
     "./src/routes/AdminRoute/**/*.js",
     "./src/routes/UserRoute/**/*.js",
     "./src/routes/AuthRoute/**/*.js",
@@ -29,16 +30,15 @@ function getRouteFilesByPattern() {
     }
   });
 
-  return allFiles.filter((file) => !file.includes("/index.js") && fs.existsSync(file));
+  return allFiles.filter((file) => file.includes("/index.js") && fs.existsSync(file));
 }
-
 const doc = {
   info: {
     title: "News API",
     description: "API for News Management System with Admin, User and Auth routes",
     version: "1.0.0",
   },
-  host: "localhost:5000",
+  host: process.env.URL_SERVER || "localhost:5000",
   basePath: "/",
   schemes: ["http", "https"],
   consumes: ["application/json"],
@@ -48,7 +48,7 @@ const doc = {
     { name: "User Auth", description: "User authentication routes" },
     { name: "Admin", description: "Admin management routes" },
     { name: "User", description: "User access routes" },
-    { name: "Health", description: "Health check endpoint" }
+    { name: "Health", description: "Health check endpoint" },
   ],
   securityDefinitions: {
     bearerAuth: {
@@ -56,11 +56,17 @@ const doc = {
       name: "Authorization",
       scheme: "bearer",
       in: "header",
-    }
-  }
+    },
+  },
 };
 
 const outputFile = "./src/swagger-output.json";
+// check if not outputFile exists then create it,
+if (!fs.existsSync(outputFile)) {
+  fs.writeFileSync(outputFile, JSON.stringify({}));
+} else {
+  fs.writeFileSync(outputFile, JSON.stringify({}));
+}
 const endpointsFiles = getRouteFilesByPattern();
 
 console.log('🔄 Generating Swagger documentation...');
