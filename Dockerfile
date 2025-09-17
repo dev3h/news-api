@@ -13,20 +13,14 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Generate Swagger documentation (using build-specific script)
-RUN npm run swagger:build || echo "Swagger generation failed, creating empty swagger file..." && \
-    mkdir -p src && echo '{"swagger":"2.0","info":{"title":"API","version":"1.0.0"},"paths":{}}' > src/swagger-output.json
-
-# Debug: Check if swagger file is properly copied and readable
-RUN echo "=== Swagger file verification ===" && \
-    ls -la build/swagger-output.json && \
-    echo "=== First 10 lines of swagger file ===" && \
-    head -10 build/swagger-output.json && \
-    echo "=== Swagger file size ===" && \
-    wc -c build/swagger-output.json
+# Debug and Generate Swagger documentation
+RUN npm run swagger:build || echo "Swagger generation failed, continuing without it"
 
 # Build the application
 RUN npm run build
+
+# Copy swagger to build directory after build is complete
+RUN cp src/swagger-output.json build/ || echo "Could not copy swagger file"
 
 # Production stage
 FROM node:18-alpine AS production
@@ -40,13 +34,8 @@ COPY package*.json ./
 # Install only production dependencies
 RUN npm ci --only=production && npm cache clean --force
 
-# Generate Swa
-
-# Copy built application from builder stage
+# Copy built application from builder stage (including swagger file)
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/src/swagger-output.json ./build/swagger-output.json
-
-# Note: Environment variables should be set via Render dashboard, not copied into image
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \

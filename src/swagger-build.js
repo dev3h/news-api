@@ -1,5 +1,36 @@
 import swaggerAutogen from "swagger-autogen";
 import fs from 'fs';
+import glob from 'glob';
+
+function getRouteFilesByPattern() {
+  const patterns = [
+    "./src/routes/HealthRoute.js",
+    "./src/routes/AdminRoute/**/*.js",
+    "./src/routes/UserRoute/**/*.js",
+    "./src/routes/AuthRoute/**/*.js",
+  ];
+
+  const allFiles = [];
+
+  patterns.forEach((pattern) => {
+    try {
+      if (pattern.includes("**")) {
+        // Handle glob patterns
+        const files = glob.sync(pattern);
+        allFiles.push(...files);
+      } else {
+        // Handle direct file paths
+        if (fs.existsSync(pattern)) {
+          allFiles.push(pattern);
+        }
+      }
+    } catch (error) {
+      console.warn(`Could not process pattern: ${pattern}`);
+    }
+  });
+
+  return allFiles.filter((file) => !file.includes("/index.js") && fs.existsSync(file));
+}
 
 const doc = {
   info: {
@@ -30,12 +61,7 @@ const doc = {
 };
 
 const outputFile = "./src/swagger-output.json";
-const endpointsFiles = [
-  "./src/routes/index.js",
-  "./src/routes/AdminRoute/**/*.js",
-  "./src/routes/UserRoute/**/*.js",
-  "./src/routes/AuthRoute/**/*.js"
-];
+const endpointsFiles = getRouteFilesByPattern();
 
 console.log('🔄 Generating Swagger documentation...');
 
