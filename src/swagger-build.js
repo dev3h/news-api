@@ -1,4 +1,5 @@
 import swaggerAutogen from "swagger-autogen";
+import fs from 'fs';
 
 const doc = {
   info: {
@@ -28,17 +29,18 @@ const doc = {
   }
 };
 
-const outputFile = "./swagger-output.json";
+const outputFile = "./src/swagger-output.json";
 const endpointsFiles = [
-  "./routes/index.js",
-  "./routes/AdminRoute/**/*.js",
-  "./routes/UserRoute/**/*.js",
-  "./routes/AuthRoute/**/*.js"
+  "./src/routes/index.js",
+  "./src/routes/AdminRoute/**/*.js",
+  "./src/routes/UserRoute/**/*.js",
+  "./src/routes/AuthRoute/**/*.js"
 ];
+
+console.log('🔄 Generating Swagger documentation...');
 
 swaggerAutogen()(outputFile, endpointsFiles, doc).then(async () => {
   // Auto-fix tags after generation
-  const fs = await import('fs');
   const swagger = JSON.parse(fs.readFileSync('./src/swagger-output.json', 'utf8'));
 
   const rules = [
@@ -64,11 +66,8 @@ swaggerAutogen()(outputFile, endpointsFiles, doc).then(async () => {
     })
   );
 
+  // Write to both locations to ensure compatibility
   fs.writeFileSync('./src/swagger-output.json', JSON.stringify(swagger, null, 2));
-  console.log('✅ Swagger generated with tags!');
-  
-  // Only start server if not in build mode
-  if (!process.env.SKIP_SERVER_START) {
-    await import("./index.js");
-  }
+  console.log('✅ Swagger generated with tags - build mode!');
+  process.exit(0);
 });

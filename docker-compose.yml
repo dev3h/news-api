@@ -34,6 +34,20 @@ services:
   redis:
     image: redis:latest
     restart: always
+    ports:
+      - "6379:6379"
+
+  # News API Service
+  api:
+    build: .
+    container_name: news-api
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+      - redis
 
 volumes:
   mysql_data:

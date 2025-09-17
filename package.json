@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
     "swagger": "babel-node src/swapper.js",
+    "swagger:build": "node src/swagger-build.js",
     "build": "babel src -d build",
     "start": "node build/index.js",
     "test": "jest --watchAll --no-cache --detectOpenHandles"

@@ -11,8 +11,10 @@ var _AdminRoute = _interopRequireDefault(require("./AdminRoute"));
 var _UserRoute = _interopRequireDefault(require("./UserRoute"));
 var _AdminAuthRoute = _interopRequireDefault(require("./AuthRoute/AdminAuthRoute"));
 var _UserAuthRoute = _interopRequireDefault(require("./AuthRoute/UserAuthRoute"));
+var _HealthRoute = _interopRequireDefault(require("./HealthRoute"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var initRoutes = function initRoutes(app) {
+  app.use("/health", _HealthRoute["default"]);
   (0, _AdminAuthRoute["default"])(app);
   (0, _UserAuthRoute["default"])(app);
   (0, _AdminRoute["default"])(app);
