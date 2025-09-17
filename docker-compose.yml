@@ -41,13 +41,19 @@ services:
   api:
     build: .
     container_name: news-api
+    env_file:
+      - .env.docker
     environment:
-      - NODE_ENV=production
+      # Override specific Docker values
+      - DB_HOST=mysql
+      - REDIS_HOST=redis
     ports:
-      - "5000:5000"
+      - "${PORT:-5000}:${PORT:-5000}"
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
 volumes:
   mysql_data:

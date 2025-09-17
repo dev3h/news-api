@@ -14,7 +14,16 @@ RUN npm ci
 COPY . .
 
 # Generate Swagger documentation (using build-specific script)
-RUN npm run swagger:build || echo "Swagger generation failed, continuing..."
+RUN npm run swagger:build || echo "Swagger generation failed, creating empty swagger file..." && \
+    mkdir -p src && echo '{"swagger":"2.0","info":{"title":"API","version":"1.0.0"},"paths":{}}' > src/swagger-output.json
+
+# Debug: Check if swagger file is properly copied and readable
+RUN echo "=== Swagger file verification ===" && \
+    ls -la build/swagger-output.json && \
+    echo "=== First 10 lines of swagger file ===" && \
+    head -10 build/swagger-output.json && \
+    echo "=== Swagger file size ===" && \
+    wc -c build/swagger-output.json
 
 # Build the application
 RUN npm run build
@@ -30,6 +39,8 @@ COPY package*.json ./
 
 # Install only production dependencies
 RUN npm ci --only=production && npm cache clean --force
+
+# Generate Swa
 
 # Copy built application from builder stage
 COPY --from=builder /app/build ./build
