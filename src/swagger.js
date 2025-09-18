@@ -32,15 +32,23 @@ function getRouteFilesByPattern() {
 
   return allFiles.filter((file) => file.includes("/index.js") && fs.existsSync(file));
 }
+
 const doc = {
   info: {
     title: "News API",
     description: "API for News Management System with Admin, User and Auth routes",
     version: "1.0.0",
   },
-  host: process.env.URL_SERVER || "localhost:5000",
-  basePath: "/",
-  schemes: ["http", "https"],
+  servers: [
+    {
+      url: "http://localhost:5000",
+      description: "", // by default: ''
+    },
+    {
+      url: "https://news-api-ko52.onrender.com",
+      description: "", // by default: ''
+    },
+  ],
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [
@@ -60,6 +68,8 @@ const doc = {
   },
 };
 
+console.log("🎯 Swagger host will be:", doc.host);
+
 const outputFile = "./src/swagger-output.json";
 // check if not outputFile exists then create it,
 if (!fs.existsSync(outputFile)) {
@@ -69,29 +79,29 @@ if (!fs.existsSync(outputFile)) {
 }
 const endpointsFiles = getRouteFilesByPattern();
 
-console.log('🔄 Generating Swagger documentation...');
+console.log("🔄 Generating Swagger documentation...");
 
-swaggerAutogen()(outputFile, endpointsFiles, doc).then(async () => {
+swaggerAutogen({ openapi: "3.0.0" })(outputFile, endpointsFiles, doc).then(async () => {
   // Auto-fix tags after generation
-  const swagger = JSON.parse(fs.readFileSync('./src/swagger-output.json', 'utf8'));
+  const swagger = JSON.parse(fs.readFileSync("./src/swagger-output.json", "utf8"));
 
   const rules = [
-    ['/auth/admin/', 'Admin Auth', false],
-    ['/auth/user/', 'User Auth', false],
-    ['/api/v1/user/', 'User', true],
-    ['/api/v1/', 'Admin', true],
-    ['/health', 'Health', false]
+    ["/auth/admin/", "Admin Auth", false],
+    ["/auth/user/", "User Auth", false],
+    ["/api/v1/user/", "User", true],
+    ["/api/v1/", "Admin", true],
+    ["/health", "Health", false],
   ];
-  const noAuth = ['/login', '/register', '/refresh-token', '/forgot-password'];
+  const noAuth = ["/login", "/register", "/refresh-token", "/forgot-password"];
 
   Object.entries(swagger.paths).forEach(([path, methods]) =>
-    Object.values(methods).forEach(route => {
+    Object.values(methods).forEach((route) => {
       if (route.tags) return;
       const rule = rules.find(([pattern]) => path.includes(pattern));
       if (rule) {
         const [, tag, needsAuth] = rule;
         route.tags = [tag];
-        if (needsAuth && !noAuth.some(p => path.includes(p))) {
+        if (needsAuth && !noAuth.some((p) => path.includes(p))) {
           route.security = [{ bearerAuth: [] }];
         }
       }
@@ -99,7 +109,7 @@ swaggerAutogen()(outputFile, endpointsFiles, doc).then(async () => {
   );
 
   // Write to both locations to ensure compatibility
-  fs.writeFileSync('./src/swagger-output.json', JSON.stringify(swagger, null, 2));
-  console.log('✅ Swagger generated with tags - build mode!');
+  fs.writeFileSync("./src/swagger-output.json", JSON.stringify(swagger, null, 2));
+  console.log("✅ Swagger generated with tags - build mode!");
   process.exit(0);
 });

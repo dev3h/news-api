@@ -13,11 +13,16 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+RUN rm -f src/swagger-output.json
+
 # Debug and Generate Swagger documentation
 RUN npm run swagger:build || echo "Swagger generation failed, continuing without it"
 
 # Build the application
-RUN npm run build
+RUN npm run prebuild && npm run build
+
+# Copy swagger to build directory
+RUN cp src/swagger-output.json build/swagger-output.json
 
 # Production stage
 FROM node:18-alpine AS production
@@ -33,10 +38,6 @@ RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application from builder stage (including swagger file)
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/src/swagger-output.json ./build/swagger-output.json
-
-# cat file index.js to ensure it exists
-RUN cat ./build/index.js
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
