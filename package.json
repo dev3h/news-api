@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "babel-node src/swagger.js && nodemon --exec babel-node src/index.js",
     "swagger:build": "babel-node src/swagger.js",
     "prebuild": "rm -rf build",
     "build": "babel src -d build",

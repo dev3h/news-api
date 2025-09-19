@@ -7,9 +7,13 @@ import UserRoute from "./UserRoute";
 import AdminAuthRoute from "./AuthRoute/AdminAuthRoute";
 import UserAuthRoute from "./AuthRoute/UserAuthRoute";
 import HealthRoute from "./HealthRoute";
+import { serverAdapter } from "../config/bullBoard";
 
 const initRoutes = (app) => {
   app.use("/health", HealthRoute);
+
+  // Bull Board for queue management
+  app.use("/admin/queues", serverAdapter.getRouter());
 
   AdminAuthRoute(app);
   UserAuthRoute(app);
