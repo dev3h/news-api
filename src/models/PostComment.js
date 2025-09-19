@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       ...columnConfig,
       modelName: "PostComment",
+      tableName: "post_comments",
     }
   );
   return PostComment;

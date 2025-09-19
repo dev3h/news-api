@@ -10,7 +10,7 @@ const hashPassword = (password) => {
 module.exports = {
   async up(queryInterface, Sequelize) {
     const password = await hashPassword("1");
-    await queryInterface.createTable("Admins", {
+    await queryInterface.createTable("admins", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -56,6 +56,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Admins");
+    await queryInterface.dropTable("admins");
   },
 };

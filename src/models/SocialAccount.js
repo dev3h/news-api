@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       ...columnConfig,
       modelName: "SocialAccount",
+      tableName: "social_accounts",
     }
   );
   return SocialAccount;

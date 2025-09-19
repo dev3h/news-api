@@ -3,12 +3,12 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "Post_User_Like",
+      "post_user_like",
       {
         post_id: {
           type: Sequelize.INTEGER,
           references: {
-            model: { tableName: "Posts" },
+            model: { tableName: "posts" },
             key: "id",
           },
           onUpdate: "CASCADE",
@@ -32,6 +32,6 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Post_User_Like");
+    await queryInterface.dropTable("post_user_like");
   },
 };

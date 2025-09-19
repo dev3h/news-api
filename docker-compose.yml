@@ -5,6 +5,7 @@ services:
     image: mysql:latest
     ports:
       - '${DB_PORT:-3306}:3306'
+    command: --lower_case_table_names=2
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'

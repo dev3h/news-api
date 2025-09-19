@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       ...columnConfig,
       modelName: "Tag",
+      tableName: "tags",
     }
   );
   return Tag;

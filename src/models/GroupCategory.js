@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
       ...columnConfig,
       modelName: "GroupCategory",
+      tableName: "group_categories",
     }
   );
 
