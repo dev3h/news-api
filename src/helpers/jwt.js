@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { JWT_CONFIG } from "../config/jwt";
 
 const generateToken = ({ id, role = null }) => {
   return jwt.sign(
@@ -8,7 +9,7 @@ const generateToken = ({ id, role = null }) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "2d",
+      expiresIn: JWT_CONFIG.accessTokenExpiresIn,
     }
   );
 };
@@ -20,7 +21,7 @@ const generateRefreshToken = (id) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "7d",
+      expiresIn: JWT_CONFIG.refreshTokenExpiresIn,
     }
   );
 };

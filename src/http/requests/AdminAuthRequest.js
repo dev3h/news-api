@@ -1,10 +1,11 @@
 import joi from "joi";
 import passwordRule from "rule/PasswordRule";
+import BaseRequest from "./BaseRequest";
 
-const AdminAuthRequest = (req, res, next) => {
-  const usenamePattern = /^[a-zA-Z0-9]+$/;
-  const { error } = joi
-    .object({
+class AdminAuthReq extends BaseRequest {
+  static getSchema() {
+    const usenamePattern = /^[a-zA-Z0-9]+$/;
+    return joi.object({
       username: joi.string().required().min(3).max(50).pattern(usenamePattern).messages({
         "string.empty": "Username là bắt buộc",
         "any.required": "Username là bắt buộc",
@@ -13,16 +14,17 @@ const AdminAuthRequest = (req, res, next) => {
         "string.pattern.base": "Username không được chứa ký tự đặc biệt",
       }),
       ...passwordRule(),
-    })
-    .validate({
-      username: req.body?.username?.trim(),
-      password: req.body?.password?.trim(),
-    });
-  if (error) {
-    return res.status(422).json({
-      message: error.message,
     });
   }
-  next();
+
+  static validate(req, res, next) {
+    const schema = this.getSchema();
+    const data = this.prepareData(req);
+    return super.validate(schema, data, res, next);
+  }
+}
+
+const AdminAuthRequest = (req, res, next) => {
+  return AdminAuthReq.validate(req, res, next);
 };
 export default AdminAuthRequest;

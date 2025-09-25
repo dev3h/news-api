@@ -14,9 +14,9 @@ router.get("/", (req, res) => {
       timestamp: '2024-01-01T00:00:00.000Z'
     }
   } */
-  
-  res.status(200).json({ 
-    status: "OK", 
+
+  res.status(200).json({
+    status: "OK",
     message: "API is running",
     timestamp: new Date().toISOString()
   });

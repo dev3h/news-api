@@ -39,6 +39,7 @@ module.exports = {
       role: {
         type: Sequelize.TINYINT,
         defaultValue: 1,
+        comment: "0: ADMIN, 1: AUTHOR",
       },
       created_at: {
         allowNull: false,

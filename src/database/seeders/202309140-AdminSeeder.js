@@ -1,6 +1,7 @@
 "use strict";
 const { faker } = require("@faker-js/faker");
 const bcrypt = require("bcryptjs");
+const { default: RoleSysEnum } = require("../../enums/RoleSysEnum");
 
 /** @type {import('sequelize-cli').Migration} */
 
@@ -18,12 +19,21 @@ module.exports = {
         username: faker.internet.userName().replace(/[^a-zA-Z0-9]/g, ""),
         display_name: faker.person.fullName(),
         email: faker.internet.email(),
-        password: password,
-        role: Math.round(Math.random()), // Tạo giá trị 0 hoặc 1 ngẫu nhiên,
+        password,
+        role: Math.round(Math.random()),
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
       }));
-      await queryInterface.bulkInsert("admins", admins, {});
+      const baseAdmin = {
+        username: "admin",
+        display_name: "Admin",
+        email: "admin@example.com",
+        password,
+        role: RoleSysEnum.ADMIN,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      await queryInterface.bulkInsert("admins", [baseAdmin, ...admins], {});
     } catch (error) {
       console.error("Error seeding admins:", error);
     }
