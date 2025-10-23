@@ -55,6 +55,7 @@ class PostController {
           filename: photo?.file?.response?.data?.filename,
           created_by,
           updated_by,
+          published_at: rest.status === PostStatusEnum.PUBLISHED ? new Date() : null,
         },
       });
       if (response[1] === false)

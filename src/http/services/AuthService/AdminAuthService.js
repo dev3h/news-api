@@ -37,12 +37,12 @@ class AdminAuthService {
     const admin = await db.Admin.findOne({
       where: {
         id: verifyRefreshToken.id,
-        refresh_token: cookie.refreshToken,
+        refresh_token: refreshToken
       },
     });
 
     if (!admin) badRequest(new Error("Refresh token không tồn tại"), res);
-    const newAccessToken = generateToken({ id: admin.id, role: response.role });
+    const newAccessToken = generateToken({ id: admin.id, role: admin.role });
     return {
       accessToken: newAccessToken,
       message: "Refresh token thành công",

@@ -6,7 +6,6 @@ const badRequest = (err, res) => {
     return;
   }
   const error = createError.BadRequest(err);
-
   return res.status(error.status).json({
     message: err.message,
   });
@@ -18,6 +17,13 @@ const notAuth = (err, res, authError = false) => {
     return;
   }
   const error = createError.Unauthorized(err);
+  if (err?.cause) {
+    return res.status(error.status).json({
+      message: err.message,
+      cause: err.cause,
+      authError,
+    });
+  }
 
   return res.status(error.status).json({
     message: err.message,

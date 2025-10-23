@@ -1,5 +1,5 @@
 import AdminAuthService from "http/services/AuthService/AdminAuthService";
-import { internalServerError, badRequest } from "helpers/generateError";
+import { internalServerError, badRequest, notAuth } from "helpers/generateError";
 import { JWT_CONFIG } from "config/jwt";
 
 
@@ -10,7 +10,7 @@ class AdminAuthController {
 
       res.cookie("refreshToken", result.refreshToken, {
         httpOnly: true,
-        maxAge: JWT_CONFIG.refreshTokenExpiresIn
+        maxAge: JWT_CONFIG.refreshTokenExpiresIn * 1000 // Convert seconds to milliseconds
       });
 
       return res.status(200).json({
@@ -31,7 +31,9 @@ class AdminAuthController {
       return res.status(200).json(result);
     } catch (error) {
       if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-        return badRequest(new Error("Refresh token không hợp lệ"), res);
+        return notAuth(new Error("Refresh token không hợp lệ", {
+          cause: error.name
+        }), res);
       }
       internalServerError(error, res);
     }
