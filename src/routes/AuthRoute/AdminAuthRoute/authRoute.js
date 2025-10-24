@@ -34,12 +34,6 @@ router.post("/login", AdminAuthRequest,
     return AdminAuthController.login(req, res, next);
 });
 
-// #swagger.tags = ['Admin Auth']
-// #swagger.summary = 'Refresh access token'
-// #swagger.description = 'Generate new access token using refresh token'
-/* #swagger.responses[200] = {
-  description: 'Token refreshed successfully'
-} */
 router.post("/refresh-token", (req, res, next) => {
   /*
       #swagger.tags = ['Admin Auth']
