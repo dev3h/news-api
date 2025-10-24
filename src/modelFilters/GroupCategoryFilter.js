@@ -32,9 +32,21 @@ class GroupCategoryFilter {
           as: "updated_by_admin",
           attributes: ["id", "username", "email"],
         },
+        {
+          model: db.Category,
+          as: "categories",
+          attributes: ["id", "name"],
+          separate: true,
+        }
       ],
-      attributes: { exclude: ["created_by", "updated_by"] },
+      attributes: {
+        exclude: ["created_by", "updated_by"],
+      },
     });
+    data.rows = data.rows.map(groupCategory => ({
+      ...groupCategory.toJSON(),
+      categories_count: groupCategory.categories ? groupCategory.categories.length : 0
+    }));
     if (limit !== Number.MAX_SAFE_INTEGER) {
       const response = getPagingData(data, page, limit);
       return response;

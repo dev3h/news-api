@@ -56,7 +56,7 @@ const doc = {
   tags: [
     { name: "Admin Auth", description: "Admin authentication routes" },
     { name: "User Auth", description: "User authentication routes" },
-    { name: "Admin", description: "Admin management routes" },
+    { name: "Admin Dashboard", description: "Admin Dashboard routes" },
     { name: "User", description: "User access routes" },
     { name: "Health", description: "Health check endpoint" },
   ],
