@@ -1,4 +1,3 @@
-// import { badRequest, internalServerError } from "../middlewares/handle_error";
 import db from "models";
 import GroupCategoryFilter from "modelFilters/GroupCategoryFilter";
 import generateSlug from "helpers/generateSlug";
