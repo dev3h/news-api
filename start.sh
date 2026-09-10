@@ -8,7 +8,7 @@ echo "🚀 Starting News API..."
 # Check if swagger file exists, if not generate it
 if [ ! -f "src/swagger-output.json" ]; then
     echo "📝 Generating Swagger documentation..."
-    npm run swagger
+    npm run swagger:build
 fi
 
 # Start the application
